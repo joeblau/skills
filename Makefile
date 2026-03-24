@@ -1,23 +1,24 @@
 SKILLS_DIR := $(HOME)/.claude/skills
-SKILL_DIRS := $(wildcard blau-*/SKILL.md)
-SKILL_NAMES := $(patsubst %/SKILL.md,%,$(SKILL_DIRS))
+SKILL_DIRS := $(shell find . -maxdepth 2 -name SKILL.md -not -path './.git/*' | sed 's|/SKILL.md||; s|^\./||')
 
 .PHONY: install uninstall list check
 
 install: $(SKILLS_DIR)
-	@# Migrate legacy cpr skill if it exists
-	@if [ -L "$(SKILLS_DIR)/cpr" ] || [ -d "$(SKILLS_DIR)/cpr" ]; then \
-		rm -rf "$(SKILLS_DIR)/cpr"; \
-		echo "Migrated: removed legacy cpr (replaced by blau-cpr)"; \
-	fi
-	@for skill in $(SKILL_NAMES); do \
+	@# Migrate legacy skills if they exist
+	@for legacy in cpr blau-cpr; do \
+		if [ -L "$(SKILLS_DIR)/$$legacy" ] || [ -d "$(SKILLS_DIR)/$$legacy" ]; then \
+			rm -rf "$(SKILLS_DIR)/$$legacy"; \
+			echo "Migrated: removed legacy $$legacy"; \
+		fi; \
+	done
+	@for skill in $(SKILL_DIRS); do \
 		ln -sfn "$(CURDIR)/$$skill" "$(SKILLS_DIR)/$$skill"; \
 		echo "Linked: $$skill -> $(SKILLS_DIR)/$$skill"; \
 	done
-	@echo "Done. $(words $(SKILL_NAMES)) skill(s) installed."
+	@echo "Done. $(words $(SKILL_DIRS)) skill(s) installed."
 
 uninstall:
-	@for skill in $(SKILL_NAMES); do \
+	@for skill in $(SKILL_DIRS); do \
 		if [ -L "$(SKILLS_DIR)/$$skill" ]; then \
 			rm "$(SKILLS_DIR)/$$skill"; \
 			echo "Unlinked: $$skill"; \
@@ -26,7 +27,7 @@ uninstall:
 	@echo "Done."
 
 list:
-	@for skill in $(SKILL_NAMES); do \
+	@for skill in $(SKILL_DIRS); do \
 		if [ -L "$(SKILLS_DIR)/$$skill" ]; then \
 			echo "[installed] $$skill"; \
 		else \
@@ -36,7 +37,7 @@ list:
 
 check:
 	@ok=true; \
-	for skill in $(SKILL_NAMES); do \
+	for skill in $(SKILL_DIRS); do \
 		link="$(SKILLS_DIR)/$$skill"; \
 		if [ ! -L "$$link" ]; then \
 			echo "MISSING: $$link (not installed)"; \

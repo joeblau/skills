@@ -1,4 +1,4 @@
-# blau- Skills
+# b: Skills
 
 Personal [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills.
 
@@ -9,36 +9,36 @@ git clone <repo-url> && cd skills
 make install
 ```
 
-This symlinks all `blau-*` skills into `~/.claude/skills/` so Claude Code discovers them automatically.
+This symlinks all skill directories into `~/.claude/skills/` so Claude Code discovers them automatically.
 
 ## Usage
 
-Invoke any skill by typing `/blau-skillname` in Claude Code.
+Invoke any skill by typing `/b:skillname` in Claude Code.
 
 ## Available Skills
 
 | Skill | Description |
 |-------|-------------|
-| `/blau-cpr` | Create and manage GitHub pull requests |
+| `/b:cpr` | Create and manage GitHub pull requests |
 
 ## Commands
 
 ```bash
 make install    # Symlink all skills into ~/.claude/skills/
-make uninstall  # Remove all blau-* symlinks
-make list       # Show installed blau-* skills
+make uninstall  # Remove all symlinks
+make list       # Show installed skills
 make check      # Verify symlinks point to valid targets
 ```
 
 ## Creating a New Skill
 
 ```bash
-mkdir blau-myskill
-cat > blau-myskill/SKILL.md << 'EOF'
+mkdir myskill
+cat > myskill/SKILL.md << 'EOF'
 ---
-name: blau-myskill
+name: b:myskill
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /blau-myskill.
+  MANUAL TRIGGER ONLY: invoke only when user types /b:myskill.
   What the skill does.
 ---
 
