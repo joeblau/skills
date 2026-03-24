@@ -1,11 +1,13 @@
-# blau- Skills
+# b: Skills
 
-Personal Claude Code skills under the `blau-` namespace.
+Personal Claude Code skills under the `b:` namespace.
 
 ## Conventions
 
-- Each skill lives in a `blau-{name}/` directory with a `SKILL.md` file
-- Skill names use kebab-case: `blau-cpr`, `blau-deploy`, etc.
+- Each skill lives in a `{name}/` directory with a `SKILL.md` file
+- Directory names use kebab-case: `cpr`, `deploy`, etc.
+- The `b:` prefix goes in the SKILL.md frontmatter `name:` field (e.g., `name: b:cpr`)
+- Invoked as `/b:skillname` in Claude Code
 - SKILL.md must have YAML frontmatter with `name:` and `description:`
 - No build system — skills are plain markdown
 - Install: `make install` | Uninstall: `make uninstall`
@@ -13,16 +15,16 @@ Personal Claude Code skills under the `blau-` namespace.
 ## Creating a New Skill
 
 ```bash
-mkdir blau-myskill
+mkdir myskill
 ```
 
-Create `blau-myskill/SKILL.md`:
+Create `myskill/SKILL.md`:
 
 ```yaml
 ---
-name: blau-myskill
+name: b:myskill
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /blau-myskill.
+  MANUAL TRIGGER ONLY: invoke only when user types /b:myskill.
   What the skill does.
 ---
 

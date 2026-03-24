@@ -1,7 +1,7 @@
 ---
 name: b:cpr
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /blau-cpr.
+  MANUAL TRIGGER ONLY: invoke only when user types /b:cpr.
   Create and manage GitHub pull requests. Creates branch, commits,
   opens PR, watches CI, fixes failures, and merges.
 ---
