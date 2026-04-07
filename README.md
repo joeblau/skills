@@ -6,10 +6,11 @@ Personal [Claude Code](https://docs.anthropic.com/en/docs/claude-code) skills.
 
 ```bash
 git clone <repo-url> && cd skills
+brew bundle
 make install
 ```
 
-This symlinks all skill directories into `~/.claude/skills/` so Claude Code discovers them automatically.
+`brew bundle` installs CLI tools from the [Brewfile](Brewfile) (fd, ripgrep, ast-grep, jq, fzf, bat, eza, zoxide, httpie, git-delta). `make install` symlinks all skill directories into `~/.claude/skills/` so Claude Code discovers them automatically.
 
 ## Usage
 
