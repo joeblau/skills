@@ -27,3 +27,6 @@ brew "httpie"
 
 # Enhanced git diff/pager with syntax coloring
 brew "git-delta"
+
+# Video/audio encoder — required by b:sludge for compositing and captions
+brew "ffmpeg"

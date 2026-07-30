@@ -10,7 +10,7 @@ brew bundle
 make install
 ```
 
-`brew bundle` installs CLI tools from the [Brewfile](Brewfile) (fd, ripgrep, ast-grep, jq, fzf, bat, eza, zoxide, httpie, git-delta). `make install` symlinks all skill directories into `~/.claude/skills/` so Claude Code discovers them automatically.
+`brew bundle` installs CLI tools from the [Brewfile](Brewfile) (fd, ripgrep, ast-grep, jq, fzf, bat, eza, zoxide, httpie, git-delta, ffmpeg). `make install` symlinks all skill directories into `~/.claude/skills/` so Claude Code discovers them automatically.
 
 ## Usage
 
@@ -21,6 +21,8 @@ Invoke any skill by typing `/b:skillname` in Claude Code.
 | Skill | Description |
 |-------|-------------|
 | `/b:cpr` | Create and manage GitHub pull requests |
+| `/b:x-post` | Research, generate, and review X content |
+| `/b:sludge` | Render sludge content — head-locked talking head over a filler clip, jump cut for pacing, with synced captions |
 
 ## Commands
 
