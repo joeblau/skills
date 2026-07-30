@@ -14,3 +14,4 @@ Create a PR the proper way:
 4. Watch the build and make sure the build is successful
 5. If the pull request fails, fix the build
 6. Merge the pull request with `gh pr merge`, then rebase and delete the local branch
+7. Clean up local and remote branches
