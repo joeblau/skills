@@ -2,3 +2,6 @@
 *.swp
 *~
 x-post/workspace/
+
+__pycache__/
+*.pyc
