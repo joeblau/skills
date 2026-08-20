@@ -1,0 +1,5 @@
+Three Banging Figment Plugins for UXUI Designers.
+Supast!
+Typeout is a Banging UX writing plugin that provides loads of relevant suggestions for your UX copy and components.
+Chartline is a Banging plugin for generating placeholder chart lines super fast.
+Lazy Load is a Banging plugin for generating a Skeleton loading screen in a single click.

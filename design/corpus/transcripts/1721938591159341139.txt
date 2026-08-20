@@ -1,0 +1,10 @@
+Creating flow charts with FigGem AI.
+So fast, Fig would just launch their new AI generator in FigGem,
+saving you a bunch of time when planning, ideating and creating charts.
+Start with your flow chart objective.
+Chuck in your key all phases.
+To find your design guidelines.
+Ensure your prompt has feedback mechanisms.
+Wrap it up by ensuring it's user centric, accessible and scalable.
+Smash generate.
+Woohoo, there's our AI generated flow chart in FigGem.

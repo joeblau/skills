@@ -1,0 +1,8 @@
+Animating hamburger menus in Figma. Superfussed.
+Wack L for a line, duplicate twice, nudge up your thickness,
+widen the middle line and halve the top line,
+select all, workshift L and again, lovely jubbly, add a background,
+double up, move and rotate your other lines for a cross,
+toggle prototype, click drag and drop,
+set smart anime, back it up,
+whoo, there's our animated hamburger menu.

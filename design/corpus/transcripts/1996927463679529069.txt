@@ -1,0 +1,8 @@
+This one visual design rule will instantly upgrade your UI.
+So, Uber applies visual anchoring brilliantly to their UI when we strip out those icons,
+it increases cognitive overload and reduces decision-making time because
+users have to scan every block of text to compare their right options.
+So, with the 180 million monthly users, Uber has to increase decision-making speed,
+and they do so with visual anchoring, helping users recognize shape before text,
+allowing them to scan vertically to make better decisions far faster.
+Super!

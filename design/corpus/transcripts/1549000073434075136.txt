@@ -1,0 +1,5 @@
+Three Wicked Figma plugins.
+Soup Fast!
+PropStar is a wicked design system plugin for documenting your components in tables.
+Alphabet profile is a neat plugin for generating lettered gradient avatars.
+SEO for Figma runs SEO checks on your designs.

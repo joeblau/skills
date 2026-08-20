@@ -1,0 +1,21 @@
+Animating material design text fields in Figma.
+So fast.
+Whack tea, type label, whack shift date.
+Lovely job, Lee, give it a background.
+Whack shift day again.
+Bang it middle left.
+Round those corners.
+You!
+Give it a border.
+Stretch it out.
+Duplicate.
+Nudge down your label size.
+Toggle off auto layout.
+Nudge up your label.
+Set your active border.
+Twist your prototype.
+Connect your text fields.
+Set some more animate.
+Return the favor.
+Woo-hoo!
+There's our animated material design text field.

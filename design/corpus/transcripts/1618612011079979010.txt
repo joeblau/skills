@@ -1,0 +1,17 @@
+Creating responsive designs in Figma.
+Super fast.
+Responsive design allows you to visualise your design across desktop, tablet and mobile.
+White, come on Pete.
+Search for the break points plugin.
+Give it a run.
+Select new adaptive layout.
+Click plus to add a break point.
+And again for your desktop.
+Click plus on the right for your desktop.
+Select your desktop design.
+White plus.
+Select your tablet design.
+Smash the last plus.
+Select your mobile design.
+Woo!
+There's our responsive design in Figma.

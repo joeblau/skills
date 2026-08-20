@@ -1,0 +1,43 @@
+Stop ignoring visual hierarchy in your UI.
+I'm going to show you how we go from a list of content
+to a full UI by applying visual hierarchy super fast.
+So the first step with visual hierarchy
+is organizing your content
+so that you can form a layout in your UI.
+In this example, we have four types of content,
+the user, their activity, their comment,
+and then any actions related to this.
+So having grouped and prioritized our content,
+we want to use this content
+to form the overall layout of our UI.
+And if we start with our user, we have our avatar,
+username, and timestamp of this activity.
+Instead of vertically aligning,
+we're going to set this to horizontal,
+and we're going to use size
+and color visual hierarchy in that caption.
+So we can focus on our activity content now
+when you can experiment with layouts,
+but if we zoom in on those metrics,
+we can apply a better visual hierarchy
+with color and size to those labels.
+You can now focus on the actual activity map.
+We could set this to full width,
+but the scale feels overwhelming,
+so we can reduce this down
+and then align those metrics to the right,
+keeping that proximity super tight.
+And we can now focus on the achievement banner,
+which is content related to our activity,
+and we can again use color and size hierarchy here,
+making sure that it's in close proximity to our activity.
+And when we highlight these content groups,
+you can see it forms the overall layout of our UI,
+and we can now focus on that comment
+and experiment with layout,
+but for me, we want to use that descending order,
+so stack it below, especially for longer form text.
+So those actions we can float in the top right
+and remain at the bottom,
+and this is how we apply visual hierarchy to our UI.
+Woo hoo!

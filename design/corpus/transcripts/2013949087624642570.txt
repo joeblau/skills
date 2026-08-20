@@ -1,0 +1,17 @@
+Your UI transitions, every designer should use.
+First up is the context transition.
+This is great when content changes,
+but the structure should stay put.
+So tabs switching applying filters
+or just general state changes.
+Next up is the drill transition,
+which helps users navigate between levels of hierarchy
+in the information architecture of your product.
+So list to item, feed to post, summary to full view.
+Probably my favorite transition
+is the continuity transition.
+You can use it when common elements persist
+and morph into the next state.
+So card to full screen, collapse player to full player
+and grid to product page.
+Soap of us.

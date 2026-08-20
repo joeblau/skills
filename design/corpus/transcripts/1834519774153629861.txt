@@ -1,0 +1,12 @@
+why I built on your website in Framer.
+Within Framer, you can design mobile, tablet and desktop in a single page,
+making responsive prototyping absolutely effort.
+It's easy to scour your website,
+giving its component and variant-based tool,
+and you can also preview component states in isolation
+and nest those inside large patterns,
+following best design system practice.
+And one of my faith features,
+this Framer has its own actual web analytics,
+helping you design with data.
+Woohoo!

@@ -1,0 +1,15 @@
+animating a sneaker carousel in Figma.
+Soo fast, work F, bang a frame on the page,
+grab your sneaker, remove the background with the removed BG,
+bang it in your frame, rotate it, work T,
+add your text, lovely job lit,
+chuck in some more sneakers, work K, scale them down,
+reduce the width of your frame, create some duplicates,
+rotate it back to zero, scale it down,
+nudge it to the left, pull in your next sneaker,
+scale it up, rotate, repeat the nudge and rotate for each card,
+select all, create component set,
+switch to prototype, connect your cards,
+switch to on drag, chuck it in your design,
+woohoo!
+There's our animated sneaker carousel in Figma.

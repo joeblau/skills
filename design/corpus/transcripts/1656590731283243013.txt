@@ -1,0 +1,9 @@
+Documenting design systems in Figma.
+So first, first up, select your component.
+Navigate to resources.
+I binate shapes specs.
+Run the plug-in.
+Woo-hoo!
+Document the anatomy.
+Component properties.
+And layout and spacing.

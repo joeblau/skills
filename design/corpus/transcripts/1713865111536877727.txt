@@ -1,0 +1,13 @@
+Gloane loading animation in Figma, super fast.
+Smash out, draw a circle, sweep it round,
+bump up the ratio, set the filter in angular gradient,
+add four gradient points from light to dark,
+set the last to zero percent, lovely jubbly, whack f,
+bang it in a dark frame, whack f again,
+draw a tiny circle, add a layer blur,
+round those corners, as you can go to the end,
+last note, bang a white circle on,
+tube you go, rotate your circles, create components set,
+your circles, set to after the layer with my animate,
+bang it in your phone frame, whoo hoo,
+there's our glowing loading animation in Figma.

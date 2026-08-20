@@ -1,0 +1,14 @@
+designing auto layout carousels in Figma.
+Super fast!
+Work F, bang a frame on the page,
+add an image with unsplash,
+workshift out, switch from pack to space between,
+fix the width and height,
+work T, add your title, add supporting text in a chip,
+select all, workshift out,
+chuck your text in your card, bang an icon in,
+lovely job look, create a bunch of duplicates,
+vary your card content, select all, workshift out,
+chuck it in your design, pull in the edge of your frame,
+toggle prototype, switch no scrolling to horizontal,
+woohoo, there's our auto layout carousel in Figma.

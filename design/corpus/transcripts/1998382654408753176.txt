@@ -1,0 +1,10 @@
+Breaking your colors in dark mode.
+Let's assume you're designing this high saturation component.
+You switch to dark mode and leave those bright colors as they are.
+And you think it kind of works?
+I'm going to share a neat design rule to stop those saturated colors popping way too hard in dark mode.
+Oh, we're going to apply the 7060 rule for those warm colors in our UI.
+We're applying 70% opacity and the cool colors 60%.
+This reduces contrast, allowing those colors to blend in better with our dark mode,
+improving readability and balance in the UI.
+Super fast.

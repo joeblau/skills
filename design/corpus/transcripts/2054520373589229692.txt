@@ -1,0 +1,11 @@
+Liquid gradients to your UI, in less than 30 seconds, I'm going to show you how to have
+metallic and saturated liquid gradients to your UI.
+If you had to frame a click ad, you can navigate to Shaders and they've got a bunch of different
+liquid gradient patterns you can work with.
+Once you've selected your liquid gradient pattern, you can tweak the color amps to
+match your branding and adjust the angle and speed and the outcome is a super immersive
+full background liquid gradient.
+Oh, as well as backgrounds, you can apply Shaders to your logo.
+Simply upload your logo and adjust the color values.
+My favorite effect is this metallic effect.
+Super fast.

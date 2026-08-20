@@ -1,0 +1,4 @@
+Scaling your designs in Figma. Super fast. Figma just released a banging update that makes it
+super easy to scale your designs proportionally. First up, select your design, white cape,
+set the origin point from where to scale from, select the scale value,
+you can have proportionally scaled all of your designs.

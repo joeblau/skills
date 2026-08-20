@@ -1,0 +1,9 @@
+Animating gradients in Figma, Suvust, Wacko,
+Bang a circle on the page, hit edit object, stretch your circle,
+set a background, switch to linear, there are your colors,
+give it a blur effect, set to 200, duplicate, switch up your color,
+rotate your duplicate, chuck it in your design, create a bunch of duplicates,
+move and rotate your gradient, lovely doublet, switch to prototype,
+connect your screens, set all your interactions to after delay,
+more millisecond, the animation to smart anime, woohoo!
+There's our gradient animation in Figma!

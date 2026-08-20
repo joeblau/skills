@@ -1,0 +1,26 @@
+animating media cards in Figma.
+So fast!
+Wear F,
+bang a frame on the page,
+add your image with on splash,
+whack F again,
+draw another frame,
+bang your image in your frame,
+black T,
+add a card title,
+duplicate your text,
+notch down the font size,
+add your subtitle,
+select all,
+whack shift A,
+give us some padding in the background,
+round those corners,
+YOOO!
+Duplicate your card,
+increase your image size,
+bump up the exposure,
+switch to prototype,
+connect your cards,
+switch from instant to smart anime,
+woohoo! There's our
+animated media cards in Figma.

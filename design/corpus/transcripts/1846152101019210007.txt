@@ -1,0 +1,23 @@
+Stop designing static portfolios.
+Let's assume you're creating your portfolio in frame
+and that's your design you think, not bad.
+But when you prove to this live,
+you realize everything is super static.
+Well, in less than 30 seconds,
+I'm gonna show you how to animate your portfolio in frame.
+So we're gonna scale in our content first,
+select appear within effects,
+then select scale in,
+set your timings with a slight delay.
+So in a couple clicks,
+we've added some initial animation to our portfolio.
+So one of the neatest features in frame is the ability
+to copy and paste your animation effects across layers.
+Do this to your text, select slide in,
+adjust your timing and add a longer delay
+for a staggered animation.
+Copy and paste your text animation to your image,
+add a slightly longer delay for that continued
+staggered animation,
+and woo-hoo, we've added animation
+to our portfolio super fast.

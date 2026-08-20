@@ -1,0 +1,22 @@
+Stop adding content to your UI.
+So many designers add more and more content,
+trying to fill the space of their UI.
+Well, I'm going to show you super fast how you go from this UI
+to this UI, applying better visual hierarchy with less content.
+So if you bring about that original,
+the date is commanding all our attention.
+This is the Champions League final,
+so we can create better visual hierarchy by adding the event.
+We can then slide that on down,
+which creates space to build atmosphere
+with the stadium and Champions League logo.
+So if we scale up teams logos,
+it reinforces them as a primary visual focus in our UI.
+Instead of having multiple actions distracting fans,
+we want to have a single call to action
+to buy tickets using a verb.
+Oh, the visual hierarchy is sorted.
+We can mimic a real ticket with these circular cutouts,
+making it feel more authentic
+and we can see this in dark mode.
+So fast.

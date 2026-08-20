@@ -1,0 +1,22 @@
+Animating carousels in Figma.
+Super fast.
+Select your frames.
+Watch your flight.
+Love your job, look.
+Work out.
+Chuck your device in.
+Shove your carousel in.
+Duplicate.
+Scale down your carousel.
+Nudge it over.
+Duplicate again.
+Nudge your next frame.
+Last one.
+Scale it up.
+Switch your prototype.
+Connect your screens.
+Set it to our animate.
+Set the second to on drag.
+And the last to on tap.
+Woo-hoo!
+There's our animated carousel in Figma.

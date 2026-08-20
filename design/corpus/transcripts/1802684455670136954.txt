@@ -1,0 +1,19 @@
+Stop designing with primary buttons.
+Less than 30 seconds are going to show you why you should limit the use of primary buttons
+in your UI to improve usability.
+So by setting every action to primary, we lose hierarchy in IUI and it creates cognitive overload
+as users waste time trying to understand the primary action.
+First step to fix this is to organize our buttons into tertiary,
+secondary, and primary.
+So it's excessive to have six buttons in IUI, so to improve visual clarity and streamline
+decision-making, we're going to reduce this from six to four, and utilize progressive disclosure.
+Having categorized our buttons by hierarchy, we can style accordingly.
+This more button we're going to set to tertiary with that neutral outline.
+Our secondary buttons we can add higher emphasis with a neutral background.
+So these transaction icons are styled like small primary buttons,
+so we're going to replace these with logos and then utilize smaller neutral icons
+to reflect the actual transaction that's happening.
+So with these small adjustments, we've improved the visual hierarchy and reduced
+the cognitive overload with a single primary action, multiple secondary buttons,
+and that more button using progressive disclosure to reveal more actions as the user needs it.
+Ooh, super fast.

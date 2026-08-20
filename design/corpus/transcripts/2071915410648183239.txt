@@ -1,0 +1,12 @@
+Animating buttons in Figma Motion. Less than 30 seconds, I'm going to show you how to animate
+this expanding button to the right easing curves in Figma Motion. First up, we want to
+be using an auto layout central line container. Then we can navigate into Figma Motion.
+Oh, with your button selected, you can add your first keyframe setting the initial button with.
+We can then drag our timeline to expand the button with and add our second keyframe.
+And from here, we can then set an easing out animation curve. Oh, to amplify the expanding
+animation, we want to compress the inner content of the button. So if we select our text, we can
+add our next keyframe, adjusting the x-axis from right to left of our button.
+Use an ease-out curve so it starts with energy and slows down into its final position.
+Or to save yourself a bunch of time, you can copy and paste animations in Figma Motion,
+adjust the keyframe values. I'm now adding a slight delay to the content,
+and there we have our smooth button animation. Super far.

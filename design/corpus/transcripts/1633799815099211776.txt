@@ -1,0 +1,11 @@
+Animating video buttons in Figma. Superfussed.
+Worked out. Add your button text. Work shift A.
+Set your padding. Give it a fill.
+Shrew some solid to video. Add your video.
+Truck in a couple of overlays. Round those corners.
+Bang and you play icon. Add it to your screen.
+Keep the gate to your screen.
+Now check your content. Increase the height of your button.
+And the width. Hide your icon on tech.
+Switch the prototype. Connect your button to your screen.
+Woohoo! There's our animated video button in Figma.

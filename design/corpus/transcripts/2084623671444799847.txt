@@ -1,0 +1,17 @@
+Stop adding containers to your UI.
+So many designers overload their UI with containers,
+creating visual noise and weakening visual hierarchy.
+So I'm going to share super fast how to fix this
+by using white space and surfaces.
+Oh, the first mistake designers make
+is using containers for layout.
+This creates a boxy UI.
+Instead, focus on a content layout
+that creates natural white space forming groups
+within your UI.
+So by using white space, we improve visual hierarchy
+without boxy containers.
+This then encourages you to use surfaces as emphasis,
+and we can change any color for branding,
+and see it in Dart Mode.
+Super fast.

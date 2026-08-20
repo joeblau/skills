@@ -1,0 +1,11 @@
+design tasks in Notion. Notion is a banging all-in-one workspace for teams
+and individuals we use it all the time with memorizing and I'm going to show
+you how to create an awesome cam-bandboard super fast. Give your page your
+name, chuck an emoji in, smash slash, type board and select inline database, hide
+your cards with no status, click new, click out and click on title, click create
+template, type new task, set the status to not start it, assign it to yourself, add
+new property and call it type, switch it from text to a select field, add the
+different type of design type, click add property and type in estimation, switch it
+from text to number, be jubbly now whenever we create tasks we can use our
+template, we can set the task, add the type of task, set our estimation, we can
+now create an update task super fast in Notion.

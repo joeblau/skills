@@ -1,0 +1,7 @@
+Stop designing custom icons.
+So designers often feel pressured to design everything custom in their products, including icons,
+but this is a great practice. I recommend these three libraries to save you a bunch of time.
+Huge icons. There's a huge library of icons with over 27,000 icons.
+And Lucid icons is a really clean, consistent, and scalable icon library.
+Here are icons. It's one of my faves. It's megapop here and super playful,
+and I hope this helps you design super fast.

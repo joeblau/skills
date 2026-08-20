@@ -1,0 +1,19 @@
+Animating Arc Text in Figma
+Suvast
+Wack Tea
+Adjitext
+Use the Arc plug-in to round your text
+Lovely Jubbly
+Wack F
+Draw frame around your text
+Remove the fill
+Duplicate three times
+Rotate each shoot picker
+Select Alt
+Create component set
+Connect each Arc
+Set the interaction details to after delay
+Pump down to one millisecond
+Bang in your design
+Woohoo
+Those are animated Arc text in Figma

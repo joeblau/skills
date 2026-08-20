@@ -1,0 +1,6 @@
+Knowing you've designed a website by Animations and Afterthought, well, I'm going to show you how to add it in less than 30 seconds.
+Oh, a lot of designers forget to add animation as they're designing, which then turns adding animation into days of work.
+So, instead of adding animation to every layer manually, you can navigate to your framer agents
+and add a single prompt to add animation to every layer of your website.
+This saves you so much time and creates such a better user experience in less than a minute.
+Sooo, fast.

@@ -1,0 +1,14 @@
+Designing a responsive card grid in Figma.
+Super fast.
+Figma just launched all to a layout wrap
+that allows you to design responsibly.
+Smash off, bang a frame on the page,
+chuck in some sneakers, work tape, add your text,
+select all, wax your tape, your image to fill container.
+Okay, your card, change the image,
+if you get your row, update the images,
+select all, wax your tape, take your spacing,
+select all your cards, add a minimum width,
+get to fill container, add it to your page,
+switch to fill container, woo-hoo!
+There's our fully responsive grid of cards in Figma.

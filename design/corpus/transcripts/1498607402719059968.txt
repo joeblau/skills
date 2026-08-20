@@ -1,0 +1,30 @@
+creating mobile scrolling animations in Figma.
+Suvast.
+Work F.
+Hang a frame on the page.
+Bang in the background with on splash.
+Work T.
+Type in a title.
+Add a subtitle.
+Select your text.
+Work Shift-A.
+Bang in some padding.
+Align the height of both frames.
+Set a dark theme.
+Add a button to the image.
+Select Alt.
+Work Shift-A.
+Chalk your header in your design.
+Duplicate your frame.
+Slide your list behind your header.
+Work K.
+Scale down your header.
+Lovely job, mate.
+Switch approach type.
+Connect your frames from your list.
+Return the favor.
+To create that scroll effect,
+we smash on drag.
+Text smart animate.
+Woohoo!
+There's our scroll effect animation in Figma.

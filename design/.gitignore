@@ -1,0 +1,6 @@
+corpus/videos/
+corpus/*.log
+corpus/failed.txt
+corpus/shard*.txt
+corpus/mopup_ids.txt
+corpus/STOP

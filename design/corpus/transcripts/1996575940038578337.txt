@@ -1,0 +1,15 @@
+I'm ignoring your button width.
+So many designs create the buttons using autolayer,
+but with varying labels, this creates a really uneven UI.
+So I'm going to share a great design
+where all you can do.
+Oh, I'm getting the left account of our button label.
+This creates an uneven width in our buttons,
+which is mega awkward.
+So instead of relying entirely on internal panning,
+I recommend setting a minimum width
+to improve visual balance and accessibility.
+You can always stretch the width of these
+to improve the alignment,
+and this really bangs in Dart Mode.
+Super fast.

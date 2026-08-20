@@ -1,0 +1,9 @@
+You've got to try this responsive auto layout short.
+Oh, let's assume you're creating a card in Figma.
+You're pretty happy, so you're like, ooh, top notch.
+You want to make it responsive, so you whack shift in.
+It becomes like a crazy disco card.
+And you're like, ooh, there must be a super fast way.
+Well, if you select your layers, whack Control Shift A,
+Figma's new AI detects your layers and forms the auto layout
+frame so that you have a fully responsive card.

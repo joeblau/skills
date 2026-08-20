@@ -1,0 +1,9 @@
+Wow, that was my general reaction to Framer Agents. Most AI design tools tend to help non-designers
+generate quick UI screens, whereas Framer Agents actually helps designers. Here's four ways I use
+Framer Agents to level up this website for a client and save me a bunch of time. I converted
+the navigation bar from static into an on-scroll animated component. Then I wanted to update all
+of the text animation instead of clicking through every layer, it can update in a single prompt.
+Instead of having a static section here, I wanted to add this on-scroll animation where the cards
+fan out, and again it does it in a single prompt. Now once we've got that desktop version created
+with a single prompt in Framer Agents, it converts this into a fully responsive website.
+Though if you're a designer, recommend using Framer Agents to improve your layout and animation

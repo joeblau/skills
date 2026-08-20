@@ -1,0 +1,13 @@
+Animating heart buttons in Figma.
+Soon first, whack F, bang on a frame,
+chuck in your icon, mash out, draw a tiny circle,
+tube again, scale up, slide it behind your heart,
+tube again, set your active color, scale your heart,
+and your circles, tube again,
+set the opacity to zero for your circle,
+scale your heart down, lovely jubbly,
+select all, round those corners, switch to prototype,
+connect your buttons, set to bouncy,
+connect the last two, switch from bouncy to gentle,
+woohoo!
+There's our animated heart button in Figma.

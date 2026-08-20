@@ -1,0 +1,6 @@
+Remove image backgrounds, zoom fast.
+So I want to animate these AirPods Maxx in Figma.
+Save your image, right click, navigate to Quick Actions and remove background.
+It removes the background as a PNG, drag it into Figma,
+chuck it in your design.
+Woohoo, there's a super fast way to remove our background image.

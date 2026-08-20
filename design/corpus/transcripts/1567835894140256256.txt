@@ -1,0 +1,27 @@
+Animating Apple's Dynamic Island in Figma.
+Super fast.
+Wa-kef, banger frame on the page.
+Round those corners.
+Wa-tee, edge of text.
+Chuck in your album cover.
+Round those corners.
+Bang in your audio line.
+Love your tablet.
+Wa-kef, add a thin frame.
+Duplicate, set it to white.
+Reduce the width.
+Chuck it in the original.
+Wa-tee, add the length.
+Bang in your controls.
+Chuck it in your frame.
+Duplicate your frame.
+Wa-kee, scale it down on the right.
+And on the left, hide your controls.
+Reduce the height.
+Now chuck your album cover.
+Fully round those corners.
+Switch to prototype.
+Connect your screens.
+Set a custom animation with a stiffness of 300.
+Woo-hoo!
+There's our animated Dynamic Island in Figma.

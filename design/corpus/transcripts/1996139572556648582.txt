@@ -1,0 +1,13 @@
+I'm guessing you're corner radius.
+Let's assume you've got this card
+and you're trying to get the corner radius right.
+Well, instead of guessing, you can follow this method.
+Most designers, when they're setting corner radius,
+focus on the inner and then apply the same radius
+to the outer.
+But this creates this really awkward gap.
+So instead use your inner plus the padding
+to equal the outer radius.
+You can see what it looks like across tight, regular
+and then loose fitting.
+Super.

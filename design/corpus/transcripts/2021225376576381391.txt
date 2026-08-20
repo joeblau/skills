@@ -1,0 +1,11 @@
+I'm guessing your gradient colors are so easy to get gradients wrong. Most designers select
+a dark and a light tone, twist it round a little and hold it works. But I'm going to
+share a super fast frame white film you create consistent gradients.
+Oh, gradients are crazy in steps. There's a classic two-step gradient. This always creates
+a really muddy gradient because we're combining a dark shade with a light tone in that gray
+limber. Oh, the first fix is always using HSL. This ensures that each step is using a
+consistent hue value. With consistent hue, we can focus on our gradient steps. The light
+source is the highest saturation and lightness and the anchor, the darkest. In between
+we have hold and fall off and I always recommend using a four-step grid for consistent color
+blend. You can always adjust the light source angle and for a consistent gradient palette
+you just adjust the hue value. Super fast.
