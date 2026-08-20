@@ -166,6 +166,39 @@ output path.
    (0.25s). Cut boundaries come from word ends, so any imprecision there is audible as
    a chopped-off word — the guard is what stops that, and the beat matcher is not
    allowed to shorten a cut back past it.
+
+   **Every boundary lands inside a silence, and no two cuts overlap.** Word edges are
+   already on the real sound (step 4), so the span between two speech runs is genuinely
+   quiet — but two adjacent cuts both take air out of that *one* span, so it is shared
+   rather than each side helping itself: `--tail-pad` after the outgoing word,
+   `--cut-pad` before the incoming one, scaled down together if the silence cannot fund
+   both. Cuts that each took what they wanted would overlap in source time, and the
+   overlap plays twice — a repeated syllable, heard as a stutter.
+
+   Each cut carries the resulting boundary as a hard ceiling, and everything that
+   lengthens a cut later honours it: the tail guard, and the beat matcher extending
+   towards a beat. Without it, a grown cut reaches into the next word and replays what
+   the following cut also plays.
+
+   This was a real fault, not a theoretical one, and the defaults hid it — overlap
+   needs `tail_pad + cut_pad > max_gap`, which `0.25 + 0.07 < 0.35` clears. Two
+   settings recommended in the table below did not:
+
+   | | before | now |
+   |---|---|---|
+   | defaults | clean | clean |
+   | `--tail-pad 0.5` | 87 ms played twice | clean |
+   | `--max-gap 0.15` | 103 ms twice, cut inside a word | clean |
+   | `--max-gap 0.15 --cut-pad 0.12` | 153 ms twice, cut inside a word | clean |
+
+   `--tail-pad 0.5` was the documented cure for a clipped last word, and it caused
+   stuttering instead.
+
+   The invariant is asserted, not assumed: every render checks the finished cut list —
+   after the tail guard and beat matcher have moved things — for an edge inside a word
+   or an overlap in the source, and logs `cut boundaries: N cut(s), all edges in
+   silence, no overlap`. A hand-written `--edl` is free to ignore word boundaries, and
+   this is what tells you it did.
 3. **Bottom pane.** The clip is scaled to cover 1080x960, centre-cropped, looped
    to length, and started at a random (seedable) offset.
 4. **Captions.** Whisper returns word-level timestamps, then **both ends of every word
@@ -184,7 +217,96 @@ output path.
    A message that diverges too far from the audio (<60% matched) is paced evenly
    across the speech span instead of bunching at the anchors. Rendered as an ASS
    file with one event per word — the active word turns yellow and scales up.
-5. **Vocal chain.** Phone and camera mics record a thin, uneven voice, and on a phone
+5. **Vocal isolation, then the vocal chain.**
+
+   **Isolation runs first, on by default, and decides for itself.** It happens before
+   anything else reads the audio, so one separated file is *the* voice everywhere: the
+   whisper transcript, the onset refinement in step 4, the chain below, and the
+   sidechain key in step 6 all read the same audio. A bed does more damage than it
+   sounds like — it lifts the floor the speech mask thresholds against, so word edges
+   move and **cut boundaries come from word ends** (step 2); and it holds the ducking
+   key above the threshold for the whole take, so the bed and clip never recover
+   between words.
+
+   Two gates, because the cheap one cannot be trusted alone.
+
+   **Gate 1 — the gaps between words.** Music keeps playing between words and lifts
+   that floor; room tone does not. The statistic is the median speech frame minus the
+   loud end (p75) of the non-speech frames, off the 10 ms envelope step 4 already
+   computes, so it is free. Fires below **20 dB**:
+
+   | | gap floor | verdict |
+   |---|---|---|
+   | `01-kimchi` (real bed, −6 dB) | **5.8** | separate |
+   | pure music track | 7.6 | separate |
+   | `01-trump` (loud crowd) | 9.4 | separate |
+   | `01-hayes` (live room, clean) | 17.5 | separate → gate 2 rejects |
+   | `01-kimchi-nomusic` (*same take*, bed removed) | **23.7** | leave alone |
+   | 40 clean podcast segments | 21.5 – 98.8 | leave alone |
+
+   Threshold set from an 18-point ladder (3 rooms x 6 levels of real music mixed under
+   real speech): every bed **18 dB under the voice or louder** lands at 15.6 or below,
+   so 20 clears the worst by 4.4 dB. It sits *above* the closest clean take (17.5) on
+   purpose — a false positive costs one cached separation that gate 2 then throws away,
+   a false negative ships the music. This gate buys recall, not precision.
+
+   **Gate 2 — measure the separation, then decide.** demucs returns both stems, so
+   checking whether the vocals are worth using is nearly free. The metric is the
+   discarded stem's **median** level against the voice; strip at **−25 dB** or louder:
+
+   | | leftover | verdict |
+   |---|---|---|
+   | pure music track | +7.0 | strip |
+   | `01-kimchi` | **−2.9** | strip |
+   | `01-trump` (crowd, not music) | −17.2 | strip |
+   | bed 18 dB under the voice (3 rooms) | −19.9 to −22.8 | strip |
+   | — threshold −25 — | | |
+   | bed 24 dB under the voice (3 rooms) | −26.8 to −30.6 | keep original |
+   | `01-kimchi-nomusic` | −41.0 | keep original |
+   | `fl-03`, `01-hayes`, `01-raj` (clean) | −42.0 to −44.5 | keep original |
+
+   −25 sits **15 dB clear of every clean take measured** and still accepts a bed 18 dB
+   down. Quieter beds are rejected on purpose: 24 dB under the voice is inaudible
+   beneath the chain, the ducked bed and the clip, so separating would spend artifacts
+   for nothing.
+
+   **Median, not integrated loudness — this is load-bearing.** Loudness gating lets one
+   loud second carry a whole file. `01-raj` is a clean take with a single 1-second
+   sting in it; on integrated loudness its leftovers read **7.5 dB** under the voice,
+   *below* kimchi's genuine bed at 6.0, so it would have been separated for nothing. On
+   the median the same file reads −44.5.
+
+   A third guard catches the degenerate case: if the isolated voice comes back more
+   than 20 dB under the take, separation ate the take rather than the music (a head
+   with no speech in it measures 26.0 dB here; anything with a voice measures 0.0–6.4).
+
+   That guard is a *ratio*, so it cannot see a take that is empty rather than quiet:
+   a silent audio track puts both stems on the meter's floor, and 0 dB of leftover
+   under a silent voice reads as a bed sitting right on the speech. So a take at
+   **−60 LUFS or below** is rejected before demucs runs at all — ebur128 bottoms out
+   at −70, and the quietest real take measured is −26.4, so this cannot fire on
+   anything with a voice in it. Auto mode never reached that case anyway (gate 1
+   returns "too short or too dense to judge" on silence); it was `--strip-music` on a
+   silent head that would separate nothing and then claim it had removed a bed.
+
+   **Proof it reaches the output.** Rendering kimchi voice-only and measuring the
+   finished MP4 through the full chain: gap floor **3.3 dB → 23.0 dB**. `--no-strip-music`
+   on the same render leaves it at 3.3.
+
+   Costs ~2.2s + 0.04x realtime (measured: **3.1s** for a 27s head) and is cached in
+   `~/.cache/b-sludge` — both the audio *and* the verdict, so a clean head never pays
+   demucs twice to be told the same no. A re-render of kimchi drops 29.6s → 12.7s. The
+   transcript cache hangs off the isolated file, so it invalidates correctly on its own.
+
+   **It does not improve captions** — measured a wash on `large-v3-turbo`; whisper is
+   already robust to a bed. The win is the sound, the word edges, and the ducking key.
+
+   `--no-strip-music` turns it off; `--strip-music` forces it on when the detector says
+   no. Every branch logs its number. If demucs is missing or fails, the render says so
+   and carries on with the original audio — it never dies, and it does not cache the
+   failure, so it retries once demucs is available.
+
+   **Then the chain.** Phone and camera mics record a thin, uneven voice, and on a phone
    speaker that reads as amateur no matter how well the picture is cut. The head's audio
    goes through a broadcast-style chain: rumble filtered out, chest weight added at
    140 Hz and a wide low shelf, a dip at 1.15 kHz to clear the boxy midrange, presence
@@ -205,6 +327,21 @@ output path.
    with `--no-voice-polish` sits 7.8 LU quieter. Because the voice is the loudest thing
    in the mix and the bed and clip sum in above it, raising `--voice-lufs` also raises
    the whole file; `--no-voice-polish` uses the audio exactly as recorded.
+
+   **Static is a separate problem from music, with a separate switch.** Old broadcast
+   footage, VHS rips and cheap camera mics carry steady noise — tape hiss, room
+   murmur, air handling — that demucs cannot remove (it is not music) and the polish
+   chain then amplifies. `--denoise` runs a non-local-means denoiser (`anlmdn`)
+   ahead of the EQ, feeding the mix, the ducking key and the echo tail alike. NLM
+   over spectral subtraction is a measured choice: on 1997 broadcast footage whose
+   floor was low-frequency room murmur rather than high hiss, `afftdn` bought
+   **0.7 dB** where `anlmdn` bought **9.9 dB** (silence floor −41.8 → −51.7 dB)
+   with the speech level moved 0.03 dB, at 0.05x realtime. Bare flag is strength 7;
+   `--denoise 15` digs harder (measured monotonic to −54.5 dB at 20, but RMS can't
+   see smearing — listen before going high). It is **off by default**: on a clean
+   recording it costs a faint smeared room tone and buys nothing. Reach for it when
+   the head is archival footage or the gaps between words audibly hiss — not as a
+   routine pass.
 6. **Ducked background.** The clip's own audio and the music bed both sit under the
    voice, each with its own `sidechaincompress` keyed off the same voice — real dynamic
    ducking, so they drop while someone talks and recover in the gaps instead of sitting
@@ -418,11 +555,17 @@ Reach for these when the check above looks off, or when the user asks:
 | Wants one continuous take | `--no-jump-cuts` |
 | Framing changes are distracting | `--no-punch-in` |
 | Too many tiny fragments | `--min-cut 0.8` |
-| Last word sounds clipped | `--tail-pad 0.5` (default 0.25s of air after every cut's last word) |
+| Last word sounds clipped | `--tail-pad 0.5` (default 0.25s of air after every cut's last word). Safe to raise — if the silence can't fund it, the air is scaled down rather than reaching into the next word |
+| Stutter / repeated syllable at a cut | shouldn't happen; the log asserts it. If you see a `WARNING` about an overlap, it came from an `--edl` with overlapping ranges |
 | Too much dead air at cut ends | `--tail-pad 0.1` |
 | Echo should ring longer over the CTA | `--echo-repeats 6 --echo-decay 0.7`, or `--echo-note 1/4` |
 | Voice sounds thin / far away | already on by default; check the log says the voice was polished |
+| Hiss / static / tape noise under the voice (archival or VHS-era footage) | `--denoise` (strength 7, ~10 dB), `--denoise 15` for more. Not for music — that's the strip above |
+| Voice sounds smeared or underwater after `--denoise` | lower it (`--denoise 3`) or drop the flag — the source was cleaner than it seemed |
 | Voice sounds harsh or sibilant | `--no-voice-polish` (the presence and air boosts are what bite) |
+| Music still audible under the voice | check the log — it prints the gap floor it measured and what it decided. `--strip-music` forces separation when detection said no (a bed that ducks itself under speech, or one only present in a part of the head you didn't select, is invisible to the gate) |
+| Voice sounds thin, phasey or processed after a strip | `--no-strip-music` — the bed was quiet enough that the artifacts cost more than it did. The log says how far under the voice the bed was |
+| Music bed removed when it shouldn't have been | `--no-strip-music`. Loud constant crowd or PA noise measures like a bed (`01-trump`, −17.2 dB) and gets separated; the log calls it a bed when it isn't |
 | Whole file too loud / too quiet | `--voice-lufs -16` / `-12` (the voice is the mix's reference level) |
 | Voice over-processed / pumping | `--no-voice-polish` |
 | Bed too loud / too quiet | `--music-volume 0.25` / `0.7` |
@@ -470,6 +613,13 @@ Full list: `scripts/sludge.py --help`.
   and the 1.5 GB `large-v3-turbo` whisper model (cached in `~/.cache/whisper`). Without
   network the script says so and uses Haar cascades; whisper needs its model present, so
   pass `--model small` if only that one is cached.
+- `demucs` is **optional**, and only invoked when a head looks like it has music under
+  it. Reached via `demucs` on PATH, else `uvx --from demucs --with "numpy<2" --with
+  soundfile demucs` — those pins are load-bearing, since bare `uvx --from demucs demucs`
+  dies with `ModuleNotFoundError: numpy`. The 80 MB `htdemucs` model is cached in
+  `~/.cache/huggingface` and only the first separation needs network. Isolated vocals
+  are cached in `~/.cache/b-sludge` as FLAC, ~4.6 MB per 84s of head. If none of it is
+  available the render logs it and proceeds with the original audio.
 
 ## Measured lock quality
 

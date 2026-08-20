@@ -57,7 +57,53 @@ VOICE_POLISH = (
     "acompressor=threshold=-26dB:ratio=2.5:attack=200:release=1500:knee=8:makeup=2,"
     "alimiter=limit=-1.5dB:attack=5:release=50"
 )
+# Steady broadcast noise — tape hiss, room murmur, air handling — sits under old or
+# cheap recordings at a level the polish chain then amplifies. Non-local means
+# (anlmdn) over spectral subtraction (afftdn) is a measured choice, not a stylistic
+# one: on 1997 broadcast footage whose floor was low-frequency room murmur rather
+# than high hiss, afftdn at nr=12 bought 0.7 dB where anlmdn at s=7 bought 9.9 dB
+# (silence floor -41.8 -> -51.7 dB) with the speech level moved 0.03 dB, at 0.05x
+# realtime. It runs ahead of the EQ and feeds every consumer of the voice: the mix,
+# the ducking key and the echo tail. Off by default — on a clean recording it costs
+# a faint smeared quality in the room tone and buys nothing.
+VOICE_DENOISE = "anlmdn=s={s:g}:p=0.002:r=0.006"
 CLIP_VOLUME_SOLO = 0.4  # clip level with no bed to match — it is the only background
+
+# Automatic vocal isolation for the head. A music bed under the take is not only a
+# sound problem: it fills the gaps between words, and the gaps are what the rest of
+# this script reads. The speech mask that walks caption timings onto real onsets goes
+# blind, so refined word ends — which is where the jump cuts land — move by up to a
+# quarter of a second; and the sidechain key never falls back under the threshold, so
+# the bed and the bottom clip stay ducked for the whole video instead of breathing
+# between sentences. So the voice is separated once, early, and feeds all four
+# consumers: whisper, the onset refinement, the vocal chain, and the ducking key.
+DEMUCS_MODEL = "htdemucs"
+# Gate 1, the cheap one: how far the loud end of the non-speech frames sits under the
+# median speech frame. A bed keeps playing between words and lifts that floor; room
+# tone does not. Measured over 46 real clips plus an 18-point synthetic ladder (3
+# rooms x 6 bed levels): every bed at 18 dB under the voice or louder lands at 15.6 or
+# below, while the closest clean take (01-hayes, a live room) sits at 17.5 and the rest
+# run 21.5-98.8. 20 is deliberately set above the worst clean take rather than below
+# it — a false positive here costs one cached separation that gate 2 then rejects,
+# while a false negative ships the music. Recall is what this number buys.
+STRIP_MUSIC_GAP_DB = 20.0
+# Gate 2, the authoritative one: the discarded stem's median level against the voice,
+# after separating. Real beds worth removing land -23.2 to +8.5 dB; genuinely clean
+# takes land -40.1 to -44.0. -25 sits 15 dB clear of every clean file measured and
+# still accepts a bed 18 dB under the voice. Quieter beds than that are rejected on
+# purpose: 24 dB down is inaudible under the vocal chain, the ducked bed and the clip,
+# so separating would spend artifacts for nothing.
+STRIP_MUSIC_BED_DB = -25.0
+# Gate 3, the safety net: if the isolated voice comes back this far under the take,
+# separation ate the take rather than the music. That is what happens on a head with
+# no speech in it at all — clip-nibs measures 26.0 dB here, everything with a voice in
+# it measures 0.0-6.4.
+STRIP_MUSIC_VOCAL_FLOOR_DB = 20.0
+# Gate 3a, for the take that is not quiet but empty. ebur128 bottoms out at -70 LUFS,
+# and a head whose audio track is silent measures exactly that — at which point the
+# gate above compares two floors and learns nothing. Quietest real take measured is
+# -26.4 LUFS, so this threshold cannot fire on anything with a voice in it.
+STRIP_MUSIC_SILENT_LUFS = -60.0
 
 
 def log(msg: str) -> None:
@@ -360,6 +406,288 @@ def speech_mask(wav: Path, hop: float = 0.01):
         smoothed[1:-1] = mask[:-2] & mask[1:-1] | mask[1:-1] & mask[2:]
         mask = smoothed
     return mask, hop
+
+
+# ------------------------------------------------------------- vocal isolation
+
+
+def music_gap_db(wav: Path) -> float | None:
+    """How far the gaps between words sit under the speech, in dB.
+
+    Music keeps playing between words and lifts that floor; room tone does not. That
+    difference is the whole cheap detector, and it reads the same 10 ms envelope the
+    timing refinement already computes, so it is free to run on every head. Returns
+    None when there is not enough audio — or not enough silence — to judge.
+    """
+    import numpy as np
+
+    db = energy_db(wav)
+    mask, _ = speech_mask(wav)
+    if db.size < 200 or not mask.any() or not (~mask).any():
+        return None  # under ~2s, or nothing but speech, or nothing but silence
+    return float(np.percentile(db[mask], 50) - np.percentile(db[~mask], 75))
+
+
+def mono_16k(src: Path, dst: Path) -> Path | None:
+    """16 kHz mono copy for measurement. None instead of dying — callers can cope."""
+    if dst.exists():
+        return dst
+    proc = subprocess.run(
+        ["ffmpeg", "-y", "-v", "error", "-i", str(src), "-vn", "-ac", "1",
+         "-ar", "16000", "-c:a", "pcm_s16le", str(dst)],
+        capture_output=True, text=True,
+    )
+    return dst if proc.returncode == 0 and dst.exists() else None
+
+
+def bed_level_db(vocals: Path, rest: Path, work: Path) -> float | None:
+    """The discarded stem's level against the isolated voice, in dB.
+
+    A median over 100 ms frames rather than integrated loudness, and that choice is
+    load-bearing. Loudness gating lets a single loud second carry the whole file: on
+    integrated loudness 01-raj — a clean take with one 1-second sting in it — reads
+    7.5 dB under the voice, which is *below* kimchi's genuine bed at 6.0, so it would
+    have been separated for nothing. On the median the same file reads -44.0 dB, and
+    the two populations stop overlapping.
+    """
+    import numpy as np
+
+    voc = mono_16k(vocals, work / "stem-vocals.wav")
+    oth = mono_16k(rest, work / "stem-rest.wav")
+    if voc is None or oth is None:
+        return None
+    v, m = energy_db(voc, 0.10), energy_db(oth, 0.10)
+    n = min(v.size, m.size)
+    if n < 20:
+        return None
+    v, m = v[:n], m[:n]
+    # Reference against the voice while it is actually speaking, not its average —
+    # otherwise a take with long pauses flatters itself and every bed looks loud.
+    loud = v > np.percentile(v, 90) - 25.0
+    ref = float(np.percentile(v[loud], 50)) if loud.any() else float(np.percentile(v, 90))
+    return float(np.percentile(m, 50) - ref)
+
+
+def run_demucs(src: Path, work: Path, duration: float) -> tuple[Path, Path] | None:
+    """Split `src` into (vocals, everything else), or None with an explanation.
+
+    Deliberately does not use run(): that dies on a non-zero exit, and an optional
+    tool failing must never take a render down with it.
+    """
+    outdir = work / "stems"
+    local = shutil.which("demucs")
+    if local:
+        cmd = [local]
+    elif shutil.which("uvx"):
+        # The pins are not decoration: bare `uvx --from demucs demucs` dies with
+        # ModuleNotFoundError on numpy, and demucs writes its stems through soundfile.
+        cmd = ["uvx", "--from", "demucs", "--with", "numpy<2", "--with", "soundfile", "demucs"]
+    else:
+        log("demucs not available (no demucs and no uvx on PATH) — leaving the music in")
+        return None
+    cmd += ["-n", DEMUCS_MODEL, "--two-stems=vocals", "-o", str(outdir), str(src)]
+
+    log(
+        f"separating vocals with demucs ({DEMUCS_MODEL}) — about "
+        f"{2.2 + 0.04 * duration:.0f}s, and the first ever run downloads an 80 MB model"
+    )
+    started = time.time()
+    try:
+        # Measured at 0.04x realtime, so this budget is ~200x the expected cost: it
+        # can only fire on a genuine hang, never on a merely slow machine.
+        proc = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=max(300.0, 8.0 * duration)
+        )
+    except subprocess.TimeoutExpired:
+        log("vocal separation timed out — leaving the music in")
+        return None
+    except OSError as exc:
+        log(f"could not start demucs ({exc}) — leaving the music in")
+        return None
+    if proc.returncode != 0:
+        tail = " ".join((proc.stderr or "").split())[-300:]
+        log(f"vocal separation failed (exit {proc.returncode}) — leaving the music in: {tail}")
+        return None
+
+    stem = outdir / DEMUCS_MODEL / src.stem
+    vocals, rest = stem / "vocals.wav", stem / "no_vocals.wav"
+    if not vocals.exists() or not rest.exists():
+        log("demucs produced no stems — leaving the music in")
+        return None
+    log(f"separation took {time.time() - started:.1f}s")
+    return vocals, rest
+
+
+def remember_strip(path: Path, strip: bool, reason: str, gap, bed) -> None:
+    """Record the verdict beside the audio, so a re-render never decides twice."""
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(
+            json.dumps({"strip": strip, "reason": reason, "gap_db": gap, "bed_db": bed})
+        )
+    except OSError as exc:
+        log(f"could not record the vocal-isolation verdict ({exc}) — it will be redone")
+
+
+def isolate_vocals(
+    head: Media, work: Path, cache: Path, mode: bool | None
+) -> Path | None:
+    """The head's voice with any music under it separated out, or None for as-recorded.
+
+    Returns a full-length copy on the head's own audio timeline, so everything
+    downstream — the trims, the concat, the sidechain key — keeps working in unchanged
+    source seconds. Never raises: every failure path returns None and says why,
+    because a music bed is a blemish and a dead render is not.
+
+    `mode` is True to separate without checking, False to leave it alone, None to
+    decide for itself.
+    """
+    if not head.has_audio:
+        return None
+    if mode is False:
+        log("--no-strip-music: leaving the head audio as recorded, music and all")
+        return None
+
+    key = cache_key(head.path, DEMUCS_MODEL, "strip-v1", "forced" if mode else "auto")
+    verdict = cache / f"vocals-{key}.json"
+    isolated = cache / f"vocals-{key}.flac"
+
+    # A re-render is the common case and separation is far too slow to repeat, so the
+    # *verdict* is cached as well as the audio — otherwise every clean head would pay
+    # for demucs again just to be told the same no.
+    if verdict.exists():
+        try:
+            saved = json.loads(verdict.read_text())
+        except (ValueError, OSError):
+            saved = None
+        if saved is not None and bool(saved.get("strip")) == isolated.exists():
+            if saved["strip"]:
+                log(f"using cached isolated vocals {isolated.name}")
+                return isolated
+            log(f"cached verdict: {saved.get('reason', 'no music bed')} — audio as recorded")
+            return None
+
+    gap = None
+    if mode is None:
+        # The detector has to see the take untouched, and it must not leave its wav
+        # where voice_wav() would later mistake it for the isolated voice.
+        detect = work / "detect"
+        detect.mkdir(parents=True, exist_ok=True)
+        gap = music_gap_db(voice_wav(head.path, detect))
+        if gap is None:
+            log("head audio too short or too dense to judge for music — as recorded")
+            remember_strip(verdict, False, "too short to judge", gap, None)
+            return None
+        if gap >= STRIP_MUSIC_GAP_DB:
+            log(
+                f"no music bed: the gaps between words sit {gap:.1f} dB under the "
+                f"speech (a bed holds them within {STRIP_MUSIC_GAP_DB:g}) — "
+                "using the head audio as recorded"
+            )
+            remember_strip(verdict, False, f"gaps {gap:.1f} dB under the speech", gap, None)
+            return None
+        log(
+            f"something is playing under the voice: the gaps between words only drop "
+            f"{gap:.1f} dB (clean speech drops {STRIP_MUSIC_GAP_DB:g}+) — "
+            "separating the vocals to check"
+        )
+    else:
+        log("--strip-music: separating the vocals out without checking first")
+
+    # 44.1 kHz stereo is what htdemucs works at, and handing it a wav made here means
+    # the separation and the render cannot disagree about how the source decodes.
+    src = work / "separate-in.wav"
+    if not src.exists():
+        proc = subprocess.run(
+            ["ffmpeg", "-y", "-v", "error", "-i", str(head.path), "-vn", "-ac", "2",
+             "-ar", "44100", "-c:a", "pcm_s16le", str(src)],
+            capture_output=True, text=True,
+        )
+        if proc.returncode != 0 or not src.exists():
+            log("could not extract the head audio for separation — leaving the music in")
+            return None
+
+    # Gate 3a: a take with nothing in it at all. Both stems come back at the meter's
+    # floor, so the level *ratio* gate below cannot see it — 0 dB of leftover under a
+    # silent voice reads as a bed sitting right on top of the speech. Caught here
+    # rather than after separating, since there is nothing for demucs to do either.
+    # Real speech in this corpus runs -14.8 to -26.4 LUFS, so this sits 34 dB clear.
+    take_lufs = measure_lufs(src)
+    if take_lufs is not None and take_lufs <= STRIP_MUSIC_SILENT_LUFS:
+        log(
+            f"the head audio is silent ({take_lufs:.0f} LUFS) — nothing to separate, "
+            "leaving it as recorded"
+        )
+        remember_strip(verdict, False, "the take is silent", gap, None)
+        return None
+
+    stems = run_demucs(src, work, head.duration)
+    if stems is None:
+        return None  # already logged, and the render carries on with the original
+    vocals, rest = stems
+
+    voc_lufs = measure_lufs(vocals)
+    if voc_lufs is None:
+        log("could not measure the separated vocals — leaving the music in")
+        return None
+    if take_lufs is not None and voc_lufs < take_lufs - STRIP_MUSIC_VOCAL_FLOOR_DB:
+        # Nothing spoken to pull out, so what came back is the model's guess at a voice
+        # that is not there. Handing that to the render would gut the take.
+        log(
+            f"separation returned near-silence ({take_lufs - voc_lufs:.1f} dB under the "
+            "take) — there is no voice here to isolate, leaving the audio as recorded"
+        )
+        remember_strip(verdict, False, "separation found no voice", gap, None)
+        return None
+
+    bed = bed_level_db(vocals, rest, work)
+    if mode is None and bed is not None and bed < STRIP_MUSIC_BED_DB:
+        # Gate 1 was fooled by a loud room: what came out is breath and hiss, not a
+        # bed. Separating anyway would trade a clean take for model artifacts.
+        log(
+            f"nothing worth removing: what separated out sits {abs(bed):.1f} dB under "
+            f"the voice (a real bed lands within {abs(STRIP_MUSIC_BED_DB):g}) — "
+            "using the head audio as recorded"
+        )
+        remember_strip(verdict, False, f"leftover {abs(bed):.1f} dB down", gap, bed)
+        return None
+
+    # FLAC, not wav: lossless on the way back out at a third of the size, and these
+    # sit in the cache next to the transcripts for as long as the head file does.
+    try:
+        cache.mkdir(parents=True, exist_ok=True)
+        # Written aside and renamed, so an interrupted run can never leave a truncated
+        # file where the next one would trust it. -f flac is not optional: the muxer
+        # cannot be guessed from the .part extension.
+        tmp = isolated.with_suffix(".flac.part")
+        proc = subprocess.run(
+            ["ffmpeg", "-y", "-v", "error", "-i", str(vocals),
+             "-c:a", "flac", "-f", "flac", str(tmp)],
+            capture_output=True, text=True,
+        )
+        if proc.returncode != 0 or not tmp.exists():
+            log("could not cache the isolated vocals — leaving the music in")
+            return None
+        tmp.replace(isolated)
+    except OSError as exc:
+        log(f"could not cache the isolated vocals ({exc}) — leaving the music in")
+        return None
+
+    # Only claim a bed when one was actually measured. On a forced separation there
+    # may well have been nothing under the voice, and saying otherwise would put a
+    # number in the log that the audio does not support.
+    if bed is None:
+        note, why = "", "separated"
+    elif bed >= STRIP_MUSIC_BED_DB:
+        note = f" — the bed was {abs(bed):.1f} dB under the voice and is now gone"
+        why = f"bed sat {abs(bed):.1f} dB under the voice"
+    else:
+        note = (f" — though what came out sits {abs(bed):.1f} dB down, so there was "
+                "barely a bed to remove")
+        why = f"forced; leftover {abs(bed):.1f} dB down"
+    remember_strip(verdict, True, why, gap, bed)
+    log(f"vocals isolated{note} (cached as {isolated.name})")
+    return isolated
 
 
 def find_drop(music: Path, work: Path, hop: float = 0.02) -> float | None:
@@ -739,6 +1067,12 @@ class Cut:
     fps: float
     framing: float = 1.0  # face-height multiplier, for punch-in variety
     label: str = ""
+    # Source time this cut may never run past: the far edge of the silence it ends
+    # in. Everything that lengthens a cut later — the tail guard, the beat matcher —
+    # honours it, so a cut can never reach into the next word or overlap the cut
+    # that follows it. Without it a grown cut replays a syllable the next cut also
+    # plays, which is exactly what reads as a stutter.
+    limit: float | None = None
 
     @property
     def duration(self) -> float:
@@ -873,12 +1207,20 @@ def apply_jump_cuts(
     words: list[Word],
     max_gap: float,
     pad: float,
+    tail_pad: float,
     min_len: float,
 ) -> list[tuple[float, float, str]]:
     """Split each range on silences longer than max_gap, keeping a little air.
 
     This is the pacing edit: dead space between sentences is what makes a talking
     head feel slow, and cutting it is what makes the result feel fast.
+
+    Every boundary lands inside a silence, never on a word. Word ends and starts come
+    from `refine_timings`, which walks them onto the real edges of the sound, so the
+    span between two runs is genuinely quiet — and the air taken on either side is
+    shared out of that one span rather than each side helping itself. Two cuts that
+    both took what they wanted would overlap in source time, and the overlap plays
+    twice: a repeated syllable, heard as a stutter.
     """
     if not words:
         log("no word timings available — skipping silence-based jump cuts")
@@ -886,6 +1228,7 @@ def apply_jump_cuts(
 
     out: list[tuple[float, float, str]] = []
     removed = 0.0
+    squeezed = 0
     for start, end, label in ranges:
         inside = [w for w in words if w.end > start and w.start < end]
         if not inside:
@@ -898,16 +1241,36 @@ def apply_jump_cuts(
                 runs[-1][1] = we
             else:
                 runs.append([ws, we])
+        # Air wanted before each run and after it. More goes after a word than before
+        # the next one: a chopped tail is the more audible fault of the two.
+        lead = [pad] * len(runs)
+        trail = [tail_pad] * len(runs)
+        for i in range(len(runs) - 1):
+            gap = runs[i + 1][0] - runs[i][1]
+            want = trail[i] + lead[i + 1]
+            if want > gap:
+                # Not enough silence for both. Scale them down together so the split
+                # keeps its proportions and the two boundaries still cannot cross.
+                scale = gap / want if want > 0 else 0.0
+                trail[i] *= scale
+                lead[i + 1] *= scale
+                if gap < 0.08:
+                    squeezed += 1
         for i, (rs, re_) in enumerate(runs):
-            rs = max(rs - pad, start if i == 0 else runs[i - 1][1])
-            re_ = min(re_ + pad, end)
-            if re_ - rs >= min_len:
-                out.append((rs, re_, label if i == 0 else ""))
+            s = max(rs - lead[i], start)
+            e = min(re_ + trail[i], end)
+            if e - s >= min_len:
+                out.append((s, e, label if i == 0 else ""))
             else:
-                removed += re_ - rs
+                removed += e - s
         removed += (end - start) - sum(r[1] - r[0] for r in runs)
     if removed > 0.05:
         log(f"jump cuts: removed {removed:.1f}s of dead air, {len(out)} segments remain")
+    if squeezed:
+        log(
+            f"{squeezed} cut boundary(ies) sit in under 80ms of silence — tight, but "
+            f"still in the gap. Raise --max-gap to cut on longer pauses only"
+        )
     return out
 
 
@@ -933,7 +1296,11 @@ def build_cuts(
         if frames < 2:
             continue
         framing = PUNCH_IN_CYCLE[(i + offset) % len(PUNCH_IN_CYCLE)] if punch_in else 1.0
-        cuts.append(Cut(start=start, frames=frames, fps=fps, framing=framing, label=label))
+        # `end` is where the silence-sharing put this cut's boundary; frame alignment
+        # may land just inside it, and nothing later may push back out past it.
+        cuts.append(Cut(
+            start=start, frames=frames, fps=fps, framing=framing, label=label, limit=end,
+        ))
     if not cuts:
         die("nothing left to render after cutting")
     return cuts
@@ -957,11 +1324,16 @@ def protect_tail(
         inside = [w for w in words if w.start < cut.end and w.end > cut.start]
         if not inside:
             continue
-        need = min(max(w.end for w in inside) + tail_pad, source_end)
+        # Capped by the cut's own boundary: the air after the last word was already
+        # apportioned out of the silence, and taking more would reach into the next
+        # word and duplicate what the following cut plays.
+        ceiling = min(cut.limit, source_end) if cut.limit is not None else source_end
+        need = min(max(w.end for w in inside) + tail_pad, ceiling)
         if need <= cut.end:
             protected = cut.end
             continue
-        frames = int(round((need - cut.start) * fps))
+        # Floor, not round: rounding up would step past the ceiling by half a frame.
+        frames = int((need - cut.start) * fps)
         if frames > cut.frames:
             grew = frames - cut.frames
             cut.frames = frames
@@ -971,6 +1343,44 @@ def protect_tail(
             )
         protected = cut.end
     return protected
+
+
+def check_cut_boundaries(cuts: list[Cut], words: list[Word]) -> None:
+    """Confirm no cut edge sits on a word, and that no two cuts overlap in source.
+
+    The placement above should make both impossible, but this is the fault the whole
+    edit is judged on — a clipped syllable is obvious to anyone watching — so it is
+    asserted against the finished cut list rather than assumed from the arithmetic.
+    """
+    if not words:
+        return
+    split = 0
+    for cut in cuts:
+        for w in words:
+            # A word the cut lands in the middle of, at either edge. Word edges are
+            # already on the real sound, so a hair of tolerance keeps a boundary
+            # placed exactly at an edge from reading as a straddle.
+            for edge in (cut.start, cut.end):
+                if w.start + 0.02 < edge < w.end - 0.02:
+                    split += 1
+                    log(
+                        f"WARNING: cut edge at {edge:.3f}s falls inside the word "
+                        f"{w.text!r} ({w.start:.3f}-{w.end:.3f}s)"
+                    )
+                    break
+    overlaps = 0
+    # Sorted by source time, not output order: an EDL is free to reorder cuts, and
+    # what matters here is which piece of the source each one takes.
+    in_source = sorted(cuts, key=lambda c: c.start)
+    for a, b in zip(in_source, in_source[1:]):
+        if b.start + 1e-6 < a.end:
+            overlaps += 1
+            log(
+                f"WARNING: cuts overlap in the source — {a.start:.3f}-{a.end:.3f}s "
+                f"and {b.start:.3f}-{b.end:.3f}s replay {a.end - b.start:.3f}s twice"
+            )
+    if not split and not overlaps:
+        log(f"cut boundaries: {len(cuts)} cut(s), all edges in silence, no overlap")
 
 
 def remap_words(words: list[Word], cuts: list[Cut]) -> list[Word]:
@@ -1773,6 +2183,8 @@ def render(
     clip_duck_ratio: float,
     voice_polish: bool,
     voice_lufs: float,
+    voice_audio: Path | None,
+    denoise_db: float | None,
     music: Path | None,
     music_offset: float,
     music_delay: float,
@@ -1852,7 +2264,10 @@ def render(
     if head.has_audio:
         # The voice is cut to the same frame-aligned boundaries as the picture, then
         # concatenated. Each piece gets a 12 ms fade so hard cuts don't click.
-        cmd += ["-i", str(head.path)]
+        # The isolated vocals when the head had music under it, otherwise the head
+        # itself. Separation preserves the frame count exactly, so either way this is
+        # the same audio timeline and every trim below is still in source seconds.
+        cmd += ["-i", str(voice_audio or head.path)]
         voice_in = next_input
         next_input += 1
         n = len(timeline)
@@ -1861,6 +2276,11 @@ def render(
         # would let each piece land at its own level and pump at every seam. The
         # loudness pass is the exception and waits until after the concat, below.
         src = f"[{voice_in}:a]"
+        if denoise_db:
+            # Ahead of the polish chain, so the EQ boosts don't lift the very
+            # floor the denoiser is trying to subtract.
+            chains.append(f"{src}{VOICE_DENOISE.format(s=denoise_db)}[vdn]")
+            src = "[vdn]"
         if voice_polish:
             chains.append(f"{src}{VOICE_POLISH}[vpol]")
             src = "[vpol]"
@@ -2285,6 +2705,22 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
         help="loudness target for the voice, in LUFS. -14 is the streaming standard; "
         "the bed and clip mix in above it, so the finished file sits a little hotter",
     )
+    v.add_argument(
+        "--denoise", dest="denoise_db", nargs="?", type=float, const=7.0, default=None,
+        help="remove steady background static (tape hiss, room murmur, camera "
+        "noise) from the voice before it is polished; an optional value sets the "
+        "strength (bare flag = 7, which measured ~10 dB off a broadcast floor)",
+    )
+    v.add_argument(
+        "--strip-music", dest="strip_music", action="store_true", default=None,
+        help="separate the voice out of the head's audio, dropping any music playing "
+        "under it. This already happens whenever a bed is detected; the flag skips "
+        "the check and separates regardless",
+    )
+    v.add_argument(
+        "--no-strip-music", dest="strip_music", action="store_false",
+        help="use the head's audio exactly as recorded, music and all",
+    )
 
     a = p.add_argument_group("music bed")
     a.add_argument(
@@ -2394,6 +2830,11 @@ def main(argv: list[str]) -> int:
             if args.voice_polish
             else "voice: using the head's audio as recorded (--no-voice-polish)"
         )
+        if args.denoise_db:
+            log(
+                f"denoise: removing steady background static "
+                f"(non-local means, strength {args.denoise_db:g})"
+            )
     music = args.music.expanduser().resolve() if args.music else None
     music_duration = 0.0
     if music:
@@ -2463,6 +2904,28 @@ def main(argv: list[str]) -> int:
     work_root = Path(tempfile.mkdtemp(prefix="sludge-"))
     cache = Path.home() / ".cache" / "b-sludge"
     try:
+        # Separate before anything reads the audio. Whichever file this ends up being
+        # is then *the* voice: whisper transcribes it, the onsets are refined against
+        # it, the vocal chain polishes it and the ducking key is split off it. Doing it
+        # once here is what keeps those four in agreement.
+        voice_src = isolate_vocals(head, work_root, cache, args.strip_music) or head.path
+        # The clip level was solved against the take as recorded. If the music has
+        # since come out from under it, that was a measurement of the wrong signal —
+        # and with no loudness pass to pin the voice, the level is whatever the
+        # recording happens to be, so it has to be re-measured on what will be heard.
+        if (
+            args.clip_volume is None and music and head.has_audio
+            and not args.voice_polish and voice_src != head.path
+        ):
+            clip_volume = matched_clip_volume(
+                args.music_volume,
+                args.duck_ratio if args.duck else 1.0,
+                args.clip_duck_ratio if args.duck else 1.0,
+                args.duck_threshold,
+                measure_lufs(voice_src) or args.voice_lufs,
+            )
+            log(f"clip audio: re-matched to the isolated voice, now {clip_volume:.3g}")
+
         # Word timings drive three things: caption highlighting, silence-based jump
         # cuts, and segment scoring — so transcribe whenever any of them is in play.
         needs_words = not args.no_captions or args.jump_cuts or args.plan
@@ -2470,14 +2933,15 @@ def main(argv: list[str]) -> int:
             build_prompt(strip_emphasis(args.message)[0], args.vocab) if args.prime else ""
         )
         spoken = (
-            transcribe(head.path, work_root, cache, args.model, args.language, prompt)
+            transcribe(voice_src, work_root, cache, args.model, args.language, prompt)
             if needs_words and head.has_audio
             else []
         )
         if spoken and not args.no_refine:
             # Whisper's starts run early; put them back on the real onsets before any
-            # of this is used for captions or for cutting.
-            spoken = refine_timings(spoken, voice_wav(head.path, work_root))
+            # of this is used for captions or for cutting. Same source as the
+            # transcript, so both describe the same audio.
+            spoken = refine_timings(spoken, voice_wav(voice_src, work_root))
 
         if args.plan:
             if not spoken:
@@ -2492,7 +2956,9 @@ def main(argv: list[str]) -> int:
         )
         span = sum(e - s for s, e, _ in selected)
         ranges = (
-            apply_jump_cuts(selected, spoken, args.max_gap, args.cut_pad, args.min_cut)
+            apply_jump_cuts(
+                selected, spoken, args.max_gap, args.cut_pad, args.tail_pad, args.min_cut
+            )
             if args.jump_cuts
             else selected
         )
@@ -2585,6 +3051,12 @@ def main(argv: list[str]) -> int:
                 grid_phase = phase - (drop - phase) % beat if drop is not None else phase
                 last, last_track = timeline[-1]
                 room_up = max(len(last_track.scale) - last.frames, 0) + 6
+                if last.limit is not None:
+                    # Landing on a beat is not worth reaching past the silence this
+                    # cut ends in and exposing the front of the next word.
+                    room_up = min(
+                        room_up, max(int((last.limit - last.end) * args.fps), 0)
+                    )
                 # The nearest beat is within half a beat by definition; the beat before
                 # it is the fallback when moving forward would need frames we don't have.
                 nearest = snap_to_grid(duration, bpm, grid_phase % beat)
@@ -2731,6 +3203,10 @@ def main(argv: list[str]) -> int:
                 )
             )
 
+        # Last thing before the encode, so it sees the cuts as they will actually be
+        # rendered — after the tail guard and the beat matcher have moved them.
+        check_cut_boundaries([c for c, _ in timeline], spoken)
+
         render(
             head, clip, out, work_root, timeline,
             duration=duration, assfile=assfile, fps=args.fps,
@@ -2739,6 +3215,8 @@ def main(argv: list[str]) -> int:
             clip_volume=clip_volume,
             clip_duck_ratio=args.clip_duck_ratio if args.duck else 1.0,
             voice_polish=args.voice_polish, voice_lufs=args.voice_lufs,
+            voice_audio=None if voice_src == head.path else voice_src,
+            denoise_db=args.denoise_db,
             music=music, music_offset=music_offset, music_delay=music_delay,
             music_volume=args.music_volume, music_fade=args.music_fade,
             duck_ratio=args.duck_ratio if args.duck else 1.0,
