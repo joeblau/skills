@@ -1,0 +1,16 @@
+Stop naming your layers.
+So let's assume you're designing in Figma
+and you're so happy with your designs
+that you're like lovely, jubbly.
+And then you go up to the left
+and realize there's hundreds of unnamed frames
+like frame 16,085.
+So you start to manually retype these,
+scratch your head and think surely there's a super fast way.
+Well, if you select your layers,
+whack command, care in your keyboard,
+you can then select rename layers
+and Figma's new AI,
+renames all of your layers for you.
+So expect your daughter to drop
+because it's kind of like magic.

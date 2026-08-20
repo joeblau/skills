@@ -1,0 +1,15 @@
+Designing line charts in Figma.
+Fast, super fast, super fast.
+Use the chart line plugin to create your baseline.
+Duplicate your line, smash edit object, whack peat,
+click on the last vector point to extend the line,
+hold shift and connect the end of your line to the start,
+fill the chart with your border color,
+switch from solid to linear,
+select your first gradient value and set it to 20%,
+hide the border, shove it behind your line,
+back to, add your axis value,
+duplicate and label your axis,
+select all, super naughty, but whack come on G,
+whack your chart and your dashboard card,
+woohoo, there's our line chart Designing Figma.

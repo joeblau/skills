@@ -1,0 +1,25 @@
+We're going to episode one of Animating in Figma.
+Soovas!
+In today's episode, we're going to be animating this static card into an awesome, animated
+video card.
+It's my chef.
+Bang a frame of the page.
+Round those corners.
+Like tea.
+Engine card title.
+Add your caption.
+Select all.
+Wear a shift A.
+Set your padding.
+Navigate to pexels.com and grab yourself a video.
+Convert to a GIF using EZ GIF.
+Love it, Jubbly.
+Grab a screenie of the first frame.
+Bang your screenie in your frame.
+Jupygate.
+Replace your image with a GIF and set to fill.
+Switch to prototype.
+Connect your cards.
+Set to lava.
+Woohoo!
+There's our awesome animated video card in Figma.

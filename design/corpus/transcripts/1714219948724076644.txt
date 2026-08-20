@@ -1,0 +1,14 @@
+Animating hover scale effect in Figma.
+Boom!
+Fast.
+Wipe F, your frame on the page.
+Set the filter image, add your image.
+Duplicate, hit K.
+Scale it by 1.1, leverage envelope.
+Wipe F again, add a container frame,
+remove the fill, create components set,
+switch to press start, connect to cards,
+set to a hover room, some more animate,
+bang in your design.
+Woo-hoo!
+There's our animated hover scale effect in Figma.

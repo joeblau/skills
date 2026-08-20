@@ -1,0 +1,12 @@
+Stop designing UI from scratch.
+Design is often ways day starting a UI entirely from scratch.
+So, to save you a bunch of time,
+define your layout in Figma Making.
+It will build your entire UI,
+and this is such an awesome starting point.
+You can then hit Copy Design and paste that straight into Figma.
+Just converse it into editable frames,
+and my fave part is returning to Figma Make
+to ask for the dark mode version.
+You can then copy this straight across, paste it in,
+and you've then got both versions to design from super fast.

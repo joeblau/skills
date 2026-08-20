@@ -1,0 +1,6 @@
+Designing hierarchy without motion, you can sign the perfect layout as a designer, but if everything reveals itself at once, nothing stands out.
+Oh, I'm going to teach you the rule of three to apply better hierarchy with motion.
+Every section of your website has three attention layers. Primary, secondary, and tertiary, that we want to sequentially animate to guide users' attention over time.
+The most common primary attention layer is heading text animation. Within framer, you can adjust your presets, to find where it's word, line, or per character.
+By animating, I recommend using custom easing curves. You can copy and paste these effects to each of your layers and just alter the delay by 0.2 seconds.
+Superfast.

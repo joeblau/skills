@@ -1,0 +1,16 @@
+Stop getting Figma color variables. Let's assume you've created your colors in Figma. You navigate
+to local variables. You see this table, you're really, really confused, so you just start
+guessing your color top. Well, in less than 30 seconds, we're going to give you the confidence
+to create your primitive and semantic color tokens using Figma variables. Let's go ahead and select
+our local variables with confidence to create our first color collection. We're going to call
+this primitives and the first color in our collection is going to be color gray 100. We're then going
+to hit shift return on our keyboard to create our group. Oh, the forward slash in our color
+variables creates really handy groups to help us organize our colors. We can then use shift return
+shortcut to add all of the remaining colors in our collection. So having added our gray primitive
+colors, we're going to create a new color collection within this collection. We're going to use light
+and dark mode so that we can use multi mode design in Figma. Oh, the first color tokens are
+background screen and we can then use semantic aliasing to set the light and dark mode version
+of this referencing our gray primitive colors. If we hit shift return, we can then add the
+remaining colors to our colors collection. And with our Figma variable set, we can easily
+apply these variables to our design and by navigating into appearance, we can switch
+between the light and dark mode version of our design super fast.

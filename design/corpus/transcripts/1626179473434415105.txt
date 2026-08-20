@@ -1,0 +1,19 @@
+Animating music cards in Figma. Super fast.
+Wipe tea, add your genre, duplicate, add your song cap,
+duplicate your subtext, add called to action text,
+select your subtext, whiteshift dot,
+reduce your frame height, click content,
+lovely job lit, select all, whiteshift dot,
+give it some padding, increase your card width,
+chuck in your background, round those corners,
+detach your turn layout,
+boop, grab a relevant image, remove background
+with the remove background plugin,
+crack your image in your card, duplicate your card,
+switch from solid to linear,
+add a color gradient, expand your image,
+toggle in your call to action,
+select all, create components set,
+switch to approach type, connect your cards,
+set to while hovering, chuck it in your design,
+woohoo, there's our animated music cards in Figma.

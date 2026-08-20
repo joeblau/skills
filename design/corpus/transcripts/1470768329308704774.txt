@@ -1,0 +1,31 @@
+Animating Rating Martins in Figma.
+Hu Su-fumbles.
+Wll suck f.
+Chuck a frame on the page.
+Select you star from you shape tools.
+Bang it in your frame.
+Bomb up your ratio.
+Round those corners.
+Lovely Bean.
+Dueign Pat10 stack.
+Set you Hove state.
+Dueign Pat10 stack.
+Too much money.
+Chuck it behind the original.
+Dueign Pat10 stack.
+Set your active state.
+Make your mini starstrave l massive to fill the frame.
+Add the opacity to zero.
+Pump up your active star.
+Great your final jubica
+Set it back to the original size.
+Rename your frames
+to default, hover, active and complete,
+select all, create component set,
+switch to broach type, connect your frames,
+set the first interaction to our hover,
+the second to one click with smart animal
+and the final to after delay.
+Pull out your default, duplicate a bunch of times,
+workshift out, woo!
+There's our interactive rating component in Figma.

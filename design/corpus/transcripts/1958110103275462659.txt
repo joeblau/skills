@@ -1,0 +1,5 @@
+3D clay icons in your UI to take your empty states from this basic form into a motion-driven, playful experiences.
+So once we're happy with the copy and eye UI, we can head to B&B icons to create clay,
+isometric icons just like air B&B. We can then bang our sushi roll into figment and see the difference between 2D and 3D.
+But we don't want to stop there, so we're declaring AI to animate our sushi roll with our motion prompt.
+We can see far more personality added in here, so we can chuck it into figma and see our fully animated empty states super fast.

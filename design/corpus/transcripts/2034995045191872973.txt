@@ -1,0 +1,11 @@
+I'm going to make your UI mock-ups super fast in less than 30 seconds.
+I'm going to show you how to go from static mock-ups into full animated mock-ups to bring
+your design to life.
+Oh, you head over to repplet.com and select animation.
+You can then either upload a FEMA design file or your own mock-up, and then you can add
+a motion-based prompt and repplet will then convert your static mock-up to a motion-based
+mock-up that you can add to any design.
+You can then export this, hit I-definition, and it will render it for you.
+Once it's fully rendered, you can chuck it into your design.
+It's epic for onboarding experiences, marketing sites, and getting better buy-in for your
+design soon fast.

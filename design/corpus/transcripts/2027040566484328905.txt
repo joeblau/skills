@@ -1,0 +1,9 @@
+You can add this liquid blob cursor to your framer site in a couple of clicks using custom
+code.
+Let's do it super fast within framer.
+We can navigate into assets and open a new code file.
+We can name this cursor as a component.
+So once we've got our component created, we can add our custom code.
+I'll add it into the comments that you can add this liquid blob cursor to your site.
+We can then navigate to that component, drag it into our page and we can neatly see our
+liquid blob cursor super fast.

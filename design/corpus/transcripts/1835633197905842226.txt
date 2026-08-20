@@ -1,0 +1,17 @@
+Stop guessing your design token.
+So it's fairly common for designers to assign random names to design tokens,
+but this isn't great practice.
+So in less than 30 seconds,
+we're going to share with you some better naming convention practice.
+So if we focus on our semantic color tokens,
+we have color as that prefix and then the UI element as the second block.
+So to create depth and improve hierarchy,
+we layer surfaces on the background of our product.
+On these surfaces and the background of our product,
+we have components that have background fill UI elements and borders.
+And the other UI elements we need to be mindful of is the text within our product
+and also the icon range that we're using.
+Oh, if we remember those base tokens,
+we can see how we build up on this base from the UI elements.
+We can add priority and even state as we're building our token range.
+Woohoo!

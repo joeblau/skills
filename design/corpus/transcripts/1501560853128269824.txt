@@ -1,0 +1,16 @@
+Animating play buttons in Figma, super fast.
+Work F, bang a frame of the page, round those corners,
+give it a background, slide your play icon in,
+and your pause icon, hide your pause icon.
+Work F, draw a larger frame, round those corners,
+whack your button in your frame, whack F again,
+draw another frame, give it a gradient background,
+slide it into your frame, bang the bracket,
+lovely jubbly, nudge it below your frame, create a duplicate,
+slide your gradient back up,
+hide your play button and show your pause,
+select all, create component set,
+toggle prototype, connect your buttons,
+set to smart animate, bump up your milliseconds,
+chuck it in your design, woo hoo!
+There's our animated play button in Figma.

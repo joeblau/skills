@@ -1,0 +1,15 @@
+Designing 3D buttons in Figma.
+Soo fast, work T, add your text,
+work shift tape, set your padding,
+give it a background, a border,
+round those corners, lower your tablet,
+duplicate your button, fill in your duplicate,
+work F, draw frame for your button,
+chuck in your dark button, add your outline button on top,
+set your button containers to zero,
+duplicate your container, slide your button up,
+select all, create a component set,
+connect your button, switch to price type,
+switch to our hovering, switch to bouncy,
+chuck in your design, whoa!
+There's our animated 3D button in Figma.

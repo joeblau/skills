@@ -1,0 +1,5 @@
+So FEMA just released three super neat copy paste updates, so let's go through them super fast.
+You can now specify where to place components by right-clicking and whacking paste here.
+You can now multi-paste by copying your component, selecting your frames and whacking command V.
+And my absolute fave update is pasting a place, so selecting your wireframe placeholders
+right-click and click paste to replace. YOOO!

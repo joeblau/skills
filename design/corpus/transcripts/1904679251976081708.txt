@@ -1,0 +1,24 @@
+Sending hours, prototyping in Figma,
+let's assume you've created your design.
+You're connecting the screens, you zoom out
+and realise this is gonna take me hours.
+Then it hits you, surely.
+AI can do this.
+Well, if you head to bulk.new,
+click import from Figma, select your frame,
+chuck it into Bolt.
+It generates a fully functioning web app from your design.
+So, from static frames, Bolt creates fully functional
+components and it doesn't end there.
+Let's assume you wanna update this SVG
+to a toggle button you can select and spec.
+Highlight the SVG in your design,
+chuck in a prompt and Bolt will update this
+into a fully functional button.
+This leaves you gobsmacked and wondering,
+I wonder if it can create screen.
+Well, you can add prompts and Bolt becomes
+your engineering co-pilot, updating your app,
+following your UI patterns, perfect for MVPs,
+usability testing and winning more clients.
+Now that's super fast.

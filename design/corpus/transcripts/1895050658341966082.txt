@@ -1,0 +1,9 @@
+What separates good UI from great UI? Well, here's an example of good UI with a basic dissolve
+transition, but here's an example of great UI using motion principles to stagger animation.
+So here's how you can learn from awesome teams like Revolu. They identify their fixed controls
+and create depth in the overlay while using a blur effect. Oh, to create space for our
+action sheet to neatly slide up, we want to slide our nav bar down. Oh, we've created depth and
+space in our screen to maximize our overlay animation. Now the primary transition is to scale and fade
+in our card. And for those fixed controls, we just use a simple fade-in. Our action sheet is our
+primary delay transition. So when we pull this together, we can see how motion hierarchy creates
+great UI.

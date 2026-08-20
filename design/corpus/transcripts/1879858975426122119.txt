@@ -1,0 +1,10 @@
+Using eG in placeholders. Let's assume you're designing a form and you've got to whack in some placeholders
+So you just prefix everything with eG. Well, this isn't great practice
+So in less than 30 seconds, I'm going to share with you some better techniques
+So the purpose of a placeholder is to provide temporary contextual guidance by using eG as the example
+Which isn't a recognized abbreviation in most languages uses enter eG which increases error rate from an accessibility perspective screen
+We just struggled to interpret eG John Doe
+So far better to slim this down to just the example of John Doe
+This basic input example technique is used by teams like Dovetail and Spotify for their forms
+Alternative to the input example is a direct instruction placeholder such as enter your full name
+This is used by teams like Notion and linear. I hope these techniques really help you especially improve the accessibility of your forms

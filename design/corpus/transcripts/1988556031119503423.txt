@@ -1,0 +1,9 @@
+Stop duplicating your UI content in Figma.
+So many designs got to be framed after frame,
+then manually update all their text,
+but this feels a little slow.
+So to save time, set your outer frame,
+you have this cheeky line that you can drag down,
+drag it on down and hit replace content,
+you have duplicated frames with fresh content using a
+super fast.

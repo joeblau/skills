@@ -1,0 +1,4 @@
+While adding borders to your UI, some designers add content to their UI and then overload it with borders creating these boxy layouts trying to create hierarchy.
+So to avoid this design mistake, I'm going to show you super fast how to improve your UI with white space versus borders.
+So by adding borders, the I see the border not the hierarchy of content. This isn't great practice, so instead remove those borders and focus on the white space.
+In this example, we're improving the padding and spacing and adding color to improve hierarchy. We can see this in dark mode, super fast.

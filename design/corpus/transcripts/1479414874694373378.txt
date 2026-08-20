@@ -1,0 +1,7 @@
+Animating radio buttons in Figma, Suvos, work F, throw a square frame on the page,
+round your corners to create a circle, duplicate, convert your duplicate to a tiny one pixel circle,
+shut the tiny circle into the middle of your massive circle, duplicate again,
+add a border to your duplicate, fill your tiny circle,
+scale your tiny circle into a medium circle, switch to prototype, click drag drop, change from
+instant to smart animate, switch from ease in to ease in and back, return the favour,
+there's our awesome animated radio button in Figma.

@@ -1,0 +1,12 @@
+Designing interactive component calendars in Figma.
+Sublast.
+Wack T, type 1, watch your date.
+Bang it in the middle, switch to fix width.
+Make your data square, duplicate twice.
+Set your hover state, and set your active state.
+Select all, create a component set.
+Switch to project, connect your default to hover.
+Set to our hover, connect your hover to active.
+Grab a default, create a date group of numbers.
+Add your date labels, bang it in a frame.
+There's our interactive component calendar in Figma.

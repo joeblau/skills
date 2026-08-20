@@ -1,0 +1,18 @@
+Stop detaching textiles in Figma.
+So let's assume you're designing a card in Figma.
+You're adding the final touches and you think,
+oh, that's looking good.
+But you need to add bold text.
+So your eyes wonder the design panel.
+You're hovering under touch style
+and you start to panic
+because you're about to go ahead and click to touch style
+but then you think there must be a better way.
+Hell, if you select your text,
+Wac Command B, you can add a bold state
+to an existing text style in Figma.
+You can select more text,
+Wac Command B, you can add an underlying state
+and you can even select more text
+or Wac Command I to add an italic state.
+Woo hoo, super fast.

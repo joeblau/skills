@@ -1,0 +1,12 @@
+Setting breakpoint variables in Figma, woo, woo, super fast.
+Figma's new min and maximum width feature
+makes it super easy to design across mobile tablet and desktop.
+Open variables, create a new collection called breakpoints,
+add a number variable, call it min width, add your devices,
+lovely joblet, check in your breakpoint values,
+add another variable, call it max width,
+check in your value, select your frame, admin width,
+apply min width variable, add your max width,
+apply your max width variable, bang in a section,
+change variable mode, woo, we can now
+design with different breakpoints in Figma.

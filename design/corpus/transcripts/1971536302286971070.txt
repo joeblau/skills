@@ -1,0 +1,17 @@
+Stop telling customers to subscribe, so many teams get this wrong by designing subscribe
+to my newsletter and they're like, why is no one subscribed?
+Well, I'm going to share super fast how to design models that actually convert and follow
+best design principles.
+Let's slide back that original mode.
+Oh, subscribers of task and our weekly newsletter is focused on you, not them with
+no benefits, so be outcome oriented with your headings.
+We can apply the same method to our caption and increase the target area of that button
+to full width.
+Instead of shouting subscribe now in your button, focus on the benefit to users.
+Instead of using a placeholder email, use an unambiguous prompt like enter email address
+and we can tighten up that spacing.
+Oh, users are having to do a lot of reading, so let's add a background and mention weight
+that form to the bottom to align with our natural reading flow.
+We can round those corners and chuck in that privacy policy and dismiss button, we can
+neatly see this in action.
+Woohoo!

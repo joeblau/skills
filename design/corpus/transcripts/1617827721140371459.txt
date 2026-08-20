@@ -1,0 +1,5 @@
+designing auto layout avatars in Figma. Super, super, fast. Wack F, draw a frame, wack shift A,
+no center with a little padding, round those corners, lovely jubbly, add a border, switch to
+linear, chuck some angles in there, add your colors, looking good, wack O, draw a circle,
+switch the background from solid to image, add a head shot with unsplash, chuck your head shot
+in your frame, create component, wohoo, change your head shots and start as needed.

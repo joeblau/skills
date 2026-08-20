@@ -1,0 +1,15 @@
+three mega underrated Figma features.
+Super fast!
+Up first is adding dark and overlays to your design.
+By clicking the plus icon in the fill block,
+you can quickly add a dark and overlaid to your design.
+Number two is renaming all your frames at once.
+Select all your frame.
+Work command R.
+You can rename all your frames super fast.
+Number three is prototyping super fast
+with multiple layers.
+Hold shift.
+Select a bunch of layers.
+You can click and drag to prototype with multiple layers.
+Woo hoo, multi noodle.

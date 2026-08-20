@@ -1,0 +1,21 @@
+Animating light to dark cards in Figma.
+Shoe bust.
+I care.
+Check the frame on the page.
+Add a background with unsplash.
+Work art.
+And a rectangle to your frame.
+Set the opacity to 50%.
+Switch to color bar.
+Bang in your content.
+Duplicate your card.
+Change the second color bar into a light red.
+Change the third to black.
+Select all.
+Create a component set.
+Switch to price time.
+Connect your cards.
+Lovely jubbly.
+Set your interaction details to after delay.
+Woohoo!
+There's our animated light to dark cards in Figma.

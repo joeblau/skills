@@ -1,0 +1,23 @@
+Stop using placeholders as labels.
+Let's assume you're creating a sign up for me.
+You go for this minimalist style,
+so use a placeholder as a label,
+but you quickly realize it might look cool,
+but the usability is terrible.
+Well, in less than 30 seconds,
+I'm gonna show you should always pair labels
+and placeholders to improve usability.
+Let's bring back that original minimalist design.
+As soon as you just start to type in,
+there's no context for information needed,
+so error rates spike.
+And for completion rate slows,
+users have to return to that original default state
+for context.
+So always use a label for persistent clarity,
+and never something abstract as a placeholder like type here,
+but an actionable example is a guided hint.
+So users now have persistent clarity with that label,
+and our guided example placeholder improves
+the usability of our forms.
+Woo-hoo!

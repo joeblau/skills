@@ -1,0 +1,9 @@
+Animating 3D shapes in Spline.
+Spline is a banging 3D design tool and I'm going to show you how to animate shapes so fast.
+Visit spline.design, you can create a new file for free.
+Select a shape, chuck it on the page, add some revolutions,
+lovely job late, set a colour, add a state, and an event.
+Wish your event type to hover and your transition to spring,
+click and pull the green dot up, click and twist the blue arc,
+click play in the top nav, woohoo!
+There's our 3D animated shape in Spline.

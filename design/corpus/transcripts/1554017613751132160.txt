@@ -1,0 +1,3 @@
+Welcome to episode 2 of Wireframe to landing page in Webflow.
+So fast!
+Woohoo! There's our animated landing page in Webflow.

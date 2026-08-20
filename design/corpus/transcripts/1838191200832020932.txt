@@ -1,0 +1,29 @@
+Stop designing are you sure modals?
+This is one of the most common UI components,
+but designers often get this wrong,
+so in less than 30 seconds,
+I'm gonna show you how to design a better confirmation modal.
+So, if we slide about that original design,
+that question mark isn't adding any values,
+so if we remove that, we can create three core blocks
+to our modal.
+To improve readability, we can left to line our text.
+So, instead of asking, are you sure
+we want to use a verb in an L-like delete folder?
+You can reduce the font size and add a close icon,
+so users can easily close this modal.
+So, instead of using the body text to ask users,
+are you really, really sure we want to actually be concise
+and inform users that this action is irreversible?
+By focusing on that critical button,
+instead of using capitalized text,
+we want to use a simple verb like delete
+to confirm the action.
+We always have two calls to action in our confirmation modal,
+and that secondary call to action
+is instead of having discard can just be canceled
+so that users can continue with their journey.
+But this UI pattern can be applied
+to multiple confirmation modals,
+and we can see what it looks like in dark mode.
+Woo hoo!

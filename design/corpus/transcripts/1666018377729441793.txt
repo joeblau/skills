@@ -1,0 +1,32 @@
+Animating Apple's Vision Pro cards in Figma.
+Phew, super fast.
+Smash F, massive frame.
+Chuck in a living room with none's black.
+Wack F again, add in your frame.
+Change the color, choose the opacity, add a stroke,
+the linear and give it an angle,
+add a background blur, it's corners.
+Work T, your text, shift A,
+A's your blur style, add your tab names.
+Select all, work shift A, it's your style.
+Over like your frame.
+Wack F again, frame.
+On those corners, A frame.
+Hide your fourth card.
+Select all, shift A.
+Duplicate your card rows.
+Add backgrounds with unsplash.
+Love a jubbly.
+Flash T, add the date.
+Duplicate your gallery.
+Show your fourth card.
+Select all your cards.
+Set to fill container.
+Reduce the container width.
+Change the images and dates.
+Add the active tab.
+Let's do it.
+Draw your noodle.
+Set to smart anime.
+Woohoo.
+There's our animated Apple Vision Pro cards in Figma.

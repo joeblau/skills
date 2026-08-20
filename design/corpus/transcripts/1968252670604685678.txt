@@ -1,0 +1,9 @@
+Making these hero UI mistakes, I'm going to share how to fix common hero UI mistakes following best UI design practice.
+Oh, if you bring about that original design, instead of using caps in your button, it's not scannable, and we're not shouting at our users, so always use title caps.
+Clearly our heading text isn't passing contrast checks, it's non-accessible, so let's just remove that.
+Both these hero images are competing for our attention, so to reduce cognitive overload, I'd always stick with one hero image.
+That linear gradient in place, we can now create hierarchy with an accessible caption, title, and then primary and secondary buttons to reduce decision-free.
+Oh, if we focus around and do on those icons, we can see that some wonky spacing here, so to improve the proximity, we're going to improve the proximity,
+we're going to follow the four pixels, we're going to tighten these up.
+Set of splitting controls on the right and left of our navbar, I'd always encourage you to have a single control center to improve learnability and navigation of the product.
+Super fast.

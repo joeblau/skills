@@ -1,0 +1,14 @@
+Animating liquid switches in Figma.
+So fast, whack F, pull your switch frame,
+fully round those corners, give it a background, whack F again,
+smash in a rectangular frame, fully round your corners,
+lovely jablet, squeeze your rectangle into a circle,
+duplicate your switch, pop it out again, create another duplicate,
+squeeze your rectangle into a circle, bang it over to the right,
+create your final duplicate, pull that circle into a rect,
+select all, smash create components out, switch to probes,
+connect your switches, be sure to connect your last switch to the first to
+complete the loop, first interaction to unclick with smart anime,
+the second to after delay, the third with unclick with smart anime again,
+and set your last one to after delay, whoo-hoo!
+There's our animated liquid switches in Figma.

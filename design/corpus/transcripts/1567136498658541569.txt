@@ -1,0 +1,15 @@
+Animating media cards in Figma.
+Suvast.
+Work F, add a base frame,
+bang an image in using on splash.
+Lovely job, you've been on a road.
+Work T, banging your text,
+works your date, give it some padding,
+add a background, set it to 80%, add it to your image,
+set to fill container, add a background blur,
+add in your play icon, duplicate your card,
+nudge your play icon down, scare your image,
+rotate a little, select all, create component set,
+switch to protostop, connect your cards,
+switch to our hovering, bang it in your design.
+There's our animated media cards in Figma.

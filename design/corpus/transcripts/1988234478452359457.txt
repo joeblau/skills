@@ -1,0 +1,30 @@
+Stop using red for danger buttons.
+Let's assume your brand color is red.
+You've got to confront this decision with your buttons
+and it's a tricky one.
+So I'm going to share best practice
+from design team suits brand color is red with components.
+But first we've got to tackle that decision.
+Default and destructive.
+Oh, how most products handle this is maintaining
+their brand color and their default button
+adding a tertiary neutral and then secondary
+for destructive actions.
+If we look closer at components, we don't overuse red.
+So use more neutral surfaces to emphasize that brand color.
+Oh, instead of using your default button everywhere,
+use it with intention.
+This is a great example of using a tertiary button
+and they're not overusing our brand color
+using more grades.
+And what we can see is we're building more visual consistency.
+Oh, but overusing your brand color,
+you introduced a decision friction to your UI.
+Users don't know whether to choose that or that.
+If I just handle this with better hierarchy
+balanced with button choice and using their brand color
+with intention so that it becomes more of a signal
+versus noise.
+And if you are going to use red as a brand color,
+you have to use it across dark mode.
+Super fast.

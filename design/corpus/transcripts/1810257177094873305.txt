@@ -1,0 +1,10 @@
+Stop designing with placeholder content.
+But let's assume you're designing your screen.
+You've added placeholder content.
+You think, I guess I duplicated it.
+So you duplicated a bunch and then realize it all looks the same.
+There must be a super fast way.
+Well, if you select a parent frame, wack, come on K,
+you can then select replace content and Figma's new AI replaces all that placeholder content
+and you can then extend that content super fast.
+Woohoo!

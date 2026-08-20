@@ -1,0 +1,13 @@
+Animating 3D buttons in frame are in less than 30 seconds.
+I'm going to show you how to animate this awesome 3D button.
+So, wack to your keyboard and add your button tech.
+Your option command enter and set the padding for your button.
+And round those corners and add a thick border.
+Duplicate your button and fill it to create a shadow.
+Command enter to frame your button.
+Chuck your shadow and send it to the back and slide it behind your ridge.
+Or remove that frame fill and white option command K to form your button component.
+Button hover state and slide the original up to form that 3D effect.
+So, for the animation, you want 0.8 for your time and 0.4 for the bounce.
+You can chuck it into your design and woohoo!
+That is our animated 3D button.

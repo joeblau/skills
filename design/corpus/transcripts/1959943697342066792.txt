@@ -1,0 +1,24 @@
+Hating sneaker cards in Figma.
+I'm gonna show you super fast how to remove backgrounds
+and animate these sneakers.
+Bring in your sneakers.
+I'm using some flower mounds,
+things back command,
+your keyboard and smash remove background.
+So with the background removed,
+hit F on your keyboard,
+chuck in your first pair of sneakers
+and create really neat angled perspective with the others.
+You can then hit T and add some text to your card.
+Go ahead and duplicate your card.
+You can then angle and slide your original pair out
+and then scale your next sneakers in.
+Now as the next pair down,
+chuck another pair of sneakers
+and adjust the text opacity in position.
+Then neatly angle your sneakers
+to emphasize the animation.
+You can then connect your card,
+set some more, animate with an easy now curve
+and woo hoo,
+there's our neatly animated sneaks in Figma.

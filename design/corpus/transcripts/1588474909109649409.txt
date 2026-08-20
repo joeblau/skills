@@ -1,0 +1,12 @@
+Designing cards, gradient cards in Figma, super fast.
+Wakaa, banger rectangle on, add a headshot with unsplash,
+remove the background with a remove BG plugin, crop it down to size, wakaa,
+bang a frame on the page, switch to radial, take your gradient colors, give it an angle,
+add your headshot, wakaa, draw a circle, select your card, wakaa,
+option command C, select your circle, wakaa, option command V, lovely jubbly,
+we've got our same background gradient, give it layer blur of 200, add it in your card,
+round those corners, whack tea, add your text, add your caption, select all, whack
+shift A, GP gate, gale up your image, move your blur,
+tweet your gradient color, great component set, switch approach type,
+connect your cards, switch to smart animate, bang it in your design,
+woohoo, there's our calm gradient card in Figma.
