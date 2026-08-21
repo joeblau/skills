@@ -1,6 +1,6 @@
 # Corpus
 
-Source material for the `b:design` check catalog: every native-video post
+Source material for the `b:zandesign` check catalog: every native-video post
 from [@zander_supafast](https://x.com/zander_supafast) (Dec 2021 – Aug 2026),
 harvested via date-windowed X search with Chrome MCP.
 

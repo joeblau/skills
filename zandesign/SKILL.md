@@ -1,7 +1,7 @@
 ---
-name: b:design
+name: b:zandesign
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /b:design.
+  MANUAL TRIGGER ONLY: invoke only when user types /b:zandesign.
   Deep design review of a React / React Native app against a check catalog
   codified from Zander Whitehurst's (@zander_supafast) design-video corpus.
   Static code pass + visual screenshot pass + flow pass, then a ranked
