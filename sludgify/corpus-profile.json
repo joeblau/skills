@@ -1,0 +1,3358 @@
+{
+ "schema_version": "1.0.0",
+ "profile_version": "1.0.0",
+ "generated_at": "2026-08-17T03:37:29+00:00",
+ "generator": "sludgify/scripts/build_profile.py",
+ "provenance": {
+  "corpus_dir": "/Users/joeblau/Developer/bloxwap/sludge/sludgify",
+  "manifest": "/private/tmp/claude-501/-Users-joeblau-Developer-bloxwap-sludge/914bb746-cee9-42c2-ad60-d645246a2253/scratchpad/corpus/corpus.json",
+  "n_clips": 76,
+  "total_body_min": 24.8,
+  "total_words": 4656,
+  "corpus_fingerprint": "9b63ae40833727f0",
+  "speakers": {
+   "choppingblock": 19,
+   "chriscamillo": 19,
+   "ansem": 10,
+   "sunnydece": 7,
+   "frictionless": 5,
+   "hayes": 4,
+   "richard": 3,
+   "rasmr": 2,
+   "epstien": 1,
+   "freidberg": 1,
+   "kimchi": 1,
+   "raj": 1,
+   "sacks": 1,
+   "trump": 1,
+   "trvon": 1
+  },
+  "top2_speaker_share": 0.5,
+  "curated_sections": [
+   "one_paragraph",
+   "themes",
+   "house_pov",
+   "rhetorical_shapes",
+   "reject_list",
+   "scoring",
+   "editorial",
+   "sludge_invocation",
+   "production_lessons"
+  ],
+  "measured_sections": [
+   "measurements",
+   "scoring.calibration",
+   "themes.*.primary_clips",
+   "validation"
+  ],
+  "staleness": {
+   "regenerate_when": "the corpus grows by >=15 clips, a new speaker dominates a batch, or 6 months pass",
+   "command": "./scripts/build_profile.py --corpus <dir> --manifest <corpus.json> --out corpus-profile.json",
+   "known_limits": [
+    "38/76 clips are two speakers (choppingblock, chriscamillo) — parts of the lexicon are their idiolect ('ground truth', 'connecting dots', 'designated account' are chriscamillo; 'vamped', 'meta shift', 'rite of passage' are choppingblock). On a new speaker with different diction theme fit UNDER-fires; lean on the support tier, the second-theme bonus, and read the 30-37 shortlist band by hand.",
+    "The rubric was tuned against hand-written negative controls, not real off-narrative spans from real podcasts. The 100%-rejection figure is a floor-check, not a field measurement.",
+    "Theme assignment is lexical and WILL mislabel (the luck/confession clip `fortunate` classifies as apps_over_infra on the words 'build' and 'technology'). primary_theme is for diversity capping and register selection — never show it to the user as a claim about what a clip is about.",
+    "themes.*.rank is CURATED (the hand-read ordering by corpus mass) while themes.*.primary_clips is MEASURED by the lexical scorer. They will not be perfectly monotonic — a hand-read rank-3 theme can measure fewer primary clips than rank 4, because a clip is assigned to whichever lexicon its words happen to hit. Neither number is wrong; they answer different questions.",
+    "Ten corpus clips score below the reject threshold. They were picked on delivery and punchline, not vocabulary. The rubric is an ordering tool with a hard floor, not a complete model of the user's taste."
+   ]
+  }
+ },
+ "one_paragraph": "A good clip is 18-24 seconds and about 60 words of one person making one argument to the viewer. It opens on the claim inside the first sentence with at most two words of lead-in — mid-sentence entry is fine, preamble never is. It needs no context: no unresolved pronouns, no names the audience doesn't already know, no reference to the room. It lands on its own thesis in the last three words, on a complete clause, and the CTA cuts in immediately. One EDL span if the material is contiguous, never more than three; sludge's silence removal supplies the 3-6 visible cuts on its own. One face for the whole clip, frame-checked at every cut.",
+ "themes": {
+  "apps_over_infra": {
+   "rank": 1,
+   "title": "Apps Over Infrastructure",
+   "claim": "The L1/infrastructure cycle is over. Value and the unexplored design space are in real apps with real revenue and real distribution — and almost nobody is building good ones.",
+   "primary_clips": 15,
+   "core": [
+    "l1",
+    "l1s",
+    "l2",
+    "l2s",
+    "chain",
+    "chains",
+    "block space",
+    "blockspace",
+    "scaling",
+    "apps",
+    "app",
+    "product",
+    "products",
+    "build",
+    "building",
+    "builders",
+    "revenues",
+    "revenue",
+    "distribution",
+    "pmf",
+    "product market fit",
+    "tam",
+    "name one good product",
+    "ship"
+   ],
+   "support": [
+    "faster and cheaper",
+    "infrastructure",
+    "protocol",
+    "design space",
+    "experimentation",
+    "developers",
+    "startup",
+    "startups",
+    "founders",
+    "users",
+    "customer",
+    "customers",
+    "interface",
+    "token",
+    "incentive"
+   ],
+   "exemplars": [
+    "apps-over-l1s",
+    "bullish-on-apps-in-crypto",
+    "creating-apps",
+    "name-one-good-product",
+    "mogging",
+    "design-around-the-product",
+    "i-love-the-idea-of-tokens",
+    "is-there-something-real",
+    "shilling-of-the-world",
+    "crypto-gaming"
+   ],
+   "quotable": [
+    "you can actually build real apps with real revenues, real distribution immediately now",
+    "not a single good fucking app is being built in this industry",
+    "I don't think you're gonna see the L1 bullshit happen again"
+   ],
+   "discriminator": null
+  },
+  "everything_tradable": {
+   "rank": 2,
+   "title": "Everything Becomes Tradable",
+   "claim": "The crypto/TradFi line is gone. Perps, prediction markets, equities, gold, 24/7 — trading is being added everywhere, and the venue with the liquidity wins because liquidity cannot be copy-pasted.",
+   "primary_clips": 13,
+   "core": [
+    "perps",
+    "perp",
+    "perpetuals",
+    "open interest",
+    "prediction markets",
+    "tokenization",
+    "stablecoins",
+    "equities",
+    "equity perps",
+    "24/7",
+    "24-7",
+    "tradfi",
+    "spot",
+    "options",
+    "zero day",
+    "0dte",
+    "leverage",
+    "levered",
+    "liquidity",
+    "volume",
+    "volumes"
+   ],
+   "support": [
+    "stocks",
+    "gold",
+    "silver",
+    "commodities",
+    "assets",
+    "markets",
+    "market",
+    "hyperliquid",
+    "polymarket",
+    "robinhood",
+    "robin hood",
+    "coinbase",
+    "exchange",
+    "venue",
+    "order book",
+    "funding",
+    "basis",
+    "shitcoins",
+    "crypto only"
+   ],
+   "exemplars": [
+    "not-crypto-vs-tradfi",
+    "perps-are-innovative",
+    "perps",
+    "perps-v2",
+    "perps-are-better",
+    "crypto-only-we-just-trade",
+    "hyperliquid-cant-be-vamped",
+    "monkey-pictures-to-equities",
+    "1000x-onchain-volumes",
+    "most-stocks-are-shitcoins",
+    "crypto-is-about-money"
+   ],
+   "quotable": [
+    "no longer to be this crypto versus tradfi, but how finance in general evolves",
+    "Hyperliquid is sticky... can't just be vamped",
+    "most stocks are shitcoins over a long enough period of time"
+   ],
+   "discriminator": null
+  },
+  "traders_as_protagonist": {
+   "rank": 3,
+   "title": "Traders Are the New Celebrities",
+   "claim": "Trading is now a public identity and a status ladder. The trader replaced the founder/technologist as the culture's protagonist — and unlike other elites, the trader can teach you how.",
+   "primary_clips": 6,
+   "core": [
+    "traders",
+    "trader",
+    "celebrities",
+    "celebrity",
+    "influencers",
+    "influencer",
+    "p&l",
+    "pnl",
+    "somebody",
+    "nobody",
+    "make a name",
+    "name for myself",
+    "discourse",
+    "shit post",
+    "shitpost",
+    "clout",
+    "rite of passage",
+    "right of passage",
+    "blow up"
+   ],
+   "support": [
+    "famous",
+    "rich",
+    "status",
+    "following",
+    "audience",
+    "teach",
+    "teach you",
+    "verify",
+    "on chain",
+    "onchain",
+    "leaderboard",
+    "copy trade",
+    "social trading",
+    "meta shift"
+   ],
+   "exemplars": [
+    "traders-are-celebrities",
+    "traders-are-the-new-celebrities",
+    "social-apps-proliferate-100x",
+    "nobody-to-somebody",
+    "blow-up-as-a-trader",
+    "just-good-at-this-game",
+    "biggest-pnl-verify-on-chain",
+    "top-bottom"
+   ],
+   "quotable": [
+    "LeBron cannot tell you how to be LeBron. They can literally teach you how they made 40 million.",
+    "on chain has solidified itself as a venue for like a nobody to become a somebody",
+    "cycle's not over till Ansem is married to a Kardashian"
+   ],
+   "discriminator": null
+  },
+  "risk_is_a_craft": {
+   "rank": 4,
+   "title": "Risk Is a Craft, Not a Vice",
+   "claim": "Leverage and concentration are legitimate when they are earned with work and stated risk. The shame is being casual, not being levered.",
+   "primary_clips": 8,
+   "core": [
+    "risk tolerance",
+    "risk capital",
+    "designated account",
+    "concentrated",
+    "conviction",
+    "position size",
+    "sizing",
+    "dedicate",
+    "dedicated",
+    "dedication",
+    "full-time job",
+    "full time job",
+    "do the work",
+    "put the work in",
+    "get crushed",
+    "gambling",
+    "objectives",
+    "order book"
+   ],
+   "support": [
+    "leverage",
+    "levered",
+    "discipline",
+    "attentive",
+    "engaged",
+    "homework",
+    "documents",
+    "time frame",
+    "stop loss",
+    "probability",
+    "analysis",
+    "hours",
+    "craft",
+    "understand the risk",
+    "blow up"
+   ],
+   "exemplars": [
+    "dedicate-yourself",
+    "wage-cucking-job",
+    "if-youre-wrong-youre-crushed",
+    "objective-risk-tolerance",
+    "concentrated-levered-bets",
+    "designated-account-risk",
+    "fully-attentive",
+    "low-conviction-smaller-size"
+   ],
+   "quotable": [
+    "if you dedicate yourself to trading crypto, you could be very successful. But you have to dedicate yourself.",
+    "understand the risk, understand your objectives",
+    "I do excessive amounts of probability analysis over a hundred hours of deep research"
+   ],
+   "discriminator": "The corpus is simultaneously pro-speculation and anti-gambling. The reconciling rule is WORK AND STATED RISK: speculation with research and a sized position is craft; a slot machine is not. No regex captures this — read the span. A clip can be pro-leverage and anti-sports-betting in the same breath and both are on-narrative."
+  },
+  "trading_as_daily_habit": {
+   "rank": 5,
+   "title": "Trading as a Daily Habit / The Missing Interface",
+   "claim": "Trading becomes an everyday consumer app behaviour — like scrolling — and the interface for it has not been built yet. There is still an opening against the incumbents.",
+   "primary_clips": 6,
+   "core": [
+    "interface",
+    "interfaces",
+    "ux",
+    "scroll",
+    "scrolling",
+    "open the app",
+    "muscle memory",
+    "experience",
+    "permissionless",
+    "permissionlessness",
+    "new platform",
+    "robinhood",
+    "robin hood",
+    "interactive brokers",
+    "coinbase",
+    "onboarding",
+    "retention"
+   ],
+   "support": [
+    "mobile",
+    "phone",
+    "app",
+    "apps",
+    "social media",
+    "tiktok",
+    "instagram",
+    "feed",
+    "habit",
+    "daily",
+    "every day",
+    "keeps them coming back",
+    "young",
+    "platform",
+    "network"
+   ],
+   "exemplars": [
+    "trading",
+    "hypothesis-to-execution",
+    "new-interface-young-winners",
+    "new-players-vs-old",
+    "more-fun-trading-interfaces",
+    "great-experience"
+   ],
+   "quotable": [
+    "the same way people open X and you're like, oh, I go scroll... you open pump fun",
+    "a new competitor to Robinhood, Interactive Brokers, Coinbase",
+    "eventually it becomes muscle memory"
+   ],
+   "discriminator": "'Permissionless' is the shape this corpus performs but the word it demotes. sunnydece: 'while permissionlessness and the 24/7 access is important... what keeps them coming back is that repeated experience.' Access is the theme; the jargon is not the point."
+  },
+  "psychology_of_the_hit": {
+   "rank": 6,
+   "title": "The Psychology of the Hit",
+   "claim": "Traders are not addicted to money, they are addicted to being right — and the number that would be enough never arrives.",
+   "primary_clips": 5,
+   "core": [
+    "addicted",
+    "addiction",
+    "emotional hit",
+    "dopamine",
+    "dopamine hit",
+    "feel it",
+    "feeling",
+    "being right",
+    "getting it right",
+    "personal relationship",
+    "dating your stock",
+    "never be over",
+    "enough",
+    "ego"
+   ],
+   "support": [
+    "emotional",
+    "emotion",
+    "psychology",
+    "lie",
+    "lies",
+    "tell themselves",
+    "chilling",
+    "scale up",
+    "greed",
+    "fear",
+    "excitement",
+    "hit",
+    "gut"
+   ],
+   "exemplars": [
+    "addicted-to-emotional-hit",
+    "might-never-be-over",
+    "low-conviction-smaller-size",
+    "great-traders-act-on-their-feelings",
+    "not-dating-your-stock",
+    "just-good-at-this-game"
+   ],
+   "quotable": [
+    "one of the biggest lies that investors tell themselves is that they're addicted to making money... we're addicted to the emotional hit of getting it right",
+    "You're not dating your stock. Stop it.",
+    "it might never be over"
+   ],
+   "discriminator": null
+  },
+  "ai_as_market_regime": {
+   "rank": 7,
+   "title": "AI Is a Market Regime, Not a Product",
+   "claim": "AI matters here only because it makes everything unpredictable, reprices mega-caps like shitcoins, and commoditizes intelligence. Never as technology to admire.",
+   "primary_clips": 6,
+   "core": [
+    "ai trade",
+    "ai stocks",
+    "nobody can predict",
+    "repriced",
+    "commoditized",
+    "intelligence becomes",
+    "human in the loop",
+    "automation",
+    "flood cycle"
+   ],
+   "support": [
+    "ai",
+    "semis",
+    "semi",
+    "chips",
+    "memory chips",
+    "nvidia",
+    "amazon",
+    "apple",
+    "marvel",
+    "sandisk",
+    "ibm",
+    "deltas",
+    "volatility",
+    "unknown",
+    "moats",
+    "barriers to entry"
+   ],
+   "exemplars": [
+    "nobody-can-predict",
+    "attention-trade",
+    "creatives-become-valuable",
+    "semi-explosion",
+    "liquid-capital-markets",
+    "premium-for-human-in-the-loop"
+   ],
+   "quotable": [
+    "Amazon and Apple are getting repriced 15% on a date. These things are trading like shitcoins.",
+    "what skill sets become valuable when intelligence becomes commoditized",
+    "we're going to pay a premium for humans in the loop"
+   ],
+   "discriminator": "Fires ONLY when AI is the CAUSE OF A MARKET CONDITION. If AI is the subject — models, benchmarks, agents, training runs — the `ai_tech_talk` veto fires instead. This is the noisiest boundary in the rubric and AI-heavy podcasts are exactly the videos most likely to be fed to sludgify. Read the span, do not trust the score alone."
+  },
+  "volatility_is_the_product": {
+   "rank": 8,
+   "title": "Volatility Is the Product",
+   "claim": "People show up for volatility, excitement and speculation. Dampening it kills the market. The winning product is whatever is most exciting.",
+   "primary_clips": 4,
+   "core": [
+    "volatility",
+    "dampen",
+    "dampening",
+    "excitement",
+    "exciting",
+    "speculation",
+    "speculative",
+    "retail",
+    "gamified",
+    "gamify",
+    "roller coaster",
+    "short duration",
+    "meme",
+    "memes",
+    "craziest"
+   ],
+   "support": [
+    "institutions",
+    "institutional",
+    "fun",
+    "culture",
+    "attention",
+    "hype",
+    "adrenaline",
+    "action",
+    "degens",
+    "degen",
+    "casino",
+    "jump on it",
+    "showed up"
+   ],
+   "exemplars": [
+    "we-love-volatility",
+    "what-the-people-want",
+    "culture-of-the-market",
+    "design-around-the-product",
+    "speculation",
+    "single-accounts-manipulate"
+   ],
+   "quotable": [
+    "we thought we wanted volatility dampening — actually we hate volatility dampening. We loved the volatility because that's why retail showed up.",
+    "trade the craziest products... with as much leverage as you can. And that's what the people want."
+   ],
+   "discriminator": null
+  },
+  "retail_can_win": {
+   "rank": 9,
+   "title": "Retail Can Actually Win",
+   "claim": "Ordinary people can and do beat the market. S&P-and-chill is passivity. Take your outcome into your own hands.",
+   "primary_clips": 4,
+   "core": [
+    "retail",
+    "regular people",
+    "s&p",
+    "s p",
+    "index",
+    "beat the market",
+    "outperform",
+    "active investing",
+    "own hands",
+    "accessible",
+    "my mom",
+    "get in the game",
+    "anybody can",
+    "anyone can",
+    "ordinary people"
+   ],
+   "support": [
+    "everyone",
+    "normal",
+    "people out there",
+    "returns",
+    "compound",
+    "portfolio",
+    "account",
+    "start with",
+    "small",
+    "approachable",
+    "intuitive",
+    "engaged"
+   ],
+   "exemplars": [
+    "ton-of-people-beat-market",
+    "active-investing-own-outcome",
+    "if-investing-youre-winning",
+    "my-mom-could-understand",
+    "money-in-capital-markets",
+    "everyone-has-time-connect-dots"
+   ],
+   "quotable": [
+    "There are a ton of people that consistently beat the market... just regular people",
+    "people do not feel comfortable with the role of their outcome on by the S&P and chill",
+    "my mom could understand what was happening"
+   ],
+   "discriminator": "Held against its own opposite: the corpus also says retail is extremely bad at calling the top. Reconciled by AGENCY — retail-as-individual-who-does-work wins; retail-as-herd is wrong at extremes. Do not resolve this tension away."
+  },
+  "noise_vs_ground_truth": {
+   "rank": 10,
+   "title": "Noise vs Ground Truth",
+   "claim": "The crowd trades noise. The edge is independent observation of the real world — and it is not mysterious; anyone paying attention can do it.",
+   "primary_clips": 4,
+   "core": [
+    "noise",
+    "ground truth",
+    "independent thinker",
+    "independent thinking",
+    "alpha",
+    "connecting dots",
+    "connect the dots",
+    "black box",
+    "mysterious",
+    "observing",
+    "observation",
+    "research",
+    "conviction"
+   ],
+   "support": [
+    "consensus",
+    "crowd",
+    "everybody",
+    "perception",
+    "narrative",
+    "truthful",
+    "information",
+    "assess",
+    "figure out",
+    "edge",
+    "common sense",
+    "makes sense",
+    "first principles"
+   ],
+   "exemplars": [
+    "ground-truth-you-win",
+    "independent-thinker",
+    "not-mysterious-no-black-box",
+    "everyone-has-time-connect-dots",
+    "attention-trade"
+   ],
+   "quotable": [
+    "the easiest trade right now is just not to pay attention to the noise and just actually try to assess the ground truth in something, anything",
+    "I don't have some black box mysterious trading system. It just freaking makes sense.",
+    "everyone has time to start observing the world and connecting dots"
+   ],
+   "discriminator": null
+  },
+  "unloved_moment": {
+   "rank": 11,
+   "title": "Build in the Unloved Moment",
+   "claim": "Negative sentiment is exactly when the best opportunities appear and the most research should happen. The crowd arrives after.",
+   "primary_clips": 2,
+   "core": [
+    "negative perception",
+    "best opportunities",
+    "most research",
+    "before it's popular",
+    "working on for years",
+    "counter narrative",
+    "commoditized",
+    "juncture",
+    "correction",
+    "momentum",
+    "fundamentals",
+    "zoom out"
+   ],
+   "support": [
+    "cycle",
+    "early",
+    "unloved",
+    "hated",
+    "bear",
+    "sentiment",
+    "emerging",
+    "see it coming",
+    "get popular",
+    "surprised",
+    "overexposed",
+    "exposed"
+   ],
+   "exemplars": [
+    "best-opportunities-most-research",
+    "gonna-be-brutal",
+    "creatives-become-valuable",
+    "premium-for-human-in-the-loop",
+    "fortunate"
+   ],
+   "quotable": [
+    "this current juncture in crypto where a lot of people have a negative perception of crypto is usually when the best opportunities arise and we should be doing the most research",
+    "the counter narrative to automation"
+   ],
+   "discriminator": null
+  },
+  "raw_pnl_over_ideology": {
+   "rank": 12,
+   "title": "Raw P&L Over Ideology",
+   "claim": "Results are the only credential. Decentralization talk, crypto ideals and technical purity are noise; verified money and solved pain are the scoreboard.",
+   "primary_clips": 3,
+   "core": [
+    "raw p&l",
+    "raw pnl",
+    "cut the noise",
+    "decentralization",
+    "ideals",
+    "maxi",
+    "maxis",
+    "solving a pain",
+    "solve a pain",
+    "value proposition",
+    "price go up",
+    "not here to discuss",
+    "who makes real money"
+   ],
+   "support": [
+    "real",
+    "actually",
+    "verify",
+    "results",
+    "scoreboard",
+    "proof",
+    "legit",
+    "bullshit",
+    "theater",
+    "purity",
+    "ideology",
+    "principles",
+    "matter",
+    "care about"
+   ],
+   "exemplars": [
+    "i-just-want-raw-pnl",
+    "users-dont-care-about-decentralization",
+    "biggest-pnl-verify-on-chain",
+    "is-there-something-real",
+    "crypto-is-about-money",
+    "i-love-the-idea-of-tokens"
+   ],
+   "quotable": [
+    "Cut the noise... I'm not here to discuss decentralization. I'm not here to discuss crypto ideals. I just want raw P&L.",
+    "who makes real money, who has the biggest P&Ls and you could verify it on chain",
+    "Users don't care about decentralization."
+   ],
+   "discriminator": "Ranks last by PRIMARY-clip count but is the corpus's ideological SPINE. Its vocabulary is spread thin, so it works best as a SECONDARY theme — the 0.55 second-theme bonus is what surfaces it. A span whose secondary theme is raw_pnl_over_ideology is more on-narrative than its raw score suggests."
+  }
+ },
+ "house_pov": {
+  "believes": [
+   {
+    "claim": "Trading is the main event of the culture, not a sideshow.",
+    "note": "Finance is entertainment, identity and status simultaneously."
+   },
+   {
+    "claim": "The scoreboard is verifiable P&L — not followers, takes or credentials.",
+    "note": "'who makes real money, who has the biggest P&Ls and you could verify it on chain'"
+   },
+   {
+    "claim": "Crypto was always about money.",
+    "note": "'Bitcoin was about money. Ethereum was about contracts. And DeFi, it's got finance in the name.'"
+   },
+   {
+    "claim": "Apps and products win; chains are commodity.",
+    "note": "'It's not just enough to be faster and cheaper.'"
+   },
+   {
+    "claim": "Volatility is the product, not a defect.",
+    "note": "Institutions dampening it is a loss, not a maturation."
+   },
+   {
+    "claim": "Retail belongs here and can win — with work.",
+    "note": "Passive indexing is treated as a surrender of agency."
+   },
+   {
+    "claim": "Leverage and concentration are honorable when earned.",
+    "note": "Sizing, homework and stated risk are the license."
+   },
+   {
+    "claim": "The barrier is attention and dedication, not credentials.",
+    "note": "No degrees, no desks, no gatekeepers appear anywhere in 76 clips."
+   },
+   {
+    "claim": "Everything converges into one 24/7 tradable surface.",
+    "note": "The crypto/TradFi distinction is treated as already dead."
+   },
+   {
+    "claim": "Ordinary observation beats institutional research.",
+    "note": "'That's just living life.'"
+   },
+   {
+    "claim": "The interface hasn't been built yet — incumbents are beatable.",
+    "note": "Robinhood / Interactive Brokers / Coinbase named as targets, not models."
+   },
+   {
+    "claim": "Honest confession of motive is welcome.",
+    "note": "Admitting the addiction, the luck, the moving goalposts is IN character."
+   }
+  ],
+  "dismisses": [
+   {
+    "claim": "Decentralization ideology, crypto ideals, maxis.",
+    "note": "Named and rejected outright."
+   },
+   {
+    "claim": "Infrastructure discourse.",
+    "note": "Block space debates, L2 scaling, 'faster and cheaper', 'the L1 bullshit'."
+   },
+   {
+    "claim": "Institutions as a truth-source.",
+    "note": "They appear almost only as the thing that dampened volatility."
+   },
+   {
+    "claim": "Passive indexing as an identity.",
+    "note": "'S&P and chill.'"
+   },
+   {
+    "claim": "Token incentives as a substitute for product.",
+    "note": "'if you're giving away money for free, a lot of people use your product — that says nothing.'"
+   },
+   {
+    "claim": "Influencer clout without P&L.",
+    "note": "'not the OG crypto influencer crowd that's funny or that shit post.'"
+   },
+   {
+    "claim": "Bad crypto products, named.",
+    "note": "'moonshot is a trash fucking app... name one good product, bruh.'"
+   },
+   {
+    "claim": "Emotional attachment to positions.",
+    "note": "'You're not dating your stock. Stop it.'"
+   },
+   {
+    "claim": "Pure gambling outside markets.",
+    "note": "Sports betting is 'the worst imaginable thing for humans.'"
+   },
+   {
+    "claim": "Mystification of trading.",
+    "note": "The black box, the guru system."
+   },
+   {
+    "claim": "Doomerism.",
+    "note": "'crypto's going to zero' appears only as the thing being contradicted."
+   }
+  ],
+  "held_tensions": [
+   {
+    "tension": "Anti-gambling vs pro-speculation",
+    "resolution": "Work. Speculation with research and stated risk is craft; a slot machine is not.",
+    "warning": "A lexicon that treats 'gambling' as purely negative rejects legitimate risk_is_a_craft clips; one that treats it as positive accepts sports-betting content. No regex captures this — the agent must read."
+   },
+   {
+    "tension": "'Retail can win' vs 'retail is extremely bad at calling the top'",
+    "resolution": "Agency. Retail-as-individual-who-does-work wins; retail-as-herd is wrong at extremes.",
+    "warning": "Both sides are on-narrative. Do not reject one for contradicting the other."
+   },
+   {
+    "tension": "Trading as casual daily habit vs trading as full-time dedication",
+    "resolution": "Both are endorsed. What is never endorsed is CASUAL LEVERAGE.",
+    "warning": "The contradiction is the corpus's actual position, not an inconsistency to fix."
+   }
+  ]
+ },
+ "rhetorical_shapes": [
+  {
+   "id": "contrarian_reversal",
+   "name": "Contrarian reversal",
+   "n": 16,
+   "signature": "'we thought we wanted X — actually we hate X'; 'the biggest lie X tell themselves'",
+   "exemplars": [
+    "we-love-volatility",
+    "addicted-to-emotional-hit",
+    "most-stocks-are-shitcoins"
+   ]
+  },
+  {
+   "id": "second_person_instruction",
+   "name": "Second-person instruction",
+   "n": 14,
+   "signature": "'you have to', 'if you don't', imperative opener",
+   "exemplars": [
+    "ground-truth-you-win",
+    "dedicate-yourself",
+    "not-dating-your-stock"
+   ]
+  },
+  {
+   "id": "prediction",
+   "name": "Prediction",
+   "n": 14,
+   "signature": "'is gonna', 'the future is', 'in ten years'",
+   "exemplars": [
+    "perps",
+    "trading",
+    "more-fun-trading-interfaces"
+   ]
+  },
+  {
+   "id": "named_contrast",
+   "name": "Named contrast",
+   "n": 10,
+   "signature": "X vs Y with real names / entities",
+   "exemplars": [
+    "hyperliquid-cant-be-vamped",
+    "new-players-vs-old",
+    "biggest-pnl-verify-on-chain"
+   ]
+  },
+  {
+   "id": "insider_mechanism",
+   "name": "Insider mechanism",
+   "n": 9,
+   "signature": "'the reason is', 'they have the...', a causal chain",
+   "exemplars": [
+    "perps-v2",
+    "dedicate-yourself",
+    "single-accounts-manipulate"
+   ]
+  },
+  {
+   "id": "before_after_progression",
+   "name": "Before/after progression",
+   "n": 7,
+   "signature": "'started with... then... now'; 'for the first time ever'",
+   "exemplars": [
+    "monkey-pictures-to-equities",
+    "social-apps-proliferate-100x"
+   ]
+  },
+  {
+   "id": "confession",
+   "name": "Confession",
+   "n": 6,
+   "signature": "admits motive, luck, or that it never ends",
+   "exemplars": [
+    "might-never-be-over",
+    "fortunate",
+    "addicted-to-emotional-hit"
+   ]
+  },
+  {
+   "id": "rant_indictment",
+   "name": "Rant / indictment",
+   "n": 6,
+   "signature": "profanity, 'name one', 'stop it'",
+   "exemplars": [
+    "name-one-good-product",
+    "mogging",
+    "worst-imaginable-thing"
+   ]
+  },
+  {
+   "id": "permissioned_to_permissionless",
+   "name": "Permissioned → permissionless",
+   "n": 5,
+   "signature": "an access / status ladder, but NOT the jargon",
+   "exemplars": [
+    "nobody-to-somebody",
+    "my-mom-could-understand"
+   ]
+  }
+ ],
+ "dominant_combination": "Reversal + second-person instruction. The canonical sludge states the consensus, flips it, and points at YOU. Clips carry 1-3 shapes; score compound shapes higher than single ones. 56/76 (74%) contain second-person address at 3.83 'you' per 100 words; 45/76 carry negation.",
+ "reject_list": [
+  {
+   "id": "macro_fed",
+   "label": "Macro / Fed / rates / inflation / CPI / debasement / yields",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Zero regex hits. The nearest thing in 4,656 words is 'half a trillion dollar deltas' — a size, not a macro thesis, and no pattern fires on it. Hayes appears 4x and NEVER for his liquidity-macro thesis. That is the clearest proof this is a deliberate editorial filter, not a topic sample.",
+   "pattern": "\\b(fed|federal reserve|powell|interest rates?|rate cuts?|inflation|cpi|jobs report|quantitative easing|debasement|bond yields?|treasur(?:y|ies))\\b"
+  },
+  {
+   "id": "regulation_politics",
+   "label": "Regulation / SEC / lawsuits / politics / policy / compliance / KYC",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Zero hits in 4,656 words.",
+   "pattern": "\\b(sec|cftc|regulator|regulation|regulatory|lawsuit|subpoena|congress|senate|the bill|kyc|aml|compliance|election|president|administration)\\b"
+  },
+  {
+   "id": "price_target",
+   "label": "Price targets, cycle tops, ATHs, 'to the moon', '$X by Y'",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "This corpus predicts BEHAVIOUR and STRUCTURE, never a number on a date.",
+   "pattern": "\\b(price target|cycle top|all[- ]time high|\\bath\\b|bottom is in|to the moon|going to \\$\\s?\\d)"
+  },
+  {
+   "id": "technical_analysis",
+   "label": "Technical analysis of any kind",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Zero hits.",
+   "pattern": "\\b(support level|resistance|moving average|\\brsi\\b|macd|fibonacci|head and shoulders|trend ?line|candlestick|chart pattern|golden cross)\\b"
+  },
+  {
+   "id": "tokenomics",
+   "label": "Tokenomics: FDV, unlocks, vesting, emissions, cap tables, raise valuations",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Tokens appear as PRODUCT ('I love the idea of tokens'), never as a cap table.",
+   "pattern": "\\b(tokenomics|token unlock|vesting|\\bfdv\\b|fully diluted|emissions schedule|airdrop farm|cap table|series [ab]|raised at)\\b"
+  },
+  {
+   "id": "scam_drama",
+   "label": "Scams, rugs, hacks, exploits, fraud, court cases, personality feuds",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Zero hits. This corpus never does drama.",
+   "pattern": "\\b(scam|rug ?pull|rugged|exploit|hacked|hack|fraud|ponzi|\\bsbf\\b|\\bftx\\b|indicted|jail|sued|drama|beef)\\b"
+  },
+  {
+   "id": "hard_money",
+   "label": "Bitcoin maximalism / sound money / store of value / halving",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Zero regex hits. Bitcoin appears once in the whole corpus, as one clause of a history ('Bitcoin was about money') — never as an ideology, so no hard-money pattern fires.",
+   "pattern": "\\b(sound money|fix the money|digital gold|store of value|the halving|somebody'?s liability|fiat debasement)\\b"
+  },
+  {
+   "id": "non_finance_chain",
+   "label": "Non-finance blockchain: ZK, DePIN, sharding, validators, gas, consensus",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Zero hits.",
+   "pattern": "\\b(supply chain|self[- ]sovereign|zero ?knowledge|\\bzk\\b|depin|sharding|validator set|consensus mechanism|node operator|gas fees?)\\b"
+  },
+  {
+   "id": "ai_tech_talk",
+   "label": "AI-as-technology: models, benchmarks, context windows, agents, training runs",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Shares surface vocabulary with the ai_as_market_regime THEME. Discriminator: is AI the cause of a market condition (theme) or the subject itself (veto)?",
+   "pattern": "\\b(agi|benchmark|\\bgpt-?\\d|\\bllm\\b|model weights|training run|transformer|context window|prompt engineering|open ?source model)\\b"
+  },
+  {
+   "id": "lifestyle_flex",
+   "label": "Lifestyle flex: lambos, net worth, houses, 'I made $X'",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Money appears as SCOREBOARD ('$100,000', 'made 40 million' as proof of teachability), never as consumption.",
+   "pattern": "\\b(lambo|mansion|yacht|private jet|my net worth|i made \\$\\d)\\b"
+  },
+  {
+   "id": "institutional_desk",
+   "label": "Institutional desk mechanics: AUM, LP/GP, mandates, allocations, diligence",
+   "severity": "soft",
+   "corpus_hits_at_build": 0,
+   "note": "Zero hits.",
+   "pattern": "\\b(asset allocation|mandate|limited partners?|\\blps?\\b|family office|pension fund|endowment|\\baum\\b|fund manager|due diligence)\\b"
+  },
+  {
+   "id": "housekeeping",
+   "label": "Podcast housekeeping: welcomes, sponsors, subscribe, 'this episode'",
+   "severity": "hard",
+   "corpus_hits_at_build": 0,
+   "note": "Zero hits. 0/76 clips open on any greeting.",
+   "pattern": "\\b(welcome back|thanks for having me|subscribe|sponsored by|this episode|before we (?:get )?(?:start|into)|shout ?out to our)\\b"
+  },
+  {
+   "id": "interviewer",
+   "label": "Host questions and interview scaffolding",
+   "severity": "hard",
+   "corpus_hits_at_build": 0,
+   "note": "One speaker holds the floor for the whole clip in all 76. Any span containing a host turn is disqualified regardless of score.",
+   "pattern": "\\b(what do you think about|how do you see|let me ask you|can you talk about|tell us about|my question is|walk me through)\\b"
+  },
+  {
+   "id": "recitation",
+   "label": "On-topic recitation: a timeline with correct vocabulary and zero claim",
+   "severity": "hard",
+   "corpus_hits_at_build": 0,
+   "note": "One of the two hardest negatives to catch — correct vocabulary, no argument ('we launched perps in March, then spot in June, then the app...'). Needs the recitation veto AND the no_claim gate.",
+   "pattern": "\\band then (?:we|i|they)\\b[^.?!]{0,120}\\band then (?:we|i|they)\\b"
+  },
+  {
+   "id": "doom_capitulation",
+   "label": "Doom / capitulation / 'it's over' as a sincere stance",
+   "severity": "judgement",
+   "corpus_hits_at_build": 0,
+   "note": "The corpus's one doom mention quotes it as the WRONG crowd's view. Not regex-catchable — the same words carry both stances. Read the span: is the speaker holding the doom or mocking it?",
+   "pattern": null
+  },
+  {
+   "id": "biographical_anecdote",
+   "label": "Biographical anecdote / where-I-grew-up / origin story",
+   "severity": "judgement",
+   "corpus_hits_at_build": 0,
+   "note": "Caught by the off_topic gate rather than a pattern — an anecdote has no core terms. Listed so the agent recognises it while reading.",
+   "pattern": null
+  },
+  {
+   "id": "on_brand_rhetoric_off_brand_topic",
+   "label": "On-brand rhetoric, off-brand topic (generic startup/hiring advice)",
+   "severity": "judgement",
+   "corpus_hits_at_build": 0,
+   "note": "The second of the two hardest negatives. Heavy second-person and imperatives, zero core terms. Caught by the off_topic gate's distinct-core-term floor, not by any veto.",
+   "pattern": null
+  }
+ ],
+ "scoring": {
+  "implementation": "sludgify/scripts/build_profile.py :: score_span(text, body_seconds) -> (score, base, primary_theme, debug)",
+  "weights": {
+   "theme_fit": {
+    "max": 30,
+    "core_weight": 3.0,
+    "support_weight": 1.0,
+    "per_theme_cap": 18.0,
+    "per_100_words_scale": 1.6,
+    "second_theme_bonus": 0.55,
+    "formula": "raw = 3*core_hits + 1*support_hits; theme_pts = min(raw*(100/W)*1.6, 18); theme_fit = min(best + 0.55*second_best, 30)",
+    "why": "The best corpus clips braid TWO themes (apps-over-l1s = apps_over_infra + everything_tradable; nobody-to-somebody = traders_as_protagonist + retail_can_win). The second-theme bonus is deliberate, not slack.",
+    "tie_break": "Equal theme scores resolve to the LOWER `rank` (more corpus mass wins). Ties are common on short spans; without an explicit rule the primary_theme label would depend on dict ordering.",
+    "primary_theme_caveat": "theme_fit (the score) is order-independent — on a tie, best and second are the same number either way. Only the primary_theme LABEL moves. Use the label for diversity capping and register selection, never as a claim about what a clip is about."
+   },
+   "stance": {
+    "max": 20,
+    "formula": "min(6*min(reversal,2) + 3*min(named_contrast,2) + 3*min(dismissal,2) + 4*min(confession,1), 20)"
+   },
+   "address": {
+    "max": 12,
+    "formula": "min(you_count*(100/W)*1.6, 8) + min(2*imperative_hits, 4)",
+    "why": "Corpus baseline is 3.83 'you' per 100 words; 74% of clips have some."
+   },
+   "concreteness": {
+    "max": 12,
+    "formula": "min(2*number_hits, 6) + min(2*entity_hits, 6)",
+    "why": "Both halves capped so a stat-dump cannot win on numbers alone."
+   },
+   "claim_shape": {
+    "max": 12,
+    "formula": "+3 prediction, +3 progression, +3 mechanism, +1.5 declarative copular clause, +1.5 does not end mid-clause; cap 12"
+   },
+   "delivery": {
+    "max": 8,
+    "formula": "start 8; -4 if wps outside [2.0,4.4]; -1.5 if outside [2.4,4.1]; -3 if filler>12/100w; -1.5 if filler>8/100w",
+    "why": "Doubles as the whisper-priming sanity check. A span reporting <2.0 wps against visible speech means the transcript got SWALLOWED — re-run with --no-prime before believing the score."
+   },
+   "duration_fit": {
+    "max": 6,
+    "measured_on": "speech body, NOT finished length",
+    "bands": [
+     {
+      "range_s": [
+       15.0,
+       25.0
+      ],
+      "pts": 6.0
+     },
+     {
+      "range_s": [
+       12.0,
+       15.0
+      ],
+      "pts": 4.0
+     },
+     {
+      "range_s": [
+       25.0,
+       29.0
+      ],
+      "pts": 4.0
+     },
+     {
+      "range_s": [
+       9.0,
+       12.0
+      ],
+      "pts": 2.0
+     },
+     {
+      "range_s": [
+       29.0,
+       34.0
+      ],
+      "pts": 2.0
+     }
+    ],
+    "else_pts": 0.0
+   }
+  },
+  "stance_patterns": {
+   "reversal": [
+    "\\b(?:but|and) (?:actually|really)\\b",
+    "\\bactually\\b(?=[^.?!]{0,40}\\b(?:hate|love|don't|isn't|is not|the opposite)\\b)",
+    "\\bthat'?s not (?:how|true|it|the)\\b",
+    "\\b(?:biggest|greatest) (?:lie|myth|misconception)\\b",
+    "\\b(?:everyone|everybody|people|most people|they) (?:think|thinks|say|says|believe|believes)\\b[^.?!]{0,60}\\b(?:but|actually|no|wrong)\\b",
+    "\\bi don'?t (?:think|believe)\\b",
+    "\\bit'?s not (?:just )?(?:enough|about|that)\\b",
+    "\\bwe thought we wanted\\b",
+    "\\bturns out\\b",
+    "\\bcounter ?narrative\\b",
+    "\\bcontrary to\\b",
+    "\\bmost people (?:don'?t|are wrong|get this wrong)\\b",
+    "\\bnot a single\\b",
+    "\\bnobody\\b",
+    "\\bwhat if\\b"
+   ],
+   "named_contrast": [
+    "\\b\\w+ (?:vs\\.?|versus) \\w+\\b",
+    "\\bnot (?:the )?[a-z]+,? (?:it'?s|but) \\b",
+    "\\bwhy isn'?t \\w+",
+    "\\brather than\\b",
+    "\\binstead of\\b",
+    "\\b(?:unlike|compared to)\\b",
+    "\\bis no longer\\b",
+    "\\bused to be\\b[^.?!]{0,60}\\bnow\\b"
+   ],
+   "imperative": [
+    "^(?:stop|start|go|look|listen|understand|forget|do|don'?t|just|think about|name one|cut)\\b",
+    "\\byou (?:have to|need to|should|gotta|got to|must)\\b",
+    "\\bif you (?:want|don'?t|can|are|'re)\\b",
+    "\\bstop (?:it|having|doing)\\b",
+    "\\bunderstand (?:the|your)\\b"
+   ],
+   "dismissal": [
+    "\\b(?:bullshit|trash|garbage|crap|nonsense|stupid|dumb|joke|meaningless|worthless)\\b",
+    "\\b(?:i'?m )?not here to\\b",
+    "\\bdon'?t care about\\b",
+    "\\bwho cares\\b",
+    "\\bdrives me nuts\\b",
+    "\\bi hate\\b",
+    "\\bworst\\b",
+    "\\bdoesn'?t matter\\b",
+    "\\bnot that great\\b",
+    "\\bdid not deserve\\b"
+   ],
+   "confession": [
+    "\\bi(?:'| a)m (?:just )?(?:addicted|not|actually|honestly|gonna be honest)\\b",
+    "\\bthe (?:biggest )?lie(?:s)? (?:that )?\\w+ tell\\b",
+    "\\bwe were (?:super )?fortunate\\b",
+    "\\bi (?:used to|stopped|realized|realize)\\b",
+    "\\bto be honest\\b",
+    "\\bi'?ll admit\\b",
+    "\\bmy most confident view\\b",
+    "\\bit might never\\b"
+   ],
+   "prediction": [
+    "\\b(?:is|are|'s|'re) (?:gonna|going to) (?:be|get|happen|see|change|proliferate)\\b",
+    "\\bin (?:\\d+|five|ten|three) years\\b",
+    "\\bthe future is\\b",
+    "\\bwill (?:be|get|change|come|continue)\\b",
+    "\\bi think (?:we'?re|there'?s|it'?s) (?:gonna|going to)\\b",
+    "\\bnext cycle\\b",
+    "\\blong term\\b"
+   ],
+   "progression": [
+    "\\bstarted with\\b[^.?!]{0,80}\\b(?:then|now)\\b",
+    "\\bwe graduated\\b",
+    "\\bused to\\b[^.?!]{0,60}\\bnow\\b",
+    "\\b(?:pre|post)[- ]?(?:circa )?20\\d\\d\\b",
+    "\\bfor the first time (?:ever)?\\b",
+    "\\ball of a sudden\\b"
+   ],
+   "mechanism": [
+    "\\bthe reason (?:that|why|is)\\b",
+    "\\bbecause (?:they|you|it|there|all)\\b",
+    "\\bwhat happens (?:is|generally|when)\\b",
+    "\\bhere'?s (?:how|why|what)\\b",
+    "\\bthey have the\\b",
+    "\\bit'?s happening because\\b",
+    "\\bwhich means\\b"
+   ]
+  },
+  "entities": [
+   "hyperliquid",
+   "polymarket",
+   "robinhood",
+   "coinbase",
+   "solana",
+   "ethereum",
+   "eth",
+   "bitcoin",
+   "pump fun",
+   "pumpfun",
+   "phoenix",
+   "moonshot",
+   "binance",
+   "s&p",
+   "nasdaq",
+   "amazon",
+   "aws",
+   "apple",
+   "nvidia",
+   "marvel",
+   "sandisk",
+   "ibm",
+   "telegram",
+   "tiktok",
+   "instagram",
+   "twitter",
+   "x",
+   "kalshi",
+   "interactive brokers",
+   "yc",
+   "lebron",
+   "kardashian",
+   "morgan stanley",
+   "defi",
+   "uniswap"
+  ],
+  "number_regex": "(?:\\$\\s?\\d[\\d,\\.]*|\\b\\d[\\d,\\.]*\\s?(?:x|%|k|bn|billion|million|trillion|dollars?)\\b|\\b(?:19|20)\\d\\d\\b|\\b\\d+\\s?(?:day|hour|year|month)s?\\b)",
+  "filler_regex": "\\b(um|uh|you know|i mean|like|kind of|sort of|right\\?|basically|literally)\\b",
+  "second_person_regex": "\\b(you|you're|your|yourself|you've|you'll|yall|y'all)\\b",
+  "auto_emphasis_regex": "(?:\\$\\s?\\d|\\b\\d[\\d,\\.]*\\s?%|\\b\\d[\\d,\\.]*\\s?x\\b|\\b(?:hundred|thousand|100)\\s?x\\b)",
+  "claim_evidence_regexes": [
+   "\\b(not|never|nobody|none|nothing|no one|n't)\\b",
+   "\\b(biggest|best|worst|most|only|easiest|hardest|greatest|number one|first time)\\b",
+   "\\b(everyone|everybody|nobody|all of|every|a ton of|a lot of people|most people|people are|people want|users|always|the core of|has been)\\b",
+   "\\b(gonna|going to|will|would|could|has to|have to|needs? to)\\b"
+  ],
+  "veto_multipliers": {
+   "soft": 0.62,
+   "hard": 0.35
+  },
+  "gates": {
+   "off_topic": {
+    "rule": "distinct_core >= 2 OR (distinct_core >= 1 AND distinct_support >= 3)",
+    "scope": "union of all 12 theme lexicons",
+    "multiplier": 0.6,
+    "catches": "on-brand rhetoric, off-brand topic — generic startup/hiring advice with heavy second-person"
+   },
+   "no_claim": {
+    "rule": "claim_evidence > 0",
+    "counts": "negations + superlatives + quantifiers + modals + every stance and shape regex hit",
+    "multiplier": 0.7,
+    "catches": "on-topic recitation — correct vocabulary, no argument"
+   }
+  },
+  "thresholds": {
+   "reject": {
+    "below": 30,
+    "action": "do not clip"
+   },
+   "shortlist": {
+    "from": 30,
+    "to": 38,
+    "action": "consider only if the frame-check loves it"
+   },
+   "strong": {
+    "from": 38,
+    "to": 45,
+    "action": "normal candidate — corpus p25 to median"
+   },
+   "flagship": {
+    "from": 45,
+    "action": "corpus upper half — lead with these"
+   }
+  },
+  "calibration": {
+   "corpus": {
+    "n": 76,
+    "min": 14.3,
+    "p10": 26.0,
+    "p25": 38.9,
+    "median": 44.9,
+    "p75": 50.3,
+    "p90": 59.9,
+    "max": 69.2,
+    "mean": 43.9
+   },
+   "negatives": {
+    "n": 19,
+    "min": 4.5,
+    "p10": 4.6,
+    "p25": 6.1,
+    "median": 9.7,
+    "p75": 14.0,
+    "p90": 24.0,
+    "max": 29.2,
+    "mean": 11.8
+   },
+   "n_negative_controls": 19,
+   "at_reject_threshold": {
+    "threshold": 30,
+    "corpus_recall": 0.868,
+    "negatives_rejected": 1.0
+   },
+   "bands": {
+    "shortlist": {
+     "floor": 30,
+     "corpus_recall": 0.868,
+     "negatives_admitted": 0
+    },
+    "strong": {
+     "floor": 38,
+     "corpus_recall": 0.789,
+     "negatives_admitted": 0
+    },
+    "flagship": {
+     "floor": 45,
+     "corpus_recall": 0.5,
+     "negatives_admitted": 0
+    }
+   },
+   "primary_theme_distribution": {
+    "apps_over_infra": 15,
+    "everything_tradable": 13,
+    "risk_is_a_craft": 8,
+    "traders_as_protagonist": 6,
+    "trading_as_daily_habit": 6,
+    "ai_as_market_regime": 6,
+    "psychology_of_the_hit": 5,
+    "volatility_is_the_product": 4,
+    "retail_can_win": 4,
+    "noise_vs_ground_truth": 4,
+    "raw_pnl_over_ideology": 3,
+    "unloved_moment": 2
+   },
+   "top_scoring": [
+    {
+     "slug": "name-one-good-product",
+     "score": 69.2,
+     "primary_theme": "apps_over_infra"
+    },
+    {
+     "slug": "nobody-can-predict",
+     "score": 67.9,
+     "primary_theme": "ai_as_market_regime"
+    },
+    {
+     "slug": "apps-over-l1s",
+     "score": 65.3,
+     "primary_theme": "apps_over_infra"
+    },
+    {
+     "slug": "design-around-the-product",
+     "score": 62.9,
+     "primary_theme": "apps_over_infra"
+    },
+    {
+     "slug": "we-love-volatility",
+     "score": 62.9,
+     "primary_theme": "volatility_is_the_product"
+    },
+    {
+     "slug": "nobody-to-somebody",
+     "score": 61.5,
+     "primary_theme": "apps_over_infra"
+    },
+    {
+     "slug": "ground-truth-you-win",
+     "score": 60.2,
+     "primary_theme": "noise_vs_ground_truth"
+    },
+    {
+     "slug": "social-apps-proliferate-100x",
+     "score": 59.9,
+     "primary_theme": "apps_over_infra"
+    },
+    {
+     "slug": "mogging",
+     "score": 58.2,
+     "primary_theme": "apps_over_infra"
+    },
+    {
+     "slug": "i-just-want-raw-pnl",
+     "score": 58.1,
+     "primary_theme": "raw_pnl_over_ideology"
+    }
+   ],
+   "below_reject_threshold": [
+    {
+     "slug": "fully-attentive",
+     "score": 14.3
+    },
+    {
+     "slug": "shilling-of-the-world",
+     "score": 14.3
+    },
+    {
+     "slug": "liquid-capital-markets",
+     "score": 18.4
+    },
+    {
+     "slug": "fortunate",
+     "score": 18.4
+    },
+    {
+     "slug": "might-never-be-over",
+     "score": 20.4
+    },
+    {
+     "slug": "designated-account-risk",
+     "score": 21.6
+    },
+    {
+     "slug": "speculation",
+     "score": 22.8
+    },
+    {
+     "slug": "1000x-onchain-volumes",
+     "score": 26.0
+    },
+    {
+     "slug": "rocket-ship",
+     "score": 26.5
+    },
+    {
+     "slug": "semi-explosion",
+     "score": 29.7
+    }
+   ],
+   "negative_controls": [
+    {
+     "label": "ontopic_hedged_mush",
+     "score": 29.2,
+     "primary_theme": "apps_over_infra",
+     "veto": [],
+     "gates": []
+    },
+    {
+     "label": "scam_drama",
+     "score": 24.0,
+     "primary_theme": "everything_tradable",
+     "veto": [
+      "scam_drama"
+     ],
+     "gates": []
+    },
+    {
+     "label": "generic_startup",
+     "score": 23.0,
+     "primary_theme": "apps_over_infra",
+     "veto": [],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "zk_infra",
+     "score": 21.3,
+     "primary_theme": "apps_over_infra",
+     "veto": [
+      "non_finance_chain"
+     ],
+     "gates": []
+    },
+    {
+     "label": "lifestyle_flex",
+     "score": 14.0,
+     "primary_theme": "retail_can_win",
+     "veto": [],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "macro_fed",
+     "score": 12.9,
+     "primary_theme": "everything_tradable",
+     "veto": [
+      "macro_fed"
+     ],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "filler_nothing",
+     "score": 10.8,
+     "primary_theme": "apps_over_infra",
+     "veto": [],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "bitcoin_maxi",
+     "score": 10.6,
+     "primary_theme": "traders_as_protagonist",
+     "veto": [
+      "hard_money"
+     ],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "personal_anecdote",
+     "score": 10.3,
+     "primary_theme": "unloved_moment",
+     "veto": [],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "ontopic_no_claim",
+     "score": 9.7,
+     "primary_theme": "apps_over_infra",
+     "veto": [
+      "recitation"
+     ],
+     "gates": [
+      "no_claim"
+     ]
+    },
+    {
+     "label": "technical_analysis",
+     "score": 8.6,
+     "primary_theme": "apps_over_infra",
+     "veto": [
+      "technical_analysis"
+     ],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "regulation",
+     "score": 7.8,
+     "primary_theme": "retail_can_win",
+     "veto": [
+      "regulation_politics"
+     ],
+     "gates": [
+      "off_topic",
+      "no_claim"
+     ]
+    },
+    {
+     "label": "housekeeping",
+     "score": 7.5,
+     "primary_theme": "retail_can_win",
+     "veto": [
+      "housekeeping"
+     ],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "price_target",
+     "score": 7.3,
+     "primary_theme": "unloved_moment",
+     "veto": [
+      "price_target"
+     ],
+     "gates": [
+      "off_topic",
+      "no_claim"
+     ]
+    },
+    {
+     "label": "ai_tech",
+     "score": 6.1,
+     "primary_theme": "apps_over_infra",
+     "veto": [
+      "ai_tech_talk"
+     ],
+     "gates": [
+      "off_topic"
+     ]
+    },
+    {
+     "label": "tokenomics",
+     "score": 5.8,
+     "primary_theme": "apps_over_infra",
+     "veto": [
+      "tokenomics"
+     ],
+     "gates": [
+      "off_topic",
+      "no_claim"
+     ]
+    },
+    {
+     "label": "host_question",
+     "score": 5.8,
+     "primary_theme": "retail_can_win",
+     "veto": [
+      "interviewer"
+     ],
+     "gates": [
+      "off_topic",
+      "no_claim"
+     ]
+    },
+    {
+     "label": "crosstalk",
+     "score": 4.6,
+     "primary_theme": "apps_over_infra",
+     "veto": [],
+     "gates": [
+      "off_topic",
+      "no_claim"
+     ]
+    },
+    {
+     "label": "institutional",
+     "score": 4.5,
+     "primary_theme": "unloved_moment",
+     "veto": [
+      "institutional_desk"
+     ],
+     "gates": [
+      "off_topic",
+      "no_claim"
+     ]
+    }
+   ]
+  },
+  "post_score_gates": [
+   "The score ORDERS candidates. It cannot ship one. Before any --edl is written:",
+   "1. FRAME-CHECK every cut for speaker identity. 100% head-lock coverage proves nothing.",
+   "2. MERGE contiguous segments into ONE cut. Never emit two EDL entries sharing a boundary.",
+   "3. --headroom 1.4 whenever the span crosses a camera-angle change.",
+   "4. --message near-verbatim, never a paraphrase. Verify >=60% word overlap against an unprimed pass; --no-prime is the escape.",
+   "5. Cut-edge WARNINGs are unproven until an RMS envelope confirms them.",
+   "6. Beat-match failure on the 92.3 BPM / 0.28-strength bed is expected.",
+   "7. Prefix every temp file with the clip slug — renders run concurrently."
+  ]
+ },
+ "editorial": {
+  "duration": {
+   "measured_on": "SPEECH BODY. corpus.json `dur` and every number here exclude the CTA tail.",
+   "body_target_s": [
+    18.0,
+    24.0
+   ],
+   "body_ok_s": [
+    15.0,
+    25.0
+   ],
+   "body_hard_s": [
+    12.0,
+    30.0
+   ],
+   "words_target": [
+    46,
+    76
+   ],
+   "words_floor": 40,
+   "words_absolute_floor": 19,
+   "wps_ok": [
+    2.0,
+    4.3
+   ],
+   "wps_sanity": [
+    2.0,
+    4.5
+   ],
+   "sludge_target_duration_flag": 20,
+   "rules": [
+    "Target a BODY of 18-24s. Hard floor 12s, hard ceiling 30s — only 2/76 exceed 30s while 24% are under 15s, so short is safe and long is not.",
+    "If the good material only adds to 13s, ship 13s. Never pad.",
+    "Target ~60 spoken words. Reject a span under 40 words unless it is a genuine one-liner.",
+    "A plan reporting <2.0 or >4.5 words/sec is a WHISPER FAILURE, not a slow or fast talker. Re-run with --no-prime before believing it.",
+    "Pass --target-duration 20 to --plan. sludge's default of 25 plans against total; 20s of body is the corpus centre.",
+    "TRAP: the finished-mp4 durations (median 26.4s) are body + a 6.4s CTA tail. Wiring --target-duration off the finished median ships ~32s clips, above the corpus p75."
+   ]
+  },
+  "opening": {
+   "hook_in_first_sentence_rate": 0.89,
+   "lead_in_words_max": 4,
+   "lead_in_words_typical": 1,
+   "setup_sentences_max": 1,
+   "mid_clause_entry_ok": true,
+   "mid_clause_entry_rate": 0.21,
+   "lead_in_tokens_to_trim": [
+    "so",
+    "and",
+    "like",
+    "but",
+    "um",
+    "uh",
+    "well",
+    "okay",
+    "right",
+    "yeah",
+    "just",
+    "actually",
+    "basically",
+    "obviously",
+    "again",
+    "you know",
+    "i mean"
+   ],
+   "permitted_hooks": [
+    {
+     "kind": "flat_claim",
+     "n": 59
+    },
+    {
+     "kind": "imperative_to_viewer",
+     "n": 4
+    },
+    {
+     "kind": "question_the_speaker_answers_himself",
+     "n": 3
+    },
+    {
+     "kind": "hard_stat",
+     "n": 2
+    }
+   ],
+   "preferred_grammars": [
+    {
+     "kind": "named_subject_declarative",
+     "example": "Users don't care about decentralization"
+    },
+    {
+     "kind": "contrarian_negation",
+     "example": "I don't think you're gonna see the L1 bullshit happen again"
+    },
+    {
+     "kind": "superlative_or_first_ever",
+     "example": "This is the biggest moment in the history of capital markets"
+    }
+   ],
+   "hedged_opening_rate": 0.105,
+   "auto_reject": [
+    "a greeting",
+    "a self-introduction",
+    "'um' / 'uh'",
+    "'that's a great question'",
+    "the host's voice or an audible off-camera question",
+    "any sentence whose subject is the conversation ('so what we were talking about earlier')",
+    "a hedge stack ('I think maybe it's sort of')"
+   ],
+   "rules": [
+    "The hook is in the FIRST SENTENCE — 89% of the corpus does this.",
+    "LEAD-IN BUDGET: at most 4 words, preferably 1, before the first content word. Median is 1 word (~0.3s); 96% are <=2; nothing exceeds 4.",
+    "AT MOST ONE setup sentence, and only if it is a concrete scenario. Two setup sentences = reject. Only 11% of the corpus uses even one.",
+    "STARTING MID-CLAUSE IS CORRECT PRACTICE, not a defect. 21% of the corpus does it. 'is that, like, the core of crypto has always been about money and finance' is a shipped opening. The test is not grammaticality; it is whether the first three words carry content. DO NOT build an opener-cleanliness filter.",
+    "If the best claim answers a host's question, keep it only if the SPEAKER restates the question himself. Otherwise start after the restatement, on the claim."
+   ]
+  },
+  "landing": {
+   "thesis_in_final_quarter_rate": 0.64,
+   "thesis_in_last_three_words_rate": 0.41,
+   "thesis_is_final_word_rate": 0.25,
+   "lands_on_payoff_rate": 0.61,
+   "snap_close_rate": 0.26,
+   "snap_close_max_words": 9,
+   "genuine_mid_word_stop_rate": [
+    0.04,
+    0.07
+   ],
+   "close_shapes": [
+    {
+     "kind": "thesis_restatement",
+     "n": 17
+    },
+    {
+     "kind": "punchline_or_joke",
+     "n": 9
+    },
+    {
+     "kind": "snap_summary",
+     "n": 5
+    },
+    {
+     "kind": "reason_payoff",
+     "n": 4
+    },
+    {
+     "kind": "bookend",
+     "n": 4
+    },
+    {
+     "kind": "reversal",
+     "n": 2
+    },
+    {
+     "kind": "payoff",
+     "n": 2
+    },
+    {
+     "kind": "contrast_payoff",
+     "n": 1
+    },
+    {
+     "kind": "escalation",
+     "n": 1
+    }
+   ],
+   "never_close_on": [
+    "a summary of the summary",
+    "'so yeah'",
+    "a hand-off to a host",
+    "a hedge",
+    "dead air",
+    "a rhetorical question (only 2/76)"
+   ],
+   "rules": [
+    "END ON THE THESIS. The phrase the clip is ABOUT must be in the final quarter of the body and ideally in the last three spoken words. If the best line is at 60% through the span, TRIM THE SPAN so it ends there.",
+    "Pick one of the six close shapes deliberately: thesis restatement, punchline, snap summary, reason-payoff, bookend, reversal.",
+    "RESTATE IN DIFFERENT WORDS. Verbatim bookending is 1/62 in this corpus. Reusing >=3 content words from the opening sentence reads as a loop, not a landing.",
+    "The snap close is a real weapon: 26% close on <=9 words after a longer build. When the body ran long, close short.",
+    "END ON A COMPLETE CLAUSE. Do NOT adopt mid-word stopping as a style."
+   ],
+   "measurement_trap": "corpus.json's transcripts appear to show 24% of clips trailing off mid-word. That is an ARTIFACT of the ~6.4s CTA trim clipping the final word before transcription, not an editorial choice. Re-transcribed real tails were complete 6/6: '...so those are good PERPS', '...when it corrects, it's gonna be BRUTAL', '...I'm also TRADING'. Anyone re-deriving this must verify tails against the mp4, never the corpus text. Encoding 'end mid-word for punch' would ship broken endings."
+  },
+  "self_containedness": {
+   "zero_proper_noun_rate": 0.61,
+   "three_plus_proper_noun_rate": 0.04,
+   "addresses_you_or_we_rate": 0.84,
+   "known_entities_only": [
+    "Hyperliquid",
+    "Solana",
+    "Bitcoin",
+    "Ethereum",
+    "Polymarket",
+    "Coinbase",
+    "Robinhood",
+    "Amazon",
+    "AWS",
+    "S&P 500",
+    "LeBron",
+    "Kardashian",
+    "TikTok",
+    "Instagram",
+    "X",
+    "Morgan Stanley",
+    "IBM",
+    "SanDisk",
+    "Interactive Brokers"
+   ],
+   "tests": [
+    {
+     "id": "D1",
+     "name": "PRONOUN TEST",
+     "rule": "Every it/this/that/they/these/those/he/she resolves inside the span, or names the clip's own topic. A bare demonstrative in the first sentence is allowed only when the SAME sentence supplies the referent.",
+     "pass_example": "This is the biggest moment in the history of capital markets",
+     "fail_example": "That's what I was saying about their model",
+     "automation": "READING INSTRUCTION, NOT A REGEX. A loose demonstrative probe hits 32/76 and most of those resolve fine on a human read. Do not automate this."
+    },
+    {
+     "id": "D2",
+     "name": "PROPER NOUN TEST",
+     "rule": "Any name kept must be one a crypto/markets audience already knows. If the span needs a name introduced earlier in the source video, reject the span."
+    },
+    {
+     "id": "D3",
+     "name": "ROOM TEST",
+     "rule": "Reject 'like I said earlier', 'to your point', 'going back to what you asked', 'as we discussed'. References to the interview appear in only 4/76 and are always incidental."
+    },
+    {
+     "id": "D4",
+     "name": "STANDALONE READ",
+     "rule": "Read the span cold with no source context. If the first sentence needs a preceding sentence to parse, reject — do NOT fix it by extending backwards into preamble."
+    },
+    {
+     "id": "D5",
+     "name": "VIEWER ADDRESS (positive signal)",
+     "rule": "84% of clips address 'you' or 'we' directly. Talking TO the viewer is itself the self-containment device — it replaces missing context with the viewer's own situation. Prefer it, all else equal."
+    }
+   ]
+  },
+  "cut_structure": {
+   "edl_spans": {
+    "prefer": 1,
+    "max": 3,
+    "hard_max": 4
+   },
+   "min_span_s": 4.0,
+   "visible_segments_per_body": {
+    "p25": 3,
+    "median": 4,
+    "p75": 5,
+    "max": 8
+   },
+   "seconds_per_visible_segment": 4.4,
+   "reorder_policy": "conservative",
+   "rules": [
+    "Prefer ONE span. Every corpus transcript reads as continuous prose in source order; the only proven EDL work is REMOVAL (dropping a sentence from the middle of a take), not assembly of scattered fragments.",
+    "Minimum span 4s. Do not select a 2s fragment and hope it joins.",
+    "MERGE CONTIGUOUS SPANS INTO ONE CUT. Never emit two EDL entries that share a boundary — the tail guard makes them overlap and the overlap replays as an audible stutter.",
+    "Do not reorder unless promoting a hook to the front. If you do reorder, say so when reporting, and never reorder to invert the speaker's meaning.",
+    "Let sludge produce the cut RHYTHM. Its silence removal (--max-gap 0.35) yields 3-6 visible framing changes in a 20s body — exactly the corpus rhythm. Do not chase a cut count in the EDL; chase a clean 18-24s of argument and the rhythm comes free.",
+    "FRAME-CHECK EVERY CUT, not the clip. One top-pane frame per cut, hstacked, read as a strip: same person, same background, same head size."
+   ],
+   "tension_with_sludge_skill": "sludge's own SKILL.md says reordering 'is not just allowed, it is the main lever'. sludgify NARROWS that on purpose: reordering interacts badly with the butt-joined-cut stutter and with misrepresenting real people on camera. Evidence is also weak in both directions — a well-executed reorder is invisible in a transcript by construction. Default conservative; reorder only to promote a hook, and disclose it.",
+   "measurement_caveat": "Cut counts are a PROXY. No EDLs were preserved; these are visible framing changes from top-pane scene detection (crop=1080:960:0:0). scene>0.18 gives median 4 segments; scene>0.06 gives median 6 with false positives up to 22 on high-motion sources. The split between sludge's automatic jump cuts and hand-authored EDL cuts is inferred."
+  },
+  "message_policy": {
+   "verbatim_floor": 0.9,
+   "alignment_threshold": 0.6,
+   "words_for_20s_body": [
+    55,
+    80
+   ],
+   "rules": [
+    "The --message must be the NEAR-VERBATIM transcript of the selected span — >=90% of the spoken words. It is fed to whisper as --initial_prompt.",
+    "If you only have a slogan or a headline, pass NO message. Captions then come from the transcript and are correct. NEVER pass a paraphrase.",
+    "A message below 60% alignment gets replaced by the transcript; a message that clears 60% gets captioned INSTEAD of the speech — so any speech the paraphrase does not cover renders with NO CAPTIONS AT ALL. Verbatim messages make both failure modes impossible.",
+    "--no-prime is the escape when the transcript comes back swallowed.",
+    "After rendering, transcribe the OUTPUT's own audio and read it. If it reads as a non-sequitur, fix the EDL, not the captions."
+   ]
+  },
+  "emphasis_policy": {
+   "auto_emphasis": "ON",
+   "auto_emphasis_hit_rate": 0.17,
+   "clips_with_any_digit_rate": 0.24,
+   "max_manual_emphasis_per_video": 2,
+   "rules": [
+    "Leave auto-emphasis ON. It fires on only 17% of corpus-like clips ($ / % / Nx), so it structurally cannot over-fire. Do not pass --no-auto-emphasis.",
+    "Do NOT add asterisks to a span that already contains a number — the auto rule has it, and doubling up burns two beats of reading time.",
+    "For the 83% of spans with no number: AT MOST ONE asterisk, on the single most screenshot-able word in the CLOSING clause — normally the slug word itself. Add none if no word clearly dominates.",
+    "TIE-BREAKER: between two otherwise equal spans, take the one containing a number, a dollar amount or an Nx multiple — it reads with the sound off. But do not manufacture one; the corpus's best lines ('Users don't care about decentralization', 'Cut the noise') have none.",
+    "Keep caption defaults: --caption-words 3, --caption-chars 24, uppercase, centred on the seam."
+   ]
+  },
+  "naming": {
+   "filename": "sludge-{speaker}-{slug}.mp4",
+   "speaker": "a bare lowercase handle or surname, no spaces",
+   "slug_words": [
+    3,
+    5
+   ],
+   "slug_words_range_observed": [
+    1,
+    6
+   ],
+   "slug_chars_max": 38,
+   "slug_from_last_sentence_rate": 0.57,
+   "slug_from_first_sentence_rate": 0.49,
+   "slug_verbatim_phrase_rate": 0.33,
+   "slug_word_coverage_target": 0.8,
+   "rules": [
+    "The slug is a NEAR-VERBATIM LIFT of the punchline, not a topic label. Extract the payoff phrase; do not summarize.",
+    "Prefer the clause carrying the reversal or the imperative.",
+    ">=80% of slug words must appear in the transcript (holds for 54/76; 25/76 appear as an exact contiguous phrase).",
+    "If you cannot write the slug from the CLOSING line, the clip does not land — re-cut it."
+   ]
+  },
+  "selection_policy": {
+   "max_clips_per_primary_theme_per_video": 2,
+   "rules": [
+    "Enforce theme diversity: cap at 2 clips per primary theme per video, so one podcast does not ship five everything_tradable clips.",
+    "Prefer spans that braid 2 themes over spans that max out 1.",
+    "Prefer 15-25s of speech; accept 9-12s only when the span is a complete reversal or rant with a hard payoff (12 corpus clips are that short; i-just-want-raw-pnl is 9.9s and scores 56).",
+    "ONE SPEAKER PER CLIP, ALWAYS. Any span containing a host turn is disqualified regardless of score.",
+    "The score ORDERS candidates; it cannot ship one. Present a shortlist for judgement, never auto-cut the top N.",
+    "Log every candidate's score and veto list on the first real run so the thresholds can be re-fit against actual rejected spans instead of hand-written negatives."
+   ]
+  }
+ },
+ "sludge_invocation": {
+  "plan_defaults": {
+   "--target-duration": 20
+  },
+  "render_defaults": {
+   "--max-gap": 0.35,
+   "--tail-pad": 0.25,
+   "--cut-pad": 0.07,
+   "--min-cut": 0.4,
+   "--caption-words": 3,
+   "--caption-chars": 24
+  },
+  "conditional": [
+   {
+    "flag": "--headroom 1.4",
+    "when": "the source is a multicam podcast, or any span crossing a camera-angle change",
+    "why": "a cut from a wider angle otherwise locks at a lower scale and renders letterboxed while coverage still reports 100%"
+   },
+   {
+    "flag": "--no-prime",
+    "when": "the primed transcript comes back with implausible words/sec",
+    "why": "a short --message used as --initial_prompt can swallow a whole take"
+   }
+  ],
+  "never": [
+   {
+    "flag": "--no-auto-emphasis",
+    "why": "auto-emphasis fires on only 17% of corpus-like clips; it cannot over-fire"
+   },
+   {
+    "flag": "--tail-pad 0.5",
+    "why": "documented in the sludge SKILL as having caused real overlap-stutter"
+   },
+   {
+    "flag": "--max-gap 0.15",
+    "why": "same — documented overlap-stutter"
+   }
+  ],
+  "expected_noise": [
+   "Beat match fails on this music bed (92.3 BPM, strength 0.28). Expected, not a bug. Do not chase it.",
+   "Cut-edge WARNINGs are usually FALSE POSITIVES — they check raw whisper spans. Confirm with a 10-20ms RMS envelope: a continuous -10..-20 dB run is a real mid-word cut; a dip below -40 dB is silence and the warning is noise."
+  ]
+ },
+ "production_lessons": [
+  {
+   "id": 1,
+   "lesson": "Frame-check every cut for speaker identity.",
+   "symptom": "Multicam podcasts cut between guest, hosts, wide 3-shots and b-roll. The head lock follows whatever face is on screen, reports 100% detector coverage, and warns about nothing.",
+   "cost": "One batch shipped 24s of the wrong man's face. Another had sludge's own `suggested` selection pointing at segments where a HOST was speaking.",
+   "fix": "Extract a frame at the midpoint of EACH segment, hstack them, confirm the same person. 100% coverage proves the tracker found A face, not the RIGHT face."
+  },
+  {
+   "id": 2,
+   "lesson": "Whisper priming can swallow a take.",
+   "symptom": "The --message is fed as --initial_prompt. A short paraphrase can destroy the transcript.",
+   "cost": "A 10s span came back as the two words 'when i'; unprimed it was 104 words.",
+   "fix": "Check words-per-second sanity (2.0-4.5). Write --message near-verbatim. --no-prime is the escape."
+  },
+  {
+   "id": 3,
+   "lesson": "Never butt-join two EDL cuts.",
+   "symptom": "Adjacent segments sharing a boundary always overlap once the tail guard runs.",
+   "cost": "The overlap replays as an audible stutter.",
+   "fix": "Merge contiguous segments into ONE cut."
+  },
+  {
+   "id": 4,
+   "lesson": "Letterbox trap on camera-angle changes.",
+   "symptom": "A cut from a wider camera angle locks at a much lower scale than its neighbours and renders with black bars; coverage still says 100%.",
+   "cost": "Black bars in a shipped clip.",
+   "fix": "--headroom 1.4"
+  },
+  {
+   "id": 5,
+   "lesson": "Caption gaps from a partial message.",
+   "symptom": "If a message clears 60% alignment the MESSAGE is captioned, not the speech.",
+   "cost": "Speech the paraphrase doesn't cover renders with no captions at all.",
+   "fix": "Near-verbatim message, or no message."
+  },
+  {
+   "id": 6,
+   "lesson": "Cut-edge warnings are usually false positives.",
+   "symptom": "They check raw whisper spans, which are imprecise at boundaries.",
+   "cost": "Wasted re-cuts chasing a non-problem.",
+   "fix": "Confirm with a 10-20ms RMS envelope: continuous -10..-20 dB = real mid-word cut; a dip below -40 dB = silence, warning is false."
+  },
+  {
+   "id": 7,
+   "lesson": "Beat match fails on this music bed.",
+   "symptom": "92.3 BPM, strength 0.28.",
+   "cost": "None if recognised.",
+   "fix": "Expected. Not a bug. Do not chase it."
+  },
+  {
+   "id": 8,
+   "lesson": "Renders run concurrently — every temp file needs a unique per-clip prefix.",
+   "symptom": "Concurrent runs clobber generic render.log / plan.json in a shared scratchpad.",
+   "cost": "Lost or crossed plans between clips.",
+   "fix": "Prefix every temp file with the clip slug."
+  }
+ ],
+ "measurements": {
+  "n_clips": 76,
+  "total_body_s": 1487.0,
+  "total_body_min": 24.8,
+  "total_words": 4656,
+  "body_duration_s": {
+   "n": 76,
+   "min": 7.0,
+   "p10": 11.5,
+   "p25": 15.6,
+   "median": 20.1,
+   "p75": 24.2,
+   "p90": 26.6,
+   "max": 34.5,
+   "mean": 19.6
+  },
+  "finished_duration_s": {
+   "n": 76,
+   "min": 13.4,
+   "p10": 17.8,
+   "p25": 21.5,
+   "median": 26.4,
+   "p75": 30.1,
+   "p90": 32.9,
+   "max": 40.9,
+   "mean": 25.8
+  },
+  "cta_tail_s": {
+   "n": 76,
+   "min": 2.9,
+   "p10": 5.8,
+   "p25": 6.3,
+   "median": 6.4,
+   "p75": 6.5,
+   "p90": 6.5,
+   "max": 7.0,
+   "mean": 6.3
+  },
+  "words_per_clip": {
+   "n": 76,
+   "min": 19.0,
+   "p10": 39.0,
+   "p25": 48.0,
+   "median": 59.0,
+   "p75": 76.0,
+   "p90": 86.0,
+   "max": 123.0,
+   "mean": 61.0
+  },
+  "words_per_second": {
+   "n": 76,
+   "min": 2.04,
+   "p10": 2.47,
+   "p25": 2.76,
+   "median": 3.18,
+   "p75": 3.63,
+   "p90": 3.95,
+   "max": 4.29,
+   "mean": 3.17
+  },
+  "sentences_per_clip": {
+   "n": 76,
+   "min": 1.0,
+   "p10": 1.0,
+   "p25": 2.0,
+   "median": 4.0,
+   "p75": 5.0,
+   "p90": 7.0,
+   "max": 11.0,
+   "mean": 4.0
+  },
+  "words_per_sentence": {
+   "n": 288,
+   "min": 2.0,
+   "p10": 5.0,
+   "p25": 7.0,
+   "median": 13.0,
+   "p75": 20.0,
+   "p90": 31.0,
+   "max": 77.0,
+   "mean": 16.0
+  },
+  "filler_per_100w": {
+   "n": 76,
+   "min": 0.0,
+   "p10": 0.0,
+   "p25": 1.2,
+   "median": 2.5,
+   "p75": 4.2,
+   "p90": 7.0,
+   "max": 15.2,
+   "mean": 3.0
+  },
+  "you_per_100w": {
+   "n": 76,
+   "min": 0.0,
+   "p10": 0.0,
+   "p25": 0.0,
+   "median": 2.6,
+   "p75": 5.26,
+   "p90": 8.77,
+   "max": 22.22,
+   "mean": 3.8
+  },
+  "proper_nouns_per_clip_heuristic": {
+   "n": 76,
+   "min": 0.0,
+   "p10": 0.0,
+   "p25": 0.0,
+   "median": 1.0,
+   "p75": 2.0,
+   "p90": 3.0,
+   "max": 5.0,
+   "mean": 1.0
+  },
+  "zero_proper_noun_rate_heuristic": 0.487,
+  "clips_with_any_digit_rate": 0.237,
+  "auto_emphasis_hit_rate_regex": 0.158,
+  "body_in_15_25s_rate": 0.592,
+  "body_under_15s_rate": 0.237,
+  "body_over_30s_rate": 0.026,
+  "speakers": {
+   "choppingblock": 19,
+   "chriscamillo": 19,
+   "ansem": 10,
+   "sunnydece": 7,
+   "frictionless": 5,
+   "hayes": 4,
+   "richard": 3,
+   "rasmr": 2,
+   "epstien": 1,
+   "freidberg": 1,
+   "kimchi": 1,
+   "raj": 1,
+   "sacks": 1,
+   "trump": 1,
+   "trvon": 1
+  },
+  "speaker_count": 15,
+  "top2_speaker_share": 0.5,
+  "singleton_speakers": [
+   "epstien",
+   "freidberg",
+   "kimchi",
+   "raj",
+   "sacks",
+   "trump",
+   "trvon"
+  ],
+  "slug": {
+   "words": {
+    "n": 76,
+    "min": 1.0,
+    "p10": 2.0,
+    "p25": 3.0,
+    "median": 4.0,
+    "p75": 4.0,
+    "p90": 5.0,
+    "max": 6.0,
+    "mean": 3.0
+   },
+   "chars": {
+    "n": 76,
+    "min": 5.0,
+    "p10": 11.0,
+    "p25": 16.0,
+    "median": 21.0,
+    "p75": 25.0,
+    "p90": 28.0,
+    "max": 38.0,
+    "mean": 21.0
+   },
+   "word_coverage_80pct_rate": 0.711,
+   "verbatim_phrase_rate": 0.329,
+   "slug_word_in_last_3_spoken_rate": 0.408
+  },
+  "top_content_terms": [
+   {
+    "term": "think",
+    "n": 43
+   },
+   {
+    "term": "people",
+    "n": 39
+   },
+   {
+    "term": "crypto",
+    "n": 32
+   },
+   {
+    "term": "want",
+    "n": 23
+   },
+   {
+    "term": "money",
+    "n": 19
+   },
+   {
+    "term": "trading",
+    "n": 18
+   },
+   {
+    "term": "time",
+    "n": 16
+   },
+   {
+    "term": "make",
+    "n": 16
+   },
+   {
+    "term": "now",
+    "n": 15
+   },
+   {
+    "term": "markets",
+    "n": 15
+   },
+   {
+    "term": "trade",
+    "n": 14
+   },
+   {
+    "term": "product",
+    "n": 13
+   },
+   {
+    "term": "they're",
+    "n": 12
+   },
+   {
+    "term": "one",
+    "n": 11
+   },
+   {
+    "term": "traders",
+    "n": 11
+   },
+   {
+    "term": "see",
+    "n": 10
+   },
+   {
+    "term": "doing",
+    "n": 10
+   },
+   {
+    "term": "open",
+    "n": 10
+   },
+   {
+    "term": "market",
+    "n": 10
+   },
+   {
+    "term": "new",
+    "n": 9
+   },
+   {
+    "term": "fucking",
+    "n": 9
+   },
+   {
+    "term": "over",
+    "n": 9
+   },
+   {
+    "term": "app",
+    "n": 9
+   },
+   {
+    "term": "capital",
+    "n": 9
+   },
+   {
+    "term": "again",
+    "n": 8
+   },
+   {
+    "term": "build",
+    "n": 8
+   },
+   {
+    "term": "real",
+    "n": 8
+   },
+   {
+    "term": "apps",
+    "n": 8
+   },
+   {
+    "term": "chain",
+    "n": 8
+   },
+   {
+    "term": "love",
+    "n": 8
+   },
+   {
+    "term": "feel",
+    "n": 8
+   },
+   {
+    "term": "take",
+    "n": 8
+   },
+   {
+    "term": "every",
+    "n": 8
+   },
+   {
+    "term": "day",
+    "n": 8
+   },
+   {
+    "term": "volatility",
+    "n": 8
+   },
+   {
+    "term": "understand",
+    "n": 8
+   },
+   {
+    "term": "well",
+    "n": 7
+   },
+   {
+    "term": "game",
+    "n": 7
+   },
+   {
+    "term": "literally",
+    "n": 7
+   },
+   {
+    "term": "stocks",
+    "n": 7
+   }
+  ],
+  "absence_probes": {
+   "macro_fed": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "regulation_politics": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "price_target": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "technical_analysis": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "tokenomics": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "scam_drama": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "hard_money": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "non_finance_chain": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "ai_tech_talk": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "lifestyle_flex": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "institutional_desk": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "housekeeping": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "interviewer": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "recitation": {
+    "clips": 0,
+    "hits": 0,
+    "regressed": false
+   },
+   "doom_capitulation": {
+    "clips": null,
+    "hits": null,
+    "method": "judgement, no pattern"
+   },
+   "biographical_anecdote": {
+    "clips": null,
+    "hits": null,
+    "method": "judgement, no pattern"
+   },
+   "on_brand_rhetoric_off_brand_topic": {
+    "clips": null,
+    "hits": null,
+    "method": "judgement, no pattern"
+   }
+  },
+  "measurement_notes": {
+   "zero_proper_noun_rate_heuristic": "Counts any capitalised non-sentence-initial token, so it OVER-counts (mid-sentence 'I', whisper's inconsistent casing, sentence-split errors). Reads ~0.49 where the hand count in editorial.self_containedness.zero_proper_noun_rate is 0.61. Trust the curated figure; this one is a drift tripwire, not a measurement.",
+   "auto_emphasis_hit_rate_regex": "Approximates sludge's $ / N% / Nx auto-emphasis trigger. Reads ~0.16 against a verified hand count of 0.17 (13/76). Close enough to detect drift, not exact.",
+   "absence_probes": "Regex counts only. Two reject-list entries carry a hand-judged 'near hit' in their `note` (a macro-shaped size phrase, one historical Bitcoin clause) that no regex fires on — which is why corpus_hits_at_build is 0 for them while the prose says 1.",
+   "slug_word_in_last_3_spoken_rate": "Computed against the TRIMMED body text, whose final word is clipped by the ~6.4s CTA trim. The true rate is slightly higher than reported.",
+   "words_per_second": "Computed against the trimmed body, which may be short by up to ~1s of real speech at the tail, so the true rate is very slightly lower. Treat 3.0-3.2 as the centre and 2.0/4.5 as sanity bounds rather than trusting the median to two decimals."
+  },
+  "primary_theme_distribution": {
+   "apps_over_infra": 15,
+   "everything_tradable": 13,
+   "risk_is_a_craft": 8,
+   "traders_as_protagonist": 6,
+   "trading_as_daily_habit": 6,
+   "ai_as_market_regime": 6,
+   "psychology_of_the_hit": 5,
+   "volatility_is_the_product": 4,
+   "retail_can_win": 4,
+   "noise_vs_ground_truth": 4,
+   "raw_pnl_over_ideology": 3,
+   "unloved_moment": 2
+  }
+ },
+ "validation": {
+  "ok": true,
+  "problems": [],
+  "notes": [
+   "46 core terms across 12 themes never occur in this corpus (see validation.dead_core_terms). That is GENERALIZATION HEADROOM, not decay — the lexicon covers synonyms a new speaker may use. Only worry when a theme drops below 3 live terms, or when a dead term is a typo/variant the corpus writes differently (whisper spells Robinhood 'robin hood', so both forms are listed)."
+  ],
+  "dead_core_terms": {
+   "apps_over_infra": [
+    "blockspace",
+    "chains",
+    "l2s",
+    "product market fit",
+    "ship"
+   ],
+   "everything_tradable": [
+    "0dte",
+    "24/7",
+    "perp",
+    "perpetuals"
+   ],
+   "traders_as_protagonist": [
+    "celebrity",
+    "clout",
+    "name for myself",
+    "pnl",
+    "rite of passage",
+    "shitpost"
+   ],
+   "risk_is_a_craft": [
+    "do the work",
+    "full time job",
+    "position size",
+    "sizing"
+   ],
+   "trading_as_daily_habit": [
+    "interactive brokers",
+    "onboarding",
+    "open the app",
+    "permissionless",
+    "retention",
+    "robinhood",
+    "scrolling"
+   ],
+   "psychology_of_the_hit": [
+    "addiction",
+    "being right",
+    "ego",
+    "never be over"
+   ],
+   "ai_as_market_regime": [
+    "human in the loop"
+   ],
+   "volatility_is_the_product": [
+    "dampen",
+    "gamify",
+    "memes"
+   ],
+   "retail_can_win": [
+    "anybody can",
+    "anyone can",
+    "index",
+    "ordinary people"
+   ],
+   "noise_vs_ground_truth": [
+    "connect the dots",
+    "independent thinking",
+    "observation"
+   ],
+   "unloved_moment": [
+    "before it's popular",
+    "working on for years"
+   ],
+   "raw_pnl_over_ideology": [
+    "maxi",
+    "raw pnl",
+    "solve a pain"
+   ]
+  },
+  "checked": {
+   "exemplar_slugs": 108,
+   "themes": 12,
+   "shapes": 9,
+   "reject_entries": 17
+  }
+ },
+ "per_clip_scores": [
+  {
+   "slug": "name-one-good-product",
+   "speaker": "rasmr",
+   "score": 69.2,
+   "base": 69.2,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "nobody-can-predict",
+   "speaker": "choppingblock",
+   "score": 67.9,
+   "base": 67.9,
+   "primary_theme": "ai_as_market_regime",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "apps-over-l1s",
+   "speaker": "ansem",
+   "score": 65.3,
+   "base": 65.3,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "design-around-the-product",
+   "speaker": "choppingblock",
+   "score": 62.9,
+   "base": 62.9,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "we-love-volatility",
+   "speaker": "choppingblock",
+   "score": 62.9,
+   "base": 62.9,
+   "primary_theme": "volatility_is_the_product",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "nobody-to-somebody",
+   "speaker": "choppingblock",
+   "score": 61.5,
+   "base": 61.5,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "ground-truth-you-win",
+   "speaker": "chriscamillo",
+   "score": 60.2,
+   "base": 60.2,
+   "primary_theme": "noise_vs_ground_truth",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "social-apps-proliferate-100x",
+   "speaker": "choppingblock",
+   "score": 59.9,
+   "base": 59.9,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "mogging",
+   "speaker": "rasmr",
+   "score": 58.2,
+   "base": 58.2,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "i-just-want-raw-pnl",
+   "speaker": "choppingblock",
+   "score": 58.1,
+   "base": 58.1,
+   "primary_theme": "raw_pnl_over_ideology",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "hyperliquid-cant-be-vamped",
+   "speaker": "choppingblock",
+   "score": 57.0,
+   "base": 57.0,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "independent-thinker",
+   "speaker": "chriscamillo",
+   "score": 55.4,
+   "base": 55.4,
+   "primary_theme": "noise_vs_ground_truth",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "trading",
+   "speaker": "ansem",
+   "score": 55.2,
+   "base": 55.2,
+   "primary_theme": "trading_as_daily_habit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "not-dating-your-stock",
+   "speaker": "chriscamillo",
+   "score": 55.0,
+   "base": 55.0,
+   "primary_theme": "psychology_of_the_hit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "objective-risk-tolerance",
+   "speaker": "chriscamillo",
+   "score": 54.6,
+   "base": 54.6,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "if-investing-youre-winning",
+   "speaker": "chriscamillo",
+   "score": 53.0,
+   "base": 53.0,
+   "primary_theme": "retail_can_win",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "traders-are-celebrities",
+   "speaker": "ansem",
+   "score": 51.6,
+   "base": 51.6,
+   "primary_theme": "traders_as_protagonist",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "bullish-on-apps-in-crypto",
+   "speaker": "ansem",
+   "score": 51.0,
+   "base": 51.0,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "perps-are-innovative",
+   "speaker": "choppingblock",
+   "score": 50.3,
+   "base": 50.3,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "users-dont-care-about-decentralization",
+   "speaker": "choppingblock",
+   "score": 50.3,
+   "base": 50.3,
+   "primary_theme": "raw_pnl_over_ideology",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "more-fun-trading-interfaces",
+   "speaker": "raj",
+   "score": 50.1,
+   "base": 50.1,
+   "primary_theme": "trading_as_daily_habit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "perps-v2",
+   "speaker": "ansem",
+   "score": 49.7,
+   "base": 49.7,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "if-youre-wrong-youre-crushed",
+   "speaker": "chriscamillo",
+   "score": 49.2,
+   "base": 49.2,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "wage-cucking-job",
+   "speaker": "hayes",
+   "score": 48.8,
+   "base": 48.8,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "what-the-people-want",
+   "speaker": "choppingblock",
+   "score": 48.1,
+   "base": 48.1,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "just-good-at-this-game",
+   "speaker": "choppingblock",
+   "score": 48.0,
+   "base": 48.0,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "not-crypto-vs-tradfi",
+   "speaker": "sunnydece",
+   "score": 47.7,
+   "base": 47.7,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "new-interface-young-winners",
+   "speaker": "frictionless",
+   "score": 47.6,
+   "base": 47.6,
+   "primary_theme": "trading_as_daily_habit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "crypto-only-we-just-trade",
+   "speaker": "choppingblock",
+   "score": 47.3,
+   "base": 47.3,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "low-conviction-smaller-size",
+   "speaker": "chriscamillo",
+   "score": 47.3,
+   "base": 47.3,
+   "primary_theme": "psychology_of_the_hit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "concentrated-levered-bets",
+   "speaker": "chriscamillo",
+   "score": 47.0,
+   "base": 47.0,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "biggest-pnl-verify-on-chain",
+   "speaker": "choppingblock",
+   "score": 46.9,
+   "base": 46.9,
+   "primary_theme": "traders_as_protagonist",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "money-in-capital-markets",
+   "speaker": "chriscamillo",
+   "score": 46.9,
+   "base": 46.9,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "perps",
+   "speaker": "ansem",
+   "score": 46.0,
+   "base": 46.0,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "creatives-become-valuable",
+   "speaker": "chriscamillo",
+   "score": 45.7,
+   "base": 45.7,
+   "primary_theme": "ai_as_market_regime",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "dedicate-yourself",
+   "speaker": "hayes",
+   "score": 45.7,
+   "base": 45.7,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "addicted-to-emotional-hit",
+   "speaker": "chriscamillo",
+   "score": 45.6,
+   "base": 45.6,
+   "primary_theme": "psychology_of_the_hit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "gonna-be-brutal",
+   "speaker": "sacks",
+   "score": 45.0,
+   "base": 45.0,
+   "primary_theme": "unloved_moment",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "new-players-vs-old",
+   "speaker": "frictionless",
+   "score": 44.8,
+   "base": 44.8,
+   "primary_theme": "trading_as_daily_habit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "creating-apps",
+   "speaker": "ansem",
+   "score": 44.4,
+   "base": 44.4,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "i-love-the-idea-of-tokens",
+   "speaker": "choppingblock",
+   "score": 44.4,
+   "base": 44.4,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "blow-up-as-a-trader",
+   "speaker": "choppingblock",
+   "score": 44.0,
+   "base": 44.0,
+   "primary_theme": "traders_as_protagonist",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "traders-are-the-new-celebrities",
+   "speaker": "choppingblock",
+   "score": 44.0,
+   "base": 44.0,
+   "primary_theme": "traders_as_protagonist",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "not-mysterious-no-black-box",
+   "speaker": "chriscamillo",
+   "score": 43.4,
+   "base": 43.4,
+   "primary_theme": "noise_vs_ground_truth",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "everyone-has-time-connect-dots",
+   "speaker": "chriscamillo",
+   "score": 43.3,
+   "base": 43.3,
+   "primary_theme": "noise_vs_ground_truth",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "culture-of-the-market",
+   "speaker": "chriscamillo",
+   "score": 41.8,
+   "base": 41.8,
+   "primary_theme": "volatility_is_the_product",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "hypothesis-to-execution",
+   "speaker": "frictionless",
+   "score": 41.6,
+   "base": 41.6,
+   "primary_theme": "trading_as_daily_habit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "is-there-something-real",
+   "speaker": "choppingblock",
+   "score": 41.2,
+   "base": 41.2,
+   "primary_theme": "raw_pnl_over_ideology",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "my-mom-could-understand",
+   "speaker": "sunnydece",
+   "score": 41.2,
+   "base": 41.2,
+   "primary_theme": "retail_can_win",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "active-investing-own-outcome",
+   "speaker": "choppingblock",
+   "score": 41.0,
+   "base": 41.0,
+   "primary_theme": "retail_can_win",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "crypto-is-about-money",
+   "speaker": "choppingblock",
+   "score": 41.0,
+   "base": 41.0,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "premium-for-human-in-the-loop",
+   "speaker": "freidberg",
+   "score": 40.9,
+   "base": 40.9,
+   "primary_theme": "ai_as_market_regime",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "great-experience",
+   "speaker": "sunnydece",
+   "score": 40.4,
+   "base": 40.4,
+   "primary_theme": "trading_as_daily_habit",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "best-opportunities-most-research",
+   "speaker": "ansem",
+   "score": 39.0,
+   "base": 39.0,
+   "primary_theme": "unloved_moment",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "monkey-pictures-to-equities",
+   "speaker": "frictionless",
+   "score": 39.0,
+   "base": 39.0,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "ton-of-people-beat-market",
+   "speaker": "chriscamillo",
+   "score": 38.9,
+   "base": 38.9,
+   "primary_theme": "retail_can_win",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "perps-are-better",
+   "speaker": "sunnydece",
+   "score": 38.9,
+   "base": 38.9,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "single-accounts-manipulate",
+   "speaker": "chriscamillo",
+   "score": 38.7,
+   "base": 38.7,
+   "primary_theme": "volatility_is_the_product",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "rich-or-poor",
+   "speaker": "richard",
+   "score": 38.6,
+   "base": 38.6,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "zoom-out",
+   "speaker": "richard",
+   "score": 38.1,
+   "base": 38.1,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "most-stocks-are-shitcoins",
+   "speaker": "hayes",
+   "score": 37.2,
+   "base": 37.2,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "top-bottom",
+   "speaker": "ansem",
+   "score": 36.2,
+   "base": 36.2,
+   "primary_theme": "traders_as_protagonist",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "crypto-gaming",
+   "speaker": "trvon",
+   "score": 35.0,
+   "base": 35.0,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "great-traders-act-on-their-feelings",
+   "speaker": "epstien",
+   "score": 34.2,
+   "base": 48.9,
+   "primary_theme": "psychology_of_the_hit",
+   "veto": [],
+   "gates": [
+    "no_claim"
+   ]
+  },
+  {
+   "slug": "attention-trade",
+   "speaker": "chriscamillo",
+   "score": 31.6,
+   "base": 31.6,
+   "primary_theme": "ai_as_market_regime",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "worst-imaginable-thing",
+   "speaker": "richard",
+   "score": 31.3,
+   "base": 31.3,
+   "primary_theme": "everything_tradable",
+   "veto": [],
+   "gates": []
+  },
+  {
+   "slug": "semi-explosion",
+   "speaker": "sunnydece",
+   "score": 29.7,
+   "base": 49.6,
+   "primary_theme": "ai_as_market_regime",
+   "veto": [],
+   "gates": [
+    "off_topic"
+   ]
+  },
+  {
+   "slug": "rocket-ship",
+   "speaker": "trump",
+   "score": 26.5,
+   "base": 44.1,
+   "primary_theme": "traders_as_protagonist",
+   "veto": [],
+   "gates": [
+    "off_topic"
+   ]
+  },
+  {
+   "slug": "1000x-onchain-volumes",
+   "speaker": "frictionless",
+   "score": 26.0,
+   "base": 37.1,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": [
+    "no_claim"
+   ]
+  },
+  {
+   "slug": "speculation",
+   "speaker": "ansem",
+   "score": 22.8,
+   "base": 38.0,
+   "primary_theme": "volatility_is_the_product",
+   "veto": [],
+   "gates": [
+    "off_topic"
+   ]
+  },
+  {
+   "slug": "designated-account-risk",
+   "speaker": "chriscamillo",
+   "score": 21.6,
+   "base": 36.1,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": [
+    "off_topic"
+   ]
+  },
+  {
+   "slug": "might-never-be-over",
+   "speaker": "kimchi",
+   "score": 20.4,
+   "base": 34.0,
+   "primary_theme": "psychology_of_the_hit",
+   "veto": [],
+   "gates": [
+    "off_topic"
+   ]
+  },
+  {
+   "slug": "liquid-capital-markets",
+   "speaker": "chriscamillo",
+   "score": 18.4,
+   "base": 30.7,
+   "primary_theme": "ai_as_market_regime",
+   "veto": [],
+   "gates": [
+    "off_topic"
+   ]
+  },
+  {
+   "slug": "fortunate",
+   "speaker": "sunnydece",
+   "score": 18.4,
+   "base": 30.7,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": [
+    "off_topic"
+   ]
+  },
+  {
+   "slug": "fully-attentive",
+   "speaker": "hayes",
+   "score": 14.3,
+   "base": 34.1,
+   "primary_theme": "risk_is_a_craft",
+   "veto": [],
+   "gates": [
+    "off_topic",
+    "no_claim"
+   ]
+  },
+  {
+   "slug": "shilling-of-the-world",
+   "speaker": "sunnydece",
+   "score": 14.3,
+   "base": 34.0,
+   "primary_theme": "apps_over_infra",
+   "veto": [],
+   "gates": [
+    "off_topic",
+    "no_claim"
+   ]
+  }
+ ]
+}

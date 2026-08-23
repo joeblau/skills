@@ -23,6 +23,7 @@ Invoke any skill by typing `/b:skillname` in Claude Code.
 | `/b:cpr` | Create and manage GitHub pull requests |
 | `/b:x-post` | Research, generate, and review X content |
 | `/b:sludge` | Render sludge content — head-locked talking head over a filler clip, jump cut for pacing, with synced captions |
+| `/b:sludgify` | Mine a YouTube or X video for the clips that continue the house narrative, then render them with `/b:sludge` |
 
 ## Commands
 
