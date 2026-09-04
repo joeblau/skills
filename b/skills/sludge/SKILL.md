@@ -628,14 +628,18 @@ Full list: `scripts/sludge.py --help`.
 commands; `--install` runs them. Only the first two are hard requirements — everything
 else is fetched on demand by `uv`.
 
-- `ffmpeg` / `ffprobe` with libass and libx264. macOS `brew install ffmpeg`; Debian and
-  Ubuntu `sudo apt-get install ffmpeg`; Fedora `sudo dnf install ffmpeg`; Arch
-  `sudo pacman -S ffmpeg`; Alpine `sudo apk add ffmpeg`; Windows
-  `winget install Gyan.FFmpeg`. A build without libx264 or libass fails mid-render
-  rather than at startup, so preflight probes for both rather than just the binary.
-- `uv` (runs the script and its OpenCV dependency). macOS `brew install uv`; elsewhere
-  `curl -LsSf https://astral.sh/uv/install.sh | sh`; Windows
-  `winget install astral-sh.uv`.
+- `ffmpeg` / `ffprobe` with libass and libx264. A build without either fails
+  mid-render rather than at startup, so preflight probes for both, not just the
+  binary. Recognised: Homebrew, apt, dnf, pacman, zypper, apk, xbps, portage, nix,
+  FreeBSD pkg, winget, scoop, chocolatey.
+- `uv` (runs the script and its OpenCV dependency). From the platform's package
+  manager where it has one, else the astral.sh installer.
+
+Two things preflight handles that a hand-written install line usually gets wrong:
+`sudo` is only used when not already root and sudo exists (container, CI and Termux
+shells have neither), and `uv` installs to `~/.local/bin`, which is not on `PATH`
+until the shell restarts — preflight looks there and tells the user to add it rather
+than reporting a freshly installed `uv` as missing.
 - `whisper` on PATH, else the script falls back to `uvx --from openai-whisper whisper`
 - Network on first run, for the 230 KB YuNet face model (cached in `~/.cache/b-sludge`)
   and the 1.5 GB `large-v3-turbo` whisper model (cached in `~/.cache/whisper`). Without
