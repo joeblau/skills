@@ -66,8 +66,26 @@ than what the video says.
 
 ## Run it
 
-The script is self-executing — the shebang uses `uv run --script`, so OpenCV and
-NumPy install into an ephemeral environment on first use.
+**Check dependencies first.** Before the first render on a machine, run:
+
+```bash
+<skill-dir>/scripts/preflight.sh
+```
+
+It detects the OS and package manager and reports what is present or missing. Exit 0
+means the machine can render; exit 1 lists what is missing and prints the exact install
+command for that platform.
+
+If anything is missing, **show the user the missing list and the install command, and
+ask before installing.** With their go-ahead, `preflight.sh --install` runs those
+commands (on Linux they use `sudo`) and re-checks. Never run `--install` unprompted —
+it installs system packages.
+
+Skip preflight on repeat runs; only reach for it when a render fails with a missing
+binary or a codec error.
+
+The renderer itself is self-executing — the shebang uses `uv run --script`, so OpenCV
+and NumPy install into an ephemeral environment on first use.
 
 ```bash
 <skill-dir>/scripts/sludge.py \
@@ -606,8 +624,18 @@ Full list: `scripts/sludge.py --help`.
 
 ## Requirements
 
-- `ffmpeg` / `ffprobe` with libass and libx264 (`brew install ffmpeg`)
-- `uv` (runs the script and its OpenCV dependency)
+`scripts/preflight.sh` checks all of this and prints platform-specific install
+commands; `--install` runs them. Only the first two are hard requirements — everything
+else is fetched on demand by `uv`.
+
+- `ffmpeg` / `ffprobe` with libass and libx264. macOS `brew install ffmpeg`; Debian and
+  Ubuntu `sudo apt-get install ffmpeg`; Fedora `sudo dnf install ffmpeg`; Arch
+  `sudo pacman -S ffmpeg`; Alpine `sudo apk add ffmpeg`; Windows
+  `winget install Gyan.FFmpeg`. A build without libx264 or libass fails mid-render
+  rather than at startup, so preflight probes for both rather than just the binary.
+- `uv` (runs the script and its OpenCV dependency). macOS `brew install uv`; elsewhere
+  `curl -LsSf https://astral.sh/uv/install.sh | sh`; Windows
+  `winget install astral-sh.uv`.
 - `whisper` on PATH, else the script falls back to `uvx --from openai-whisper whisper`
 - Network on first run, for the 230 KB YuNet face model (cached in `~/.cache/b-sludge`)
   and the 1.5 GB `large-v3-turbo` whisper model (cached in `~/.cache/whisper`). Without

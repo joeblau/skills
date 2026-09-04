@@ -800,7 +800,14 @@ so real rejections are what lets them be re-fit.
 
 ## Requirements
 
-- `yt-dlp` on PATH (`/opt/homebrew/bin/yt-dlp`) — URLs only; local files skip it
+Check them all at once with b:sludge's preflight, which detects the OS and prints
+platform-specific install commands (`--install` runs them, after asking the user):
+
+```bash
+<b:sludge-skill-dir>/scripts/preflight.sh --sludgify
+```
+
+- `yt-dlp` on PATH — URLs only; local files skip it
 - `ffmpeg` / `ffprobe` with libass and libx264
 - `uv` (runs the script and its OpenCV dependency)
 - `whisper-cli` (whisper.cpp) preferred at 30–46x realtime; falls back to
