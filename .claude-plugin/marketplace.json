@@ -1,0 +1,21 @@
+{
+  "name": "b-skills",
+  "owner": {
+    "name": "Joe Blau",
+    "url": "https://github.com/joeblau"
+  },
+  "plugins": [
+    {
+      "name": "b",
+      "displayName": "b: Skills",
+      "source": "./b",
+      "description": "Personal Claude Code skills: /b:cpr, /b:sludge, /b:sludgify, /b:x-post, /b:zandesign.",
+      "version": "0.1.0",
+      "author": { "name": "Joe Blau" },
+      "homepage": "https://github.com/joeblau/skills",
+      "repository": "https://github.com/joeblau/skills",
+      "category": "productivity",
+      "keywords": ["pull-requests", "video", "design-review", "content"]
+    }
+  ]
+}

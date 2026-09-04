@@ -1,5 +1,5 @@
 ---
-name: b:cpr
+name: cpr
 description: |
   MANUAL TRIGGER ONLY: invoke only when user types /b:cpr.
   Create and manage GitHub pull requests. Creates branch, commits,

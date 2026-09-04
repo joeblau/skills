@@ -1,5 +1,5 @@
 ---
-name: b:x-post
+name: x-post
 description: |
   MANUAL TRIGGER ONLY: invoke only when user types /b:x-post.
   Research thought leaders on X, generate content (1 thread + 4 posts),
@@ -23,11 +23,14 @@ Phase 1: Research → Phase 2: Strategy → Phase 3: Creation + Quality Gate →
 ## Step 1: Initialize
 
 ```bash
-XPOST_DIR="$(dirname "$(readlink -f "$0" 2>/dev/null || echo "$0")")"
-# Fallback: find x-post dir relative to the skill
-[ -d "$XPOST_DIR" ] || XPOST_DIR="$(find ~/.claude/skills -name 'x-post' -type d 2>/dev/null | head -1)"
+# Skill assets (agents/, config.md) live with the skill; read-only.
+XPOST_DIR="${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/skills/x-post}"
+[ -d "$XPOST_DIR" ] || XPOST_DIR="$(find ~/.claude/skills ~/.claude/plugins -name 'x-post' -type d 2>/dev/null | head -1)"
+
+# Workspace is written to, so it must survive plugin updates: prefer CLAUDE_PLUGIN_DATA.
+XPOST_DATA="${CLAUDE_PLUGIN_DATA:-$XPOST_DIR}"
 TODAY=$(date +%Y-%m-%d)
-WORKSPACE="$XPOST_DIR/workspace/$TODAY"
+WORKSPACE="$XPOST_DATA/workspace/$TODAY"
 ```
 
 Create the workspace directory:
@@ -152,5 +155,5 @@ If `$WORKSPACE/needs-review.md` exists, mention it: "Note: [N] posts need manual
 Delete workspace folders older than the retention period (from config.md, default 7 days):
 
 ```bash
-find "$XPOST_DIR/workspace" -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
+find "$XPOST_DATA/workspace" -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
 ```

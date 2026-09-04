@@ -1,5 +1,5 @@
 ---
-name: b:sludgify
+name: sludgify
 description: |
   MANUAL TRIGGER ONLY: invoke only when user types /b:sludgify.
   Point at a YouTube or X video and ship finished sludge clips — the ones that
@@ -807,8 +807,10 @@ so real rejections are what lets them be re-fit.
   openai-whisper. The fallback **has now been exercised**: `--whisper openai` on a 25 s
   source ran at **3.3x realtime** and produced 78 words where whisper.cpp produced 68,
   scoring the same span 44.9 vs 44.5. It works; it is just 10–14x slower.
-- The **b:sludge** skill installed at `~/.claude/skills/sludge/scripts/sludge.py`
-  (override with `--sludge`)
+- The **b:sludge** skill's renderer, `sludge/scripts/sludge.py`. It sits beside this
+  skill: `${CLAUDE_PLUGIN_ROOT}/skills/sludge/scripts/sludge.py` when the `b` plugin is
+  installed, or `../sludge/scripts/sludge.py` relative to this skill directory when the
+  skills are symlinked into `~/.claude/skills/` (override with `--sludge`)
 - `corpus-profile.json` beside the skill (override with `--profile`)
 - Network on first run, for the whisper model and the YuNet face model (shared with
   b:sludge's cache)

@@ -1,5 +1,5 @@
 ---
-name: b:sludge
+name: sludge
 description: |
   MANUAL TRIGGER ONLY: invoke only when user types /b:sludge.
   Render sludge content: 50/50 vertical split, head-locked talking head on top,

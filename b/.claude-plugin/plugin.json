@@ -1,0 +1,13 @@
+{
+  "name": "b",
+  "displayName": "b: Skills",
+  "description": "Personal Claude Code skills: PR automation, X content, sludge video rendering, and design review.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Joe Blau",
+    "url": "https://github.com/joeblau"
+  },
+  "homepage": "https://github.com/joeblau/skills",
+  "repository": "https://github.com/joeblau/skills",
+  "keywords": ["pull-requests", "video", "design-review", "content"]
+}

@@ -1,5 +1,5 @@
 ---
-name: b:zandesign
+name: zandesign
 description: |
   MANUAL TRIGGER ONLY: invoke only when user types /b:zandesign.
   Deep design review of a React / React Native app against a check catalog
