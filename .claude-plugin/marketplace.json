@@ -4,6 +4,7 @@
     "name": "Joe Blau",
     "url": "https://github.com/joeblau"
   },
+  "description": "Joe Blau's personal Claude Code skills: GitHub PR automation, X content generation, sludge video rendering, and React design review.",
   "plugins": [
     {
       "name": "b",
