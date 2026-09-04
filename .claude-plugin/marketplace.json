@@ -11,7 +11,7 @@
       "displayName": "b: Skills",
       "source": "./b",
       "description": "Personal Claude Code skills: /b:cpr, /b:sludge, /b:sludgify, /b:x-post, /b:zandesign.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": { "name": "Joe Blau" },
       "homepage": "https://github.com/joeblau/skills",
       "repository": "https://github.com/joeblau/skills",
