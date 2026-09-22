@@ -1,10 +1,15 @@
 ---
 name: cpr
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /b:cpr.
+  MANUAL TRIGGER ONLY: use when the user explicitly invokes cpr through their agent’s skill command or asks to run this skill.
   Create and manage GitHub pull requests. Creates branch, commits,
   opens PR, watches CI, fixes failures, and merges.
+disable-model-invocation: true
 ---
+
+## Agent compatibility
+
+Use this skill with Claude Code (`/b:cpr` as a plugin or `/cpr` locally), Codex (`$cpr`), or Kimi Code (`/skill:cpr`). Resolve bundled files relative to the directory containing this `SKILL.md`, following symlinks to the source directory. Use the host’s available file and shell tools; tool names are not requirements. Shell commands require a local execution environment and the listed dependencies.
 
 Create a PR the proper way:
 

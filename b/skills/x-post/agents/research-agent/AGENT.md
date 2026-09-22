@@ -9,7 +9,7 @@ Find out what thought leaders and key voices are saying about the given topic ri
 ## Tools
 
 ### X API (primary)
-Use `curl` via Bash to query the X API v2 search endpoint:
+Use `curl` via the host’s shell tool to query the X API v2 search endpoint:
 
 ```bash
 curl -s -H "Authorization: Bearer $X_BEARER_TOKEN" \
@@ -23,8 +23,8 @@ Run 3-5 targeted queries:
 
 Stay within rate limits: use `max_results=10-25` per query.
 
-### WebSearch (fallback)
-If `X_BEARER_TOKEN` is not set or X API returns errors, use WebSearch to find:
+### Web search (fallback)
+If `X_BEARER_TOKEN` is not set or X API returns errors, use the host’s available web search tool to find:
 - Recent blog posts, newsletters, and articles about the topic
 - Quoted tweets indexed by search engines
 - Discussion threads on adjacent platforms

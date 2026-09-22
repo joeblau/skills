@@ -1,7 +1,7 @@
 ---
 name: zandesign
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /b:zandesign.
+  MANUAL TRIGGER ONLY: use when the user explicitly invokes zandesign through their agent’s skill command or asks to run this skill.
   Deep design review of a React / React Native app against a check catalog
   codified from Zander Whitehurst's (@zander_supafast) design-video corpus.
   Static code pass + visual screenshot pass + flow pass, then a ranked
@@ -9,6 +9,10 @@ description: |
 argument-hint: "[path-to-app] [--fix] [--static-only] [--screens <glob|route,...>]"
 disable-model-invocation: true
 ---
+
+## Agent compatibility
+
+Use this skill with Claude Code (`/b:zandesign` as a plugin or `/zandesign` locally), Codex (`$zandesign`), or Kimi Code (`/skill:zandesign`). Resolve bundled files relative to the directory containing this `SKILL.md`, following symlinks to the source directory. Use the host’s available file and shell tools; tool names are not requirements. Shell commands require a local execution environment and the listed dependencies.
 
 Review a React or React Native codebase the way a senior product designer
 would — grounded in the 30 codified checks in [checks/](checks/README.md),
@@ -66,11 +70,15 @@ there, and one fix in a shared component outranks twenty screen patches.
 
 ## Phase 2 — Visual pass (screenshots)
 
-Skip only if `--static-only`.
+If `--static-only`, skip the visual and interactive flow passes. Otherwise inspect
+available browser/screenshot tools before starting. If none are available, complete
+the static pass and report the visual and flow passes as unverified; accept user-provided
+screenshots for visual review. Do not claim to have run unavailable checks.
 
-- **React web**: start the dev server (see the project's README/scripts;
-  the `run` skill's conventions apply). Screenshot each in-scope route via
-  Chrome MCP (`tabs_context_mcp` → `navigate` → `computer screenshot`) at
+- **React web**: start the dev server using the project's README/scripts.
+  Use the host’s browser automation or screenshot capability (for example a browser
+  tool, configured browser MCP server, or the project’s Playwright setup).
+  Screenshot each in-scope route at
   mobile (390px) and desktop widths, in **both light and dark mode**
   (emulate via `prefers-color-scheme`, or the app's own toggle).
 - **React Native**: build/run on the iOS simulator (`npx expo run:ios` or
@@ -88,7 +96,8 @@ them by filename in findings.
 
 ## Phase 3 — Flow pass
 
-Walk 2–3 core flows (e.g. browse → detail → action, plus one destructive
+When interactive tools are available and `--static-only` was not requested,
+walk 2–3 core flows (e.g. browse → detail → action, plus one destructive
 action and one form). Judge:
 
 - Transition types against MOT-1 (context/drill/continuity) and MODAL-2.

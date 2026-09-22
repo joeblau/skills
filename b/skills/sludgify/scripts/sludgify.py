@@ -52,7 +52,7 @@ from pathlib import Path
 
 SKILL_DIR = Path(__file__).resolve().parent.parent
 DEFAULT_PROFILE = SKILL_DIR / "corpus-profile.json"
-DEFAULT_SLUDGE = Path.home() / ".claude" / "skills" / "sludge" / "scripts" / "sludge.py"
+DEFAULT_SLUDGE = SKILL_DIR.parent / "sludge" / "scripts" / "sludge.py"
 
 CACHE = Path.home() / ".cache" / "b-sludgify"
 MODEL_DIR = CACHE / "models"

@@ -1,13 +1,17 @@
 ---
 name: sludgify
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /b:sludgify.
+  MANUAL TRIGGER ONLY: use when the user explicitly invokes sludgify through their agent’s skill command or asks to run this skill.
   Point at a YouTube or X video and ship finished sludge clips — the ones that
   continue the narrative the existing corpus already promotes. sludgify decides
   WHAT to clip; b:sludge renders it.
 argument-hint: "<video-url|file> [--emit N] [--render --clip … --music … --cta …]"
 disable-model-invocation: true
 ---
+
+## Agent compatibility
+
+Use this skill with Claude Code (`/b:sludgify` as a plugin or `/sludgify` locally), Codex (`$sludgify`), or Kimi Code (`/skill:sludgify`). Resolve bundled files relative to the directory containing this `SKILL.md`, following symlinks to the source directory. Use the host’s available file and shell tools; tool names are not requirements. Shell commands require a local execution environment and the listed dependencies.
 
 Mine a long video for the clips worth shipping, then render them through
 [b:sludge](../sludge/SKILL.md).
@@ -815,9 +819,10 @@ platform-specific install commands (`--install` runs them, after asking the user
   source ran at **3.3x realtime** and produced 78 words where whisper.cpp produced 68,
   scoring the same span 44.9 vs 44.5. It works; it is just 10–14x slower.
 - The **b:sludge** skill's renderer, `sludge/scripts/sludge.py`. It sits beside this
-  skill: `${CLAUDE_PLUGIN_ROOT}/skills/sludge/scripts/sludge.py` when the `b` plugin is
-  installed, or `../sludge/scripts/sludge.py` relative to this skill directory when the
-  skills are symlinked into `~/.claude/skills/` (override with `--sludge`)
+  skill: `../sludge/scripts/sludge.py` relative to this skill’s resolved source directory,
+  independent of the agent or installation location (override with `--sludge`).
+  Install both skills; if installed separately without a shared parent, pass the
+  renderer’s actual path with `--sludge`
 - `corpus-profile.json` beside the skill (override with `--profile`)
 - Network on first run, for the whisper model and the YuNet face model (shared with
   b:sludge's cache)

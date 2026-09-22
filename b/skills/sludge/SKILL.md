@@ -1,13 +1,17 @@
 ---
 name: sludge
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /b:sludge.
+  MANUAL TRIGGER ONLY: use when the user explicitly invokes sludge through their agent’s skill command or asks to run this skill.
   Render sludge content: 50/50 vertical split, head-locked talking head on top,
   random clip on the bottom, ducked music bed, a broadcast vocal chain on the voice,
   and word-highlighted live captions synced to the speaker.
 argument-hint: "[message] @head @clip [@music] [@cta]"
 disable-model-invocation: true
 ---
+
+## Agent compatibility
+
+Use this skill with Claude Code (`/b:sludge` as a plugin or `/sludge` locally), Codex (`$sludge`), or Kimi Code (`/skill:sludge`). Resolve bundled files relative to the directory containing this `SKILL.md`, following symlinks to the source directory. Use the host’s available file and shell tools; tool names are not requirements. Shell commands require a local execution environment and the listed dependencies.
 
 Render a [sludge content](https://en.wikipedia.org/wiki/Sludge_content) video — the
 1080x1920 two-pane format built to hold attention: a talking head speaking the

@@ -1,18 +1,23 @@
 ---
 name: x-post
 description: |
-  MANUAL TRIGGER ONLY: invoke only when user types /b:x-post.
+  MANUAL TRIGGER ONLY: use when the user explicitly invokes x-post through their agent’s skill command or asks to run this skill.
   Research thought leaders on X, generate content (1 thread + 4 posts),
-  and present for review. Uses a 3-agent pipeline with quality gate.
+  and present for review. Uses research, strategy, and creation stages with a quality gate.
+disable-model-invocation: true
 ---
 
 # x-post: Content Pipeline
+
+## Agent compatibility
+
+Use this skill with Claude Code (`/b:x-post` as a plugin or `/x-post` locally), Codex (`$x-post`), or Kimi Code (`/skill:x-post`). Resolve bundled files relative to the directory containing this `SKILL.md`, following symlinks to the source directory. Use the host’s available file and shell tools; tool names are not requirements. Shell commands require a local execution environment and the listed dependencies.
 
 Research what thought leaders are saying, generate informed X content, and present it for review.
 
 ## Setup
 
-Requires `X_BEARER_TOKEN` environment variable for X API access. Falls back to WebSearch if not set.
+Requires `X_BEARER_TOKEN` environment variable for X API access. Falls back to the host’s web search capability if not set. If neither API access nor web search is available, report the missing capability before generating research-based content.
 
 ## Pipeline
 
@@ -22,13 +27,13 @@ Phase 1: Research → Phase 2: Strategy → Phase 3: Creation + Quality Gate →
 
 ## Step 1: Initialize
 
-```bash
-# Skill assets (agents/, config.md) live with the skill; read-only.
-XPOST_DIR="${CLAUDE_PLUGIN_ROOT:+$CLAUDE_PLUGIN_ROOT/skills/x-post}"
-[ -d "$XPOST_DIR" ] || XPOST_DIR="$(find ~/.claude/skills ~/.claude/plugins -name 'x-post' -type d 2>/dev/null | head -1)"
+Set `XPOST_DIR` to the absolute, resolved directory containing this `SKILL.md`. Treat all `x-post/…` references below as relative to that directory (drop the `x-post/` prefix). Keep bundled assets read-only.
 
-# Workspace is written to, so it must survive plugin updates: prefer CLAUDE_PLUGIN_DATA.
-XPOST_DATA="${CLAUDE_PLUGIN_DATA:-$XPOST_DIR}"
+```bash
+# Set this to the resolved skill directory before running the remaining commands.
+XPOST_DIR="/absolute/path/to/x-post"
+# Persistent outputs stay outside the skill installation. XPOST_DATA can override it.
+XPOST_DATA="${XPOST_DATA:-${XDG_DATA_HOME:-$HOME/.local/share}/b-skills/x-post}"
 TODAY=$(date +%Y-%m-%d)
 WORKSPACE="$XPOST_DATA/workspace/$TODAY"
 ```
@@ -50,11 +55,15 @@ Read `$WORKSPACE/pipeline-state.md` if it exists. Check the last recorded phase:
 - If a phase is incomplete: resume from that phase.
 - If no pipeline-state.md: start from Phase 1.
 
+## Execution across agents
+
+Use the host’s subagent/delegation capability when available and permitted. Otherwise perform each role sequentially in the current session, reading the same role files and writing the same stage outputs. “Dispatch” below means either method; do not require a tool literally named `Agent` or a particular `subagent_type`. Give the research role shell/HTTP and web search access when available. Keep the review pass separate from drafting even when using one agent. This skill creates drafts for review; it does not publish posts.
+
 ## Step 3: Phase 1 — Research
 
 Write to pipeline-state.md: `phase: research | status: started`
 
-Dispatch the **Research Agent** via the Agent tool:
+Dispatch the **Research Agent** using the execution method above:
 
 **Prompt construction:**
 1. Read `x-post/agents/SHARED.md`
@@ -63,7 +72,7 @@ Dispatch the **Research Agent** via the Agent tool:
 4. Combine all three into the agent prompt
 5. Append: "Topic: [topic]. Write your output to: $WORKSPACE/research.md"
 
-Use `subagent_type: general-purpose` so the agent has access to Bash (for curl) and WebSearch.
+Use the available shell tool for `curl` and the host’s web search tool for fallback research.
 
 If the agent fails or times out, retry once. If it fails again, abort the pipeline and tell the user.
 
@@ -75,7 +84,7 @@ Write to pipeline-state.md: `phase: strategy | status: started`
 
 Read `$WORKSPACE/research.md`.
 
-Dispatch the **Content Strategist (strategy mode)** via the Agent tool:
+Dispatch the **Content Strategist (strategy mode)** using the execution method above:
 
 **Prompt construction:**
 1. Read `x-post/agents/SHARED.md`
@@ -95,7 +104,7 @@ Write to pipeline-state.md: `phase: creation | status: started`
 
 Read `$WORKSPACE/strategy.md`.
 
-Dispatch the **Content Creator** via the Agent tool:
+Dispatch the **Content Creator** using the execution method above:
 
 **Prompt construction:**
 1. Read `x-post/agents/SHARED.md`
@@ -113,7 +122,7 @@ Write to pipeline-state.md: `phase: quality-gate | status: started | revision: 0
 
 Read `$WORKSPACE/drafts.md` and `$WORKSPACE/strategy.md`.
 
-Dispatch the **Content Strategist (review mode)** via the Agent tool:
+Dispatch the **Content Strategist (review mode)** using the execution method above:
 
 **Prompt construction:**
 1. Read `x-post/agents/SHARED.md`
@@ -155,5 +164,5 @@ If `$WORKSPACE/needs-review.md` exists, mention it: "Note: [N] posts need manual
 Delete workspace folders older than the retention period (from config.md, default 7 days):
 
 ```bash
-find "$XPOST_DATA/workspace" -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
+find "$XPOST_DATA/workspace" -mindepth 1 -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
 ```

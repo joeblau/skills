@@ -4,19 +4,26 @@
     "name": "Joe Blau",
     "url": "https://github.com/joeblau"
   },
-  "description": "Joe Blau's personal Claude Code skills: GitHub PR automation, X content generation, sludge video rendering, and React design review.",
+  "description": "Joe Blau's portable agent skills for Git workflows, content, video, and design review.",
   "plugins": [
     {
       "name": "b",
       "displayName": "b: Skills",
       "source": "./b",
-      "description": "Personal Claude Code skills: /b:cpr, /b:sludge, /b:sludgify, /b:x-post, /b:zandesign.",
-      "version": "0.2.0",
-      "author": { "name": "Joe Blau" },
+      "description": "Portable agent skills: cpr, sweep, sludge, sludgify, x-post, and zandesign.",
+      "version": "0.3.0",
+      "author": {
+        "name": "Joe Blau"
+      },
       "homepage": "https://github.com/joeblau/skills",
       "repository": "https://github.com/joeblau/skills",
       "category": "productivity",
-      "keywords": ["pull-requests", "video", "design-review", "content"]
+      "keywords": [
+        "pull-requests",
+        "video",
+        "design-review",
+        "content"
+      ]
     }
   ]
 }

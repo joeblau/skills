@@ -5,6 +5,10 @@ description: Merge outstanding Git branches and clean up merged remote branches,
 
 # Sweep
 
+## Agent compatibility
+
+Use this skill with Claude Code (`/b:sweep` as a plugin or `/sweep` locally), Codex (`$sweep`), or Kimi Code (`/skill:sweep`). Resolve bundled files relative to the directory containing this `SKILL.md`, following symlinks to the source directory. Use the host’s available file and shell tools; tool names are not requirements. Shell commands require a local execution environment and the listed dependencies.
+
 Bring the current repository to a clean `main`: integrate outstanding work, publish the validated result, delete integrated topic branches remotely and locally, and remove completed worktrees. Treat `b:sweep` as a request for this workflow when this skill is available; it is not a shell alias.
 
 ## Scope and authorization
