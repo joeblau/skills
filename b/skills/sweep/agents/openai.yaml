@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sweep"
+  short_description: "Merge outstanding work and clean branches and worktrees"
+  default_prompt: "Use $sweep to merge outstanding branches, clean up merged remote branches and completed worktrees, and finish on a clean main."
