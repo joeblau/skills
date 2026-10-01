@@ -1,8 +1,8 @@
 {
   "name": "b",
   "displayName": "b: Skills",
-  "description": "Portable agent skills: cpr, sweep, sludge, sludgify, x-post, and zandesign.",
-  "version": "0.3.0",
+  "description": "Portable agent skills: cpr, sweep, sludge, sludgify, x-post, zandesign, and app-release-review.",
+  "version": "0.4.0",
   "author": {
     "name": "Joe Blau",
     "url": "https://github.com/joeblau"
@@ -13,6 +13,7 @@
     "pull-requests",
     "video",
     "design-review",
+    "app-release",
     "content"
   ]
 }
