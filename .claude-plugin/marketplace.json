@@ -4,14 +4,14 @@
     "name": "Joe Blau",
     "url": "https://github.com/joeblau"
   },
-  "description": "Joe Blau's portable agent skills for Git workflows, content, video, and design review.",
+  "description": "Joe Blau's portable agent skills for Git workflows, content, video, design and mobile release review.",
   "plugins": [
     {
       "name": "b",
       "displayName": "b: Skills",
       "source": "./b",
-      "description": "Portable agent skills: cpr, sweep, sludge, sludgify, x-post, and zandesign.",
-      "version": "0.3.0",
+      "description": "Portable agent skills: cpr, sweep, sludge, sludgify, x-post, zandesign, and app-release-review.",
+      "version": "0.4.0",
       "author": {
         "name": "Joe Blau"
       },
@@ -22,6 +22,7 @@
         "pull-requests",
         "video",
         "design-review",
+        "app-release",
         "content"
       ]
     }

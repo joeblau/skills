@@ -1,0 +1,1550 @@
+{
+  "version": 1,
+  "usage": "Baseline coverage, not an exhaustive or timeless policy oracle. Evaluate every requested platform pair; add checks for current triggered rules. Obligations are seeds; explain release-specific overrides with current sources.",
+  "checks": [
+    {
+      "id": "SCOPE-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "readiness",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Establish a native release candidate",
+      "verify": "Identify actual mobile target, artifact, build provenance and supported devices; desktop/web alone cannot pass.",
+      "source_ids": [
+        "A-SUBMIT",
+        "G-CREATE"
+      ]
+    },
+    {
+      "id": "SCOPE-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "readiness",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Inventory all features and review surfaces",
+      "verify": "Map screens, extensions, web views, backend, data recipients, core tasks and store claims.",
+      "source_ids": [
+        "A-SUBMIT",
+        "G-PREPARE"
+      ]
+    },
+    {
+      "id": "SCOPE-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "readiness",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Verify current policy and deadline applicability",
+      "verify": "Open current policy sections and deadlines for release date, account, markets and form factors; record conflicts.",
+      "source_ids": [
+        "A-REQUIREMENTS",
+        "G-DEADLINES",
+        "G-UPDATES"
+      ]
+    },
+    {
+      "id": "SCOPE-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "readiness",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Complete publisher identity and agreements",
+      "verify": "Confirm store enrollment, roles, verified contact and required agreements; banking/tax where monetized.",
+      "source_ids": [
+        "A-SUBMIT",
+        "G-ACCOUNT"
+      ]
+    },
+    {
+      "id": "SCOPE-05",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "readiness",
+      "obligation": "conditional",
+      "trigger": "Selected markets, service type and distribution",
+      "title": "Resolve geographic and regulatory declarations",
+      "verify": "Check trader/export/licensing, local privacy/consumer/accessibility requirements and relevant store permits.",
+      "source_ids": [
+        "A-DSA",
+        "A-EXPORT",
+        "EU-EAA",
+        "G-POLICIES"
+      ]
+    },
+    {
+      "id": "IOS-01",
+      "platforms": [
+        "ios"
+      ],
+      "area": "build",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Meet current SDK and deployment upload rules",
+      "verify": "Inspect archive SDK/toolchain and deployment target separately against current Apple upload deadlines.",
+      "source_ids": [
+        "A-REQUIREMENTS"
+      ]
+    },
+    {
+      "id": "IOS-02",
+      "platforms": [
+        "ios"
+      ],
+      "area": "build",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Validate signing, identifiers and archive",
+      "verify": "Confirm team/provisioning, unique build/version, capabilities and successful distribution archive validation/processing.",
+      "source_ids": [
+        "A-DISTRIBUTE",
+        "A-SUBMIT"
+      ]
+    },
+    {
+      "id": "IOS-03",
+      "platforms": [
+        "ios"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "Protected resources or background capabilities",
+      "title": "Align purpose strings, entitlements and permission behavior",
+      "verify": "Map actual resource use to descriptions/capabilities; test denial, revocation and supported alternatives.",
+      "source_ids": [
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "IOS-04",
+      "platforms": [
+        "ios"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "Third-party/social primary login",
+      "title": "Meet equivalent privacy-preserving login rule",
+      "verify": "Inspect login service behavior and specific guideline 4.8 exemptions; test qualifying equivalent login when required.",
+      "source_ids": [
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "IOS-05",
+      "platforms": [
+        "ios"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "No significant account-based functionality",
+      "title": "Provide justified guest access",
+      "verify": "Assess whether mandatory account/personal data is relevant to core functionality; verify usable guest path where required.",
+      "source_ids": [
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "IOS-06",
+      "platforms": [
+        "ios"
+      ],
+      "area": "compliance",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Determine encryption export compliance",
+      "verify": "Answer actual encryption questionnaire; provide required documents or justified exemption declaration, not an automatic false flag.",
+      "source_ids": [
+        "A-EXPORT"
+      ]
+    },
+    {
+      "id": "IOS-07",
+      "platforms": [
+        "ios"
+      ],
+      "area": "build",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Use allowed APIs, code and update mechanisms",
+      "verify": "Inspect public/private APIs, downloaded code, plugins and reviewable functionality against platform-specific rules and exceptions.",
+      "source_ids": [
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "IOS-08",
+      "platforms": [
+        "ios"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Declare trader status and applicable contact verification",
+      "verify": "Record declared status; verify contact display/evidence when trader and EU distribution triggers it.",
+      "source_ids": [
+        "A-DSA"
+      ]
+    },
+    {
+      "id": "IOS-09",
+      "platforms": [
+        "ios"
+      ],
+      "area": "testing",
+      "obligation": "recommended",
+      "trigger": "Beta release testing available",
+      "title": "Test intended candidate via TestFlight",
+      "verify": "Record distribution build, core flow coverage, feedback and external beta review where used.",
+      "source_ids": [
+        "A-TESTFLIGHT"
+      ]
+    },
+    {
+      "id": "IOS-10",
+      "platforms": [
+        "ios"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "iPad, extensions, Mac/vision compatibility or extra device families enabled",
+      "title": "Review every enabled Apple target",
+      "verify": "Test target-specific layouts, capabilities, privacy, accessibility, assets and opt-in distribution compatibility.",
+      "source_ids": [
+        "A-SUBMIT",
+        "A-SCREENSHOTS"
+      ]
+    },
+    {
+      "id": "AND-01",
+      "platforms": [
+        "android"
+      ],
+      "area": "build",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Meet target API rules for this release",
+      "verify": "Verify targetSdk against new/update deadline, device-type exceptions and confirmed console extensions.",
+      "source_ids": [
+        "G-TARGET"
+      ]
+    },
+    {
+      "id": "AND-02",
+      "platforms": [
+        "android"
+      ],
+      "area": "build",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Validate signed app bundle and version identity",
+      "verify": "Inspect release AAB, package/version code, signing configuration, Play App Signing and processing results.",
+      "source_ids": [
+        "G-CREATE",
+        "D-SIGN"
+      ]
+    },
+    {
+      "id": "AND-03",
+      "platforms": [
+        "android"
+      ],
+      "area": "build",
+      "obligation": "conditional",
+      "trigger": "Native code present directly or through SDKs",
+      "title": "Verify native 64-bit ABI support",
+      "verify": "Inspect packaged libraries and generated APKs; test applicable 64-bit devices and policy exceptions.",
+      "source_ids": [
+        "D-64"
+      ]
+    },
+    {
+      "id": "AND-04",
+      "platforms": [
+        "android"
+      ],
+      "area": "build",
+      "obligation": "conditional",
+      "trigger": "Applicable target/device and memory-page requirements",
+      "title": "Verify 16 KB memory-page compatibility",
+      "verify": "Inspect all native dependencies/alignment and run actual 16 KB environment tests; verify current enforcement date.",
+      "source_ids": [
+        "D-PAGES"
+      ]
+    },
+    {
+      "id": "AND-05",
+      "platforms": [
+        "android"
+      ],
+      "area": "build",
+      "obligation": "conditional",
+      "trigger": "Play Billing integration",
+      "title": "Use supported Billing Library version",
+      "verify": "Inspect resolved/package billing dependency and live deadlines; confirm approved extension if relying on it.",
+      "source_ids": [
+        "D-BILLING"
+      ]
+    },
+    {
+      "id": "AND-06",
+      "platforms": [
+        "android"
+      ],
+      "area": "native",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Inspect merged release manifest and sensitive APIs",
+      "verify": "Review actual permission/component declarations, necessity, SDK-added entries and policy-compliant use.",
+      "source_ids": [
+        "G-PERMISSIONS",
+        "G-SDK"
+      ]
+    },
+    {
+      "id": "AND-07",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "conditional",
+      "trigger": "Restricted permissions, APIs or foreground services",
+      "title": "Complete applicable declarations and approvals",
+      "verify": "Research each used permission/service's policy; attach accurate explanations, demos and approval evidence.",
+      "source_ids": [
+        "G-DECLARE",
+        "G-PERMISSIONS"
+      ]
+    },
+    {
+      "id": "AND-08",
+      "platforms": [
+        "android"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "AccessibilityService API use",
+      "title": "Check sensitive accessibility API eligibility",
+      "verify": "Verify declaration, disclosure and autonomous-action limits/exemptions; do not confuse with accessible UI support.",
+      "source_ids": [
+        "G-A11Y-API"
+      ]
+    },
+    {
+      "id": "AND-09",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "conditional",
+      "trigger": "New personal account subject to production-access rules",
+      "title": "Complete required closed test and production application",
+      "verify": "Confirm account date/type, continuously opted-in testers/duration, useful feedback and actual production approval.",
+      "source_ids": [
+        "G-TESTING"
+      ]
+    },
+    {
+      "id": "AND-10",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "conditional",
+      "trigger": "Account identity/device verification requirements apply",
+      "title": "Complete Play account and real-device verification",
+      "verify": "Check account-specific verification notices and proof; distinguish from closed-testing gate.",
+      "source_ids": [
+        "G-ACCOUNT"
+      ]
+    },
+    {
+      "id": "AND-11",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "conditional",
+      "trigger": "Developer/package verification rollout applies",
+      "title": "Verify developer identity and package registration",
+      "verify": "Check selected markets/stores/devices and signing registration under current Android verification rollout.",
+      "source_ids": [
+        "D-VERIFY"
+      ]
+    },
+    {
+      "id": "AND-12",
+      "platforms": [
+        "android"
+      ],
+      "area": "testing",
+      "obligation": "recommended",
+      "trigger": "Release track available",
+      "title": "Review pre-launch, pre-review and compatibility findings",
+      "verify": "Collect release-track results and SDK/compatibility warnings; reproduce and resolve relevant failures.",
+      "source_ids": [
+        "G-RELEASE",
+        "G-SDK"
+      ]
+    },
+    {
+      "id": "AND-13",
+      "platforms": [
+        "android"
+      ],
+      "area": "native",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Preserve navigation and lifecycle state",
+      "verify": "Test back/predictive back, rotation, process death, keyboard/insets, background/foreground and transaction state.",
+      "source_ids": [
+        "D-QUALITY"
+      ]
+    },
+    {
+      "id": "AND-14",
+      "platforms": [
+        "android"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "Tablets, foldables, desktop, TV, Wear, automotive or XR supported",
+      "title": "Review adaptive and special-device branches",
+      "verify": "Open dedicated quality/distribution rules and test enabled form factors; add detailed checks and required assets.",
+      "source_ids": [
+        "D-QUALITY",
+        "G-ASSETS"
+      ]
+    },
+    {
+      "id": "QA-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "testing",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Finish usable advertised functionality",
+      "verify": "Exercise onboarding and all advertised core flows with reviewer-accessible backend; remove placeholders and dead links.",
+      "source_ids": [
+        "A-REVIEW",
+        "G-POLICIES"
+      ]
+    },
+    {
+      "id": "QA-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "testing",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Resolve crashes and broken core flows",
+      "verify": "Run release candidate on supported minimum/current OS and representative real devices; record failures and regression results.",
+      "source_ids": [
+        "A-SUBMIT",
+        "G-POLICIES"
+      ]
+    },
+    {
+      "id": "QA-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "testing",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Handle offline, loading, empty and error states",
+      "verify": "Test slow/failing networks, retry, cancellation, interrupted auth/payments and useful user-visible feedback.",
+      "source_ids": [
+        "D-QUALITY",
+        "A-DESIGN-TIPS"
+      ]
+    },
+    {
+      "id": "QA-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "testing",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Test upgrades, migrations and resource behavior",
+      "verify": "Verify reinstall/update/migrations, startup, rendering, memory, battery and background resource use on core flows.",
+      "source_ids": [
+        "D-QUALITY",
+        "A-SUBMIT"
+      ]
+    },
+    {
+      "id": "QA-05",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "Permission requests, push or protected resource use",
+      "title": "Honor permission choices and contextual disclosure",
+      "verify": "Request only needed scope; test denial/revocation, alternatives, notification controls and unexpected-data consent.",
+      "source_ids": [
+        "G-DISCLOSURE",
+        "G-PERMISSIONS",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "QA-06",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "native",
+      "obligation": "conditional",
+      "trigger": "Links, sharing, media, widgets or device integrations",
+      "title": "Exercise native integrations and interruptions",
+      "verify": "Verify link routing, shares, keyboard/audio focus and external return paths; research feature-specific rules.",
+      "source_ids": [
+        "D-QUALITY",
+        "A-SUBMIT"
+      ]
+    },
+    {
+      "id": "QA-07",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "testing",
+      "obligation": "recommended",
+      "trigger": "Supported locales and layouts",
+      "title": "Verify localization, right-to-left and layout resilience",
+      "verify": "Test languages, long text, orientation, display scaling and supported screen sizes without losing core actions.",
+      "source_ids": [
+        "D-QUALITY",
+        "A-DESIGN-TIPS"
+      ]
+    },
+    {
+      "id": "QA-08",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "testing",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Test release configuration and backend compatibility",
+      "verify": "Inspect production endpoints, feature flags, debug-only behavior, backend versions and release observability.",
+      "source_ids": [
+        "D-QUALITY",
+        "A-DISTRIBUTE"
+      ]
+    },
+    {
+      "id": "DATA-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "privacy",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Inventory actual app and SDK data handling",
+      "verify": "Trace code/runtime flows, data types, providers, purposes, retention/deletion and collection before consent.",
+      "source_ids": [
+        "A-PRIVACY",
+        "G-DATA",
+        "G-SDK"
+      ]
+    },
+    {
+      "id": "DATA-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Publish an accurate accessible privacy policy",
+      "verify": "Reconcile implementation/SDKs with public and in-app policy, identity/contact, recipients, retention/deletion and choices.",
+      "source_ids": [
+        "G-USER-DATA",
+        "A-SUBMIT"
+      ]
+    },
+    {
+      "id": "DATA-03",
+      "platforms": [
+        "ios"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Complete App Store privacy answers",
+      "verify": "Apply Apple's collection, purposes, identity/tracking and partner definitions; verify answers against full data inventory.",
+      "source_ids": [
+        "A-PRIVACY"
+      ]
+    },
+    {
+      "id": "DATA-04",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Production release or other covered tracks",
+      "title": "Complete Play Data safety and deletion answers",
+      "verify": "Apply Play collection/sharing/exemption definitions and all SDKs; verify security/deletion answers and public privacy URL.",
+      "source_ids": [
+        "G-DATA"
+      ]
+    },
+    {
+      "id": "DATA-05",
+      "platforms": [
+        "ios"
+      ],
+      "area": "build",
+      "obligation": "conditional",
+      "trigger": "Required-reason APIs or applicable SDK requirements",
+      "title": "Supply correct app and SDK privacy manifests",
+      "verify": "Inspect actual API categories/reasons, target packaging, tracking declarations and required SDK signatures.",
+      "source_ids": [
+        "A-MANIFEST",
+        "A-REASONS",
+        "A-SDK"
+      ]
+    },
+    {
+      "id": "DATA-06",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "privacy",
+      "obligation": "conditional",
+      "trigger": "Personal/sensitive data collection requiring consent or unexpected use",
+      "title": "Provide required disclosure and affirmative consent",
+      "verify": "Check timing, wording, recipients, scope and revocation; ensure no collection starts before required consent.",
+      "source_ids": [
+        "G-DISCLOSURE",
+        "G-USER-DATA",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "DATA-07",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "privacy",
+      "obligation": "conditional",
+      "trigger": "Advertising, tracking or device identifiers",
+      "title": "Meet tracking and advertising consent rules",
+      "verify": "Apply store definitions and age restrictions; inspect identifiers/SDK initialization and accurately disclose actual practices.",
+      "source_ids": [
+        "A-PRIVACY",
+        "G-USER-DATA",
+        "G-FAMILIES"
+      ]
+    },
+    {
+      "id": "DATA-08",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "backend",
+      "obligation": "conditional",
+      "trigger": "Accounts, stored personal data or linked creation",
+      "title": "Implement account and associated-data deletion",
+      "verify": "Test in-app request through backend/processor completion, identity safeguards, retained exceptions and subscription implications.",
+      "source_ids": [
+        "A-DELETE",
+        "G-DELETE"
+      ]
+    },
+    {
+      "id": "DATA-09",
+      "platforms": [
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "conditional",
+      "trigger": "Account creation triggers deletion rule",
+      "title": "Provide working external deletion request resource",
+      "verify": "Test public request path without installed app, app/developer identity and clear associated-data deletion instructions.",
+      "source_ids": [
+        "G-DELETE"
+      ]
+    },
+    {
+      "id": "DATA-10",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "privacy",
+      "obligation": "conditional",
+      "trigger": "Personal data sent to external AI providers",
+      "title": "Disclose AI sharing and obtain required permission",
+      "verify": "Identify recipient/routing and clear pre-transfer consent; tool execution approval is a separate control.",
+      "source_ids": [
+        "A-REVIEW",
+        "G-USER-DATA"
+      ]
+    },
+    {
+      "id": "SEC-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "security",
+      "obligation": "recommended",
+      "trigger": "Sensitive storage, account or network use",
+      "title": "Review credentials, transport and access boundaries",
+      "verify": "Inspect Keychain/Keystore use, TLS/authz, token revocation, logs/backups and web-view/deep-link trust boundaries.",
+      "source_ids": [
+        "OWASP"
+      ]
+    },
+    {
+      "id": "SEC-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "security",
+      "obligation": "recommended",
+      "trigger": "Dependencies or native/agent execution",
+      "title": "Review dependency and execution risks",
+      "verify": "Inspect supported dependencies, vulnerable SDK notices, dynamic tool/code behavior, bridges and user action controls.",
+      "source_ids": [
+        "OWASP",
+        "G-SDK"
+      ]
+    },
+    {
+      "id": "A11Y-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Complete core tasks with screen reader",
+      "verify": "Run VoiceOver/TalkBack matrix including login, purchase, settings and deletion; inspect names/roles/states/order and updates.",
+      "source_ids": [
+        "A-A11Y-TEST",
+        "D-A11Y-TEST"
+      ]
+    },
+    {
+      "id": "A11Y-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Support keyboard, switches and voice interaction",
+      "verify": "Test actionable controls, alternate gestures, visible focus, modal trap/restore and no inaccessible overlays.",
+      "source_ids": [
+        "A-A11Y-TEST",
+        "D-A11Y-TEST"
+      ]
+    },
+    {
+      "id": "A11Y-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Support large text, zoom and display scaling",
+      "verify": "Exercise accessibility text sizes/reflow across locales, devices and web views; avoid lost content/actions.",
+      "source_ids": [
+        "A-A11Y-AUDIT",
+        "D-A11Y",
+        "W-WCAG",
+        "W-ICT"
+      ]
+    },
+    {
+      "id": "A11Y-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Measure contrast and non-color meaning",
+      "verify": "Inspect actual foreground/background colors, essential UI states and charts in relevant appearances/settings.",
+      "source_ids": [
+        "W-WCAG",
+        "D-A11Y"
+      ]
+    },
+    {
+      "id": "A11Y-05",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Provide usable touch targets and gesture alternatives",
+      "verify": "Measure hit areas/spacing against appropriate platform targets; test non-drag and nonprecision alternatives.",
+      "source_ids": [
+        "A-DESIGN-TIPS",
+        "D-A11Y",
+        "W-WCAG"
+      ]
+    },
+    {
+      "id": "A11Y-06",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Animation, autoplay or timed content",
+      "title": "Respect reduced motion, timing and flashing needs",
+      "verify": "Test reduced motion, pause/stop, time adjustment and safe content while preserving task meaning.",
+      "source_ids": [
+        "W-WCAG",
+        "A-A11Y-TEST"
+      ]
+    },
+    {
+      "id": "A11Y-07",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Audio/video or voice functionality",
+      "title": "Provide accessible media and input alternatives",
+      "verify": "Verify captions, transcripts, descriptions and text alternatives for relevant common tasks.",
+      "source_ids": [
+        "W-WCAG",
+        "A-A11Y-LABELS"
+      ]
+    },
+    {
+      "id": "A11Y-08",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Forms, authentication or confirmations",
+      "title": "Make forms and errors accessible",
+      "verify": "Check persistent labels, error announcements, instructions, autofill/paste, recovery and understandable confirmations.",
+      "source_ids": [
+        "W-WCAG",
+        "A-A11Y-TEST",
+        "D-A11Y-TEST"
+      ]
+    },
+    {
+      "id": "A11Y-09",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "accessibility",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Combine automated audit with manual workflow testing",
+      "verify": "Collect Inspector/native automated results and assistive-technology task recordings; never equate zero scan issues with full access.",
+      "source_ids": [
+        "A-A11Y-AUDIT",
+        "D-A11Y-TEST"
+      ]
+    },
+    {
+      "id": "A11Y-10",
+      "platforms": [
+        "ios"
+      ],
+      "area": "console",
+      "obligation": "recommended",
+      "trigger": "App Store accessibility information offered",
+      "title": "Evaluate voluntary device-specific accessibility labels",
+      "verify": "Use current feature criteria and common-task evidence per supported device; omit unproved claims.",
+      "source_ids": [
+        "A-A11Y-LABELS"
+      ]
+    },
+    {
+      "id": "A11Y-11",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "recommended",
+      "trigger": "Public accessibility claims or support materials",
+      "title": "Document truthful accessibility support and limitations",
+      "verify": "Create tested-support matrix/statement, setting instructions and contact; verify support/privacy/deletion website accessibility.",
+      "source_ids": [
+        "A-A11Y-LABELS",
+        "W-WCAG",
+        "W-ICT"
+      ]
+    },
+    {
+      "id": "PAY-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "payments",
+      "obligation": "conditional",
+      "trigger": "Any payments, digital unlocks or subscriptions",
+      "title": "Classify purchase and allowed billing route by storefront",
+      "verify": "Identify digital/physical service, location and current exceptions/programs before requiring or allowing external payment.",
+      "source_ids": [
+        "A-REVIEW",
+        "G-PAYMENTS"
+      ]
+    },
+    {
+      "id": "PAY-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "payments",
+      "obligation": "conditional",
+      "trigger": "Store in-app products or subscriptions",
+      "title": "Configure complete reviewable product metadata",
+      "verify": "Verify product IDs, availability/pricing, localized descriptions, review screenshots/notes and submission status.",
+      "source_ids": [
+        "A-IAP",
+        "G-PAYMENTS"
+      ]
+    },
+    {
+      "id": "PAY-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "payments",
+      "obligation": "conditional",
+      "trigger": "Recurring plans or trial offers",
+      "title": "Disclose subscription, trial, renewal and cancellation terms",
+      "verify": "Inspect paywall and store copy for actual price/period/trial conversion, privacy/terms and cancellation path.",
+      "source_ids": [
+        "A-SUBSCRIPTIONS",
+        "G-SUBSCRIPTIONS"
+      ]
+    },
+    {
+      "id": "PAY-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "backend",
+      "obligation": "conditional",
+      "trigger": "Purchases or entitlements",
+      "title": "Validate purchase lifecycle, restoration and revocation",
+      "verify": "Test success/pending/decline, reinstalls/restore, verification, duplicates, renewals, refunds/revocation and interrupted sessions.",
+      "source_ids": [
+        "A-SUBSCRIPTIONS",
+        "G-SUBSCRIPTIONS"
+      ]
+    },
+    {
+      "id": "CONTENT-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Answer age/content-rating forms accurately",
+      "verify": "Inspect complete feature/content inventory and current region-specific questionnaires, not just marketing demographics.",
+      "source_ids": [
+        "A-AGE",
+        "G-PREPARE"
+      ]
+    },
+    {
+      "id": "CONTENT-02",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Declare ads and target audience accurately",
+      "verify": "Reconcile ad SDK/runtime behavior, actual intended ages, listing style and all applicable audience requirements.",
+      "source_ids": [
+        "G-PREPARE",
+        "G-FAMILIES"
+      ]
+    },
+    {
+      "id": "CONTENT-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "content",
+      "obligation": "conditional",
+      "trigger": "Child-directed or mixed child/adult audience",
+      "title": "Meet Kids/Families and child-data requirements",
+      "verify": "Inspect parental controls/consent, content, data/identifiers, allowed SDK/ads and current market obligations.",
+      "source_ids": [
+        "G-FAMILIES",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "CONTENT-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "content",
+      "obligation": "conditional",
+      "trigger": "Shared user-generated content or social interactions",
+      "title": "Provide standards, moderation, reporting and blocking",
+      "verify": "Test applicable content/user reports, blocking, policy acceptance, filtering and actual moderation response path.",
+      "source_ids": [
+        "G-UGC",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "CONTENT-05",
+      "platforms": [
+        "android"
+      ],
+      "area": "content",
+      "obligation": "conditional",
+      "trigger": "In-scope AI-generated functionality",
+      "title": "Prevent prohibited AI output and enable in-app reporting",
+      "verify": "Confirm scope/exclusions, safeguards and reports delivered without leaving app, with moderation follow-through.",
+      "source_ids": [
+        "G-AI",
+        "G-AI-GUIDE"
+      ]
+    },
+    {
+      "id": "CONTENT-06",
+      "platforms": [
+        "android"
+      ],
+      "area": "content",
+      "obligation": "conditional",
+      "trigger": "Social, dating, anonymous/random chat or restricted-age feature",
+      "title": "Meet child-safety standards and minor-access restrictions",
+      "verify": "Inspect published standards, feedback, response/reporting procedures, point of contact and appropriate age restrictions.",
+      "source_ids": [
+        "G-CHILD-SAFETY",
+        "G-AGE-RESTRICT"
+      ]
+    },
+    {
+      "id": "CONTENT-07",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "content",
+      "obligation": "conditional",
+      "trigger": "Restricted, regulated, news, gambling, donation or other special functionality",
+      "title": "Research dedicated content and service requirements",
+      "verify": "Open full applicable policies/market rules; add feature-specific checks and licenses/disclosures/evidence tasks.",
+      "source_ids": [
+        "G-POLICIES",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "CONTENT-08",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Production/covered public testing tracks",
+      "title": "Complete Health apps declaration including no-features answer",
+      "verify": "Match full feature and health-data use to actual required form; inspect additional questions if triggered.",
+      "source_ids": [
+        "G-HEALTH"
+      ]
+    },
+    {
+      "id": "CONTENT-09",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Production/covered public testing tracks",
+      "title": "Complete Financial features declaration including no-features answer",
+      "verify": "Match actual feature inventory to form; verify further evidence and market licenses if triggered.",
+      "source_ids": [
+        "G-FINANCE-FORM"
+      ]
+    },
+    {
+      "id": "CONTENT-10",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "compliance",
+      "obligation": "conditional",
+      "trigger": "Health/medical claims, data or devices",
+      "title": "Supply health claim and regulated-device evidence",
+      "verify": "Verify methodology/disclaimers, health-data restrictions, operator eligibility and applicable medical/research declarations/licenses.",
+      "source_ids": [
+        "G-HEALTH-GUIDE",
+        "A-INFO",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "CONTENT-11",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "compliance",
+      "obligation": "conditional",
+      "trigger": "Financial services, loans, crypto or tokens",
+      "title": "Supply financial licenses and truthful disclosures",
+      "verify": "Research service/market-specific eligibility, license evidence, lending/token restrictions and required metadata.",
+      "source_ids": [
+        "G-FINANCE",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "META-01",
+      "platforms": [
+        "ios"
+      ],
+      "area": "metadata",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Complete App Store required listing and identity fields",
+      "verify": "Verify localized name/category, description, keyword bytes, copyright and version information; optional fields remain optional.",
+      "source_ids": [
+        "A-INFO",
+        "A-VERSION"
+      ]
+    },
+    {
+      "id": "META-02",
+      "platforms": [
+        "android"
+      ],
+      "area": "metadata",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Complete Play title, descriptions and categorization",
+      "verify": "Verify title/short/full limits, app/game/free/paid, category/tags and contact/locale configuration.",
+      "source_ids": [
+        "G-LISTING",
+        "G-CREATE"
+      ]
+    },
+    {
+      "id": "META-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "metadata",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Align listing claims with actual mobile release",
+      "verify": "Trace claims to shipped flows/build, paid availability, required account/device/network and appropriate audience.",
+      "source_ids": [
+        "A-REVIEW",
+        "G-LISTING"
+      ]
+    },
+    {
+      "id": "META-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "metadata",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Remove misleading or prohibited metadata and affiliations",
+      "verify": "Inspect all locale copy/assets for false claims, irrelevant keywords, prohibited promotion and rights/affiliation issues.",
+      "source_ids": [
+        "A-REVIEW",
+        "G-LISTING"
+      ]
+    },
+    {
+      "id": "META-05",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Provide working policy and support contact resources",
+      "verify": "Verify public policy URL/in-app access and applicable support/contact fields with real approved business facts.",
+      "source_ids": [
+        "A-VERSION",
+        "G-USER-DATA",
+        "G-CREATE"
+      ]
+    },
+    {
+      "id": "META-06",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "metadata",
+      "obligation": "recommended",
+      "trigger": "Multiple release locales",
+      "title": "Localize copy and material claims consistently",
+      "verify": "Check field counts, clear language, UI availability, translations and consistent payment/privacy/accessibility claims.",
+      "source_ids": [
+        "A-PRODUCT",
+        "G-LISTING"
+      ]
+    },
+    {
+      "id": "META-07",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "conditional",
+      "trigger": "Update release",
+      "title": "Write truthful user-facing release notes",
+      "verify": "Describe shipped changes using current store fields/limits; first release has different Apple field availability.",
+      "source_ids": [
+        "A-VERSION",
+        "G-RELEASE"
+      ]
+    },
+    {
+      "id": "ASSET-01",
+      "platforms": [
+        "ios"
+      ],
+      "area": "assets",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Supply valid App Store screenshots by supported device",
+      "verify": "Check required device buckets/fallbacks, accepted dimensions/count/format and no alpha against refreshed specifications.",
+      "source_ids": [
+        "A-SCREENSHOTS"
+      ]
+    },
+    {
+      "id": "ASSET-02",
+      "platforms": [
+        "android"
+      ],
+      "area": "assets",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Supply Play icon, feature graphic and screenshots",
+      "verify": "Validate distinct icon/feature/screenshot specs and general minimum/count/dimensions; inspect supported-device exceptions.",
+      "source_ids": [
+        "G-ASSETS"
+      ]
+    },
+    {
+      "id": "ASSET-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "assets",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Capture truthful licensed and privacy-safe app visuals",
+      "verify": "Inspect actual mobile UI/build, fictional data, paid feature context, asset rights and audience suitability.",
+      "source_ids": [
+        "A-REVIEW",
+        "G-LISTING"
+      ]
+    },
+    {
+      "id": "ASSET-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "assets",
+      "obligation": "recommended",
+      "trigger": "Multiple locales or supported device types",
+      "title": "Plan localized readable screenshot narrative",
+      "verify": "Record captures per device/locale/build, benefit sequence, readable overlays and nonclipped important content.",
+      "source_ids": [
+        "A-PRODUCT",
+        "G-LISTING"
+      ]
+    },
+    {
+      "id": "ASSET-05",
+      "platforms": [
+        "ios"
+      ],
+      "area": "assets",
+      "obligation": "conditional",
+      "trigger": "App previews supplied",
+      "title": "Meet Apple preview format and content rules",
+      "verify": "Verify duration/resolution/size/codec and actual app footage, audio/captions and poster frame.",
+      "source_ids": [
+        "A-PREVIEWS",
+        "A-REVIEW"
+      ]
+    },
+    {
+      "id": "ASSET-06",
+      "platforms": [
+        "android"
+      ],
+      "area": "assets",
+      "obligation": "conditional",
+      "trigger": "Play preview video supplied",
+      "title": "Meet Play video access and presentation rules",
+      "verify": "Verify proper public/unlisted embeddable YouTube video without ads or age restriction; actual app depiction.",
+      "source_ids": [
+        "G-ASSETS"
+      ]
+    },
+    {
+      "id": "ASSET-07",
+      "platforms": [
+        "android"
+      ],
+      "area": "assets",
+      "obligation": "recommended",
+      "trigger": "Graphic assets uploaded",
+      "title": "Provide accessible graphic and screenshot alt text",
+      "verify": "Write meaningful concise asset descriptions in console-supported fields and localize where appropriate.",
+      "source_ids": [
+        "G-ASSETS"
+      ]
+    },
+    {
+      "id": "ASSET-08",
+      "platforms": [
+        "android"
+      ],
+      "area": "console",
+      "obligation": "conditional",
+      "trigger": "Visual assets submitted through relevant content flows",
+      "title": "Declare applicable AI-generated or edited assets",
+      "verify": "Assess each image/video under current console/self-declaration rules and applicable labeling scope.",
+      "source_ids": [
+        "G-AI-ASSETS"
+      ]
+    },
+    {
+      "id": "ASSET-09",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "build",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Package valid native icons and launch assets",
+      "verify": "Inspect actual native asset catalogs/resources and rendered icon/launch behavior; store icon is a separate artifact.",
+      "source_ids": [
+        "A-DISTRIBUTE",
+        "D-QUALITY"
+      ]
+    },
+    {
+      "id": "ASSET-10",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "assets",
+      "obligation": "conditional",
+      "trigger": "Additional form factors distributed",
+      "title": "Supply all form-factor-specific required assets",
+      "verify": "Research supported TV/watch/Wear/car/XR/tablet specs and quality rather than treating phone assets as sufficient.",
+      "source_ids": [
+        "A-SCREENSHOTS",
+        "G-ASSETS"
+      ]
+    },
+    {
+      "id": "DOC-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "conditional",
+      "trigger": "Purchased products, subscriptions or custom terms",
+      "title": "Prepare applicable terms/EULA and billing help",
+      "verify": "Choose standard/custom license correctly; verify terms/privacy/cancel/restore links and accurate product disclosures.",
+      "source_ids": [
+        "A-SUBSCRIPTIONS",
+        "G-SUBSCRIPTIONS"
+      ]
+    },
+    {
+      "id": "DOC-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "conditional",
+      "trigger": "Gated functionality, hardware, unusual flows or paid access",
+      "title": "Prepare complete private reviewer access instructions",
+      "verify": "Test fresh reviewer path through every gate; provide secure credentials handoff and dependency/hardware setup notes.",
+      "source_ids": [
+        "A-VERSION",
+        "G-PREPARE"
+      ]
+    },
+    {
+      "id": "DOC-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "conditional",
+      "trigger": "Licensed content, third-party materials or regulated claims",
+      "title": "Gather rights, licenses and requested review attachments",
+      "verify": "Tie provenance and current license/approval evidence to shipped materials and applicable submission requirements.",
+      "source_ids": [
+        "A-REVIEW",
+        "G-POLICIES"
+      ]
+    },
+    {
+      "id": "DOC-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "documentation",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Produce test, disclosure and asset evidence packet",
+      "verify": "Inventory exact documents/paths/owners, build references and outstanding inputs; synchronize with final native behavior.",
+      "source_ids": [
+        "A-SUBMIT",
+        "G-PREPARE"
+      ]
+    },
+    {
+      "id": "RELEASE-01",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Clear all applicable mandatory console tasks and review warnings",
+      "verify": "Inspect current target console/build status and remaining forms; add checks for any unmodeled mandatory task.",
+      "source_ids": [
+        "A-SUBMIT",
+        "G-PREPARE"
+      ]
+    },
+    {
+      "id": "RELEASE-02",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "console",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Select correct build, availability, pricing and publishing behavior",
+      "verify": "Confirm target artifact, regions/devices/price, release mode and prerequisite approvals with console evidence.",
+      "source_ids": [
+        "A-VERSION",
+        "G-RELEASE"
+      ]
+    },
+    {
+      "id": "RELEASE-03",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "readiness",
+      "obligation": "recommended",
+      "trigger": "Always",
+      "title": "Define monitoring, support and release recovery ownership",
+      "verify": "Assign role-based crash/ANR/backend/billing monitoring, incident response and practical stop/recovery plan.",
+      "source_ids": [
+        "D-QUALITY",
+        "G-RELEASE"
+      ]
+    },
+    {
+      "id": "RELEASE-04",
+      "platforms": [
+        "ios",
+        "android"
+      ],
+      "area": "readiness",
+      "obligation": "required",
+      "trigger": "Always",
+      "title": "Reconcile final artifacts and close release gates",
+      "verify": "Recheck code/build, claims, disclosures, console evidence and triggered policies; keep required unknowns open.",
+      "source_ids": [
+        "A-SUBMIT",
+        "G-PREPARE"
+      ]
+    }
+  ]
+}

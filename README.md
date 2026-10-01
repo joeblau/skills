@@ -1,6 +1,6 @@
 # b: Skills
 
-Six reusable skills for Claude Code, Codex, and Kimi Code. One source tree contains
+Seven reusable skills for Claude Code, Codex, and Kimi Code. One source tree contains
 shared instructions, scripts, and references; each agent supplies its own tools.
 
 ## One-command install (macOS, Linux, or WSL)
@@ -11,7 +11,7 @@ Run:
 curl -fsSL https://raw.githubusercontent.com/joeblau/skills/main/install.sh | bash
 ```
 
-This installs all six skills for Claude Code, Codex, and Kimi Code using a managed
+This installs all seven skills for Claude Code, Codex, and Kimi Code using a managed
 checkout at `~/.local/share/b-skills/repo` (or `$XDG_DATA_HOME/b-skills/repo`).
 Claude gets links in `~/.claude/skills`; Codex and Kimi share `~/.agents/skills`.
 Git and Bash must already be available; no sudo or agent CLI is required.
@@ -77,7 +77,7 @@ make uninstall AGENT=shared SKILLS=sweep
 make install AGENT=codex SKILLS_DIR=/custom/skills SKILLS=sweep
 ```
 
-`SKILLS` defaults to all six skills. Unknown names fail before installation.
+`SKILLS` defaults to all seven skills. Unknown names fail before installation.
 `AGENT=all` also works with `check`, `list`, and `uninstall`. Uninstall removes only
 links pointing to this checkout. Bash and Make are needed for installation.
 
@@ -91,11 +91,13 @@ links pointing to this checkout. Bash and Make are needed for installation.
 | Select and render clips | `/sludgify` | `/b:sludgify` | `$sludgify` | `/skill:sludgify` |
 | Draft X content | `/x-post` | `/b:x-post` | `$x-post` | `/skill:x-post` |
 | Review app design | `/zandesign` | `/b:zandesign` | `$zandesign` | `/skill:zandesign` |
+| Review mobile release readiness | `/app-release-review` | `/b:app-release-review` | `$app-release-review` | `/skill:app-release-review` |
 
-All skills except `sweep` require explicit invocation. Claude and Kimi use
+`cpr`, `sludge`, `sludgify`, `x-post`, and `zandesign` require explicit invocation.
+Claude and Kimi use
 `disable-model-invocation: true`; Codex uses
 `policy.allow_implicit_invocation: false` in each skill's `agents/openai.yaml`.
-`sweep` remains discoverable from matching requests.
+`sweep` and `app-release-review` remain discoverable from matching requests.
 
 ## Requirements and capability fallbacks
 
@@ -114,6 +116,13 @@ All skills except `sweep` require explicit invocation. Claude and Kimi use
   tools for visual/flow checks. Uses the available browser tool, MCP server, or
   project Playwright setup. Reports unavailable checks as unverified. Native iOS
   checks require macOS/Xcode; `--static-only` works without a browser or simulator.
+- `app-release-review`: file access and current web research for App Store/Google
+  Play policy; Python 3 for the coverage validator/task renderer. Native
+  builds and device checks use the target project's Xcode/Android tooling. Missing
+  tools, builds, backend or console evidence become verification tasks. Produces
+  a complete platform checklist, local GitHub issue drafts, listing/reviewer copy,
+  screenshot plans and privacy/accessibility documentation work. GitHub publishing
+  requires an explicit request and authenticated GitHub access.
 
 These are agent workflows: a model-only chat without shell, files, or required
 external tools cannot execute all their steps. Tool availability and permissions
@@ -128,7 +137,7 @@ Inside Claude Code:
 /plugin install b@b-skills
 ```
 
-This installs all six skills under `/b:<skill>`. Use either this plugin or the
+This installs all seven skills under `/b:<skill>`. Use either this plugin or the
 Claude local symlinks to avoid duplicate entries. The Claude marketplace manifest
 is not needed for Codex or Kimi's direct skill installations.
 
@@ -155,6 +164,7 @@ capabilities instead of assuming a particular agent's tool names.
 ```bash
 make validate  # requires jq for JSON manifests
 bash tests/install.sh
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p app_release_review.py
 ```
 
 For a manual-only skill, add `disable-model-invocation: true` to its frontmatter
