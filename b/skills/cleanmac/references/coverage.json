@@ -1,0 +1,387 @@
+{
+  "schema_version": 1,
+  "screenshots": [
+    {
+      "image": 1,
+      "screen": "Smart Care",
+      "features": [
+        "CM-009",
+        "CM-011",
+        "CM-027",
+        "CM-034",
+        "CM-047",
+        "CM-049"
+      ]
+    },
+    {
+      "image": 2,
+      "screen": "Junk Cleanup",
+      "features": [
+        "CM-011",
+        "CM-012",
+        "CM-013",
+        "CM-014",
+        "CM-015",
+        "CM-016",
+        "CM-017",
+        "CM-018",
+        "CM-019",
+        "CM-020",
+        "CM-021",
+        "CM-022",
+        "CM-023",
+        "CM-024",
+        "CM-025",
+        "CM-026"
+      ]
+    },
+    {
+      "image": 3,
+      "screen": "Protection",
+      "features": [
+        "CM-027",
+        "CM-028",
+        "CM-029",
+        "CM-030",
+        "CM-031",
+        "CM-032",
+        "CM-033"
+      ]
+    },
+    {
+      "image": 4,
+      "screen": "Performance",
+      "features": [
+        "CM-034",
+        "CM-035",
+        "CM-036",
+        "CM-037",
+        "CM-038",
+        "CM-039",
+        "CM-040",
+        "CM-041",
+        "CM-042",
+        "CM-043"
+      ]
+    },
+    {
+      "image": 5,
+      "screen": "Applications",
+      "features": [
+        "CM-044",
+        "CM-045",
+        "CM-046",
+        "CM-047"
+      ]
+    },
+    {
+      "image": 6,
+      "screen": "My Clutter",
+      "features": [
+        "CM-048",
+        "CM-049",
+        "CM-050",
+        "CM-051",
+        "CM-052"
+      ]
+    },
+    {
+      "image": 7,
+      "screen": "Space Lens",
+      "features": [
+        "CM-053"
+      ]
+    },
+    {
+      "image": 8,
+      "screen": "Cloud Cleanup",
+      "features": [
+        "CM-054",
+        "CM-055",
+        "CM-056",
+        "CM-057",
+        "CM-058"
+      ]
+    },
+    {
+      "image": 9,
+      "screen": "My Tools (first 15 tiles)",
+      "features": [
+        "CM-010",
+        "CM-059",
+        "CM-060",
+        "CM-061",
+        "CM-062",
+        "CM-063",
+        "CM-064",
+        "CM-065",
+        "CM-066",
+        "CM-067",
+        "CM-068",
+        "CM-023",
+        "CM-024",
+        "CM-046",
+        "CM-047",
+        "CM-033",
+        "CM-043",
+        "CM-051",
+        "CM-049",
+        "CM-048",
+        "CM-042",
+        "CM-025",
+        "CM-034",
+        "CM-035",
+        "CM-036",
+        "CM-037",
+        "CM-038",
+        "CM-039",
+        "CM-040",
+        "CM-041",
+        "CM-027",
+        "CM-028",
+        "CM-029"
+      ]
+    },
+    {
+      "image": 10,
+      "screen": "My Tools (remaining six tiles)",
+      "features": [
+        "CM-010",
+        "CM-030",
+        "CM-031",
+        "CM-032",
+        "CM-050",
+        "CM-052",
+        "CM-011",
+        "CM-012",
+        "CM-013",
+        "CM-014",
+        "CM-015",
+        "CM-016",
+        "CM-017",
+        "CM-018",
+        "CM-019",
+        "CM-020",
+        "CM-021",
+        "CM-022",
+        "CM-041",
+        "CM-026",
+        "CM-045"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "name": "Browser Care",
+      "image": 9,
+      "features": [
+        "CM-059",
+        "CM-060",
+        "CM-061"
+      ]
+    },
+    {
+      "name": "Screen Cleaning Mode",
+      "image": 9,
+      "features": [
+        "CM-062"
+      ]
+    },
+    {
+      "name": "Email Cleanup",
+      "image": 9,
+      "features": [
+        "CM-063",
+        "CM-064",
+        "CM-065",
+        "CM-066",
+        "CM-067",
+        "CM-068"
+      ]
+    },
+    {
+      "name": "AI Clutter",
+      "image": 9,
+      "features": [
+        "CM-023",
+        "CM-024"
+      ]
+    },
+    {
+      "name": "App Leftovers",
+      "image": 9,
+      "features": [
+        "CM-046"
+      ]
+    },
+    {
+      "name": "App Updater",
+      "image": 9,
+      "features": [
+        "CM-047"
+      ]
+    },
+    {
+      "name": "Application Permissions",
+      "image": 9,
+      "features": [
+        "CM-033"
+      ]
+    },
+    {
+      "name": "Background Items",
+      "image": 9,
+      "features": [
+        "CM-043"
+      ]
+    },
+    {
+      "name": "Downloads",
+      "image": 9,
+      "features": [
+        "CM-051"
+      ]
+    },
+    {
+      "name": "Duplicate Finder",
+      "image": 9,
+      "features": [
+        "CM-049"
+      ]
+    },
+    {
+      "name": "Large and Old Files",
+      "image": 9,
+      "features": [
+        "CM-048"
+      ]
+    },
+    {
+      "name": "Login Items",
+      "image": 9,
+      "features": [
+        "CM-042"
+      ]
+    },
+    {
+      "name": "Mail Attachments",
+      "image": 9,
+      "features": [
+        "CM-025"
+      ]
+    },
+    {
+      "name": "Maintenance Tasks",
+      "image": 9,
+      "features": [
+        "CM-034",
+        "CM-035",
+        "CM-036",
+        "CM-037",
+        "CM-038",
+        "CM-039",
+        "CM-040",
+        "CM-041"
+      ]
+    },
+    {
+      "name": "Malware Finder",
+      "image": 9,
+      "features": [
+        "CM-027",
+        "CM-028",
+        "CM-029"
+      ]
+    },
+    {
+      "name": "Privacy Items",
+      "image": 10,
+      "features": [
+        "CM-030",
+        "CM-031",
+        "CM-032"
+      ]
+    },
+    {
+      "name": "Similar Images",
+      "image": 10,
+      "features": [
+        "CM-050",
+        "CM-052"
+      ]
+    },
+    {
+      "name": "System Junk",
+      "image": 10,
+      "features": [
+        "CM-011",
+        "CM-012",
+        "CM-013",
+        "CM-014",
+        "CM-015",
+        "CM-016",
+        "CM-017",
+        "CM-018",
+        "CM-019",
+        "CM-020",
+        "CM-021",
+        "CM-022"
+      ]
+    },
+    {
+      "name": "Time Machine Snapshot",
+      "image": 10,
+      "features": [
+        "CM-041"
+      ]
+    },
+    {
+      "name": "Trash Bins",
+      "image": 10,
+      "features": [
+        "CM-026"
+      ]
+    },
+    {
+      "name": "Uninstaller",
+      "image": 10,
+      "features": [
+        "CM-044",
+        "CM-045"
+      ]
+    }
+  ],
+  "supplemental_groups": [
+    {
+      "basis": "Shared infrastructure required by all implementations",
+      "features": [
+        "CM-001",
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-006",
+        "CM-007",
+        "CM-008"
+      ]
+    },
+    {
+      "basis": "MacPaw Menu and Mac health documentation; not fully shown in the screenshots",
+      "features": [
+        "CM-069",
+        "CM-070",
+        "CM-071",
+        "CM-072",
+        "CM-073",
+        "CM-074",
+        "CM-075",
+        "CM-076"
+      ]
+    }
+  ],
+  "exclusions": [
+    "Commercial licensing and upsell flows",
+    "Proprietary artwork, Safety Database contents, and Moonlock engine/signatures",
+    "Historical features absent from the current baseline, including Shredder, Extensions, Photo Junk, and Launch Services repair"
+  ]
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "CleanMac"
+  short_description: "Scan, review, and safely clean selected Mac files"
+  default_prompt: "Use $cleanmac to scan selected folders, review findings, and clean only the files I approve."

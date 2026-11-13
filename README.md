@@ -1,6 +1,6 @@
 # b: Skills
 
-Seven reusable skills for Claude Code, Codex, and Kimi Code. One source tree contains
+Eight reusable skills for Claude Code, Codex, and Kimi Code. One source tree contains
 shared instructions, scripts, and references; each agent supplies its own tools.
 
 ## One-command install (macOS, Linux, or WSL)
@@ -11,7 +11,7 @@ Run:
 curl -fsSL https://raw.githubusercontent.com/joeblau/skills/main/install.sh | bash
 ```
 
-This installs all seven skills for Claude Code, Codex, and Kimi Code using a managed
+This installs all eight skills for Claude Code, Codex, and Kimi Code using a managed
 checkout at `~/.local/share/b-skills/repo` (or `$XDG_DATA_HOME/b-skills/repo`).
 Claude gets links in `~/.claude/skills`; Codex and Kimi share `~/.agents/skills`.
 Git and Bash must already be available; no sudo or agent CLI is required.
@@ -77,7 +77,7 @@ make uninstall AGENT=shared SKILLS=sweep
 make install AGENT=codex SKILLS_DIR=/custom/skills SKILLS=sweep
 ```
 
-`SKILLS` defaults to all seven skills. Unknown names fail before installation.
+`SKILLS` defaults to all eight skills. Unknown names fail before installation.
 `AGENT=all` also works with `check`, `list`, and `uninstall`. Uninstall removes only
 links pointing to this checkout. Bash and Make are needed for installation.
 
@@ -92,12 +92,13 @@ links pointing to this checkout. Bash and Make are needed for installation.
 | Draft X content | `/x-post` | `/b:x-post` | `$x-post` | `/skill:x-post` |
 | Review app design | `/zandesign` | `/b:zandesign` | `$zandesign` | `/skill:zandesign` |
 | Review mobile release readiness | `/app-release-review` | `/b:app-release-review` | `$app-release-review` | `/skill:app-release-review` |
+| Inspect and clean Mac files | `/cleanmac` | `/b:cleanmac` | `$cleanmac` | `/skill:cleanmac` |
 
 `cpr`, `sludge`, `sludgify`, `x-post`, and `zandesign` require explicit invocation.
 Claude and Kimi use
 `disable-model-invocation: true`; Codex uses
 `policy.allow_implicit_invocation: false` in each skill's `agents/openai.yaml`.
-`sweep` and `app-release-review` remain discoverable from matching requests.
+`sweep`, `app-release-review`, and `cleanmac` remain discoverable from matching requests.
 
 ## Requirements and capability fallbacks
 
@@ -123,6 +124,14 @@ Claude and Kimi use
   a complete platform checklist, local GitHub issue drafts, listing/reviewer copy,
   screenshot plans and privacy/accessibility documentation work. GitHub publishing
   requires an explicit request and authenticated GitHub access.
+- `cleanmac`: interactive local Mac scanning, exact duplicates, large-file and
+  cache review, selected-file Trash, and conflict-aware recovery. Requires macOS
+  and Python 3.10 or later. Build the optional native Trash helper explicitly with
+  `sh b/skills/cleanmac/native/build.sh` using Apple Command Line Tools or Xcode;
+  scans still work without it. Permission-blocked locations have skip/retry and
+  System Settings handoffs. Advanced roadmap modules remain unavailable until
+  implemented and validated. See the [skill](b/skills/cleanmac/SKILL.md) and
+  [feature roadmap](b/skills/cleanmac/references/roadmap.md).
 
 These are agent workflows: a model-only chat without shell, files, or required
 external tools cannot execute all their steps. Tool availability and permissions
@@ -137,7 +146,7 @@ Inside Claude Code:
 /plugin install b@b-skills
 ```
 
-This installs all seven skills under `/b:<skill>`. Use either this plugin or the
+This installs all eight skills under `/b:<skill>`. Use either this plugin or the
 Claude local symlinks to avoid duplicate entries. The Claude marketplace manifest
 is not needed for Codex or Kimi's direct skill installations.
 

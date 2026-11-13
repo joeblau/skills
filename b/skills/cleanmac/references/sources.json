@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "researched_at": "2026-11-13",
+  "sources": {
+    "smart": {
+      "title": "MacPaw: Smart Care",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/smart-care",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "junk": {
+      "title": "MacPaw: system junk groups",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/system-junk-cleanup-list",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "safety": {
+      "title": "MacPaw: Safety Database",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/safety-database",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "ai": {
+      "title": "MacPaw: AI Clutter",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/ai-clutter",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "mail": {
+      "title": "MacPaw: Mail attachments",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/mail-attachments",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "trash": {
+      "title": "MacPaw: Trash bins",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/trash-bins",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "malware": {
+      "title": "MacPaw: malware removal",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/malware-removal",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "modes": {
+      "title": "MacPaw: scan modes",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/protection-scan-modes",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "targets": {
+      "title": "MacPaw: additional scan targets",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/protection-scan-options",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "moonlock": {
+      "title": "MacPaw: Moonlock Engine",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/moonlock-engine",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "privacy": {
+      "title": "MacPaw: privacy items",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/privacy",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "permissions": {
+      "title": "MacPaw: app permissions",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/app-permissions",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "maintenance": {
+      "title": "MacPaw: maintenance tasks",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/maintenance-tasks",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "login": {
+      "title": "MacPaw: login items",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/explore-login-items",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "background": {
+      "title": "MacPaw: background items",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/manage-background-items",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "uninstall": {
+      "title": "MacPaw: uninstaller",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/uninstaller",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "update": {
+      "title": "MacPaw: updater",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/updater",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "large": {
+      "title": "MacPaw: large and old files",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/large-and-old",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "duplicates": {
+      "title": "MacPaw: duplicate files",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/duplicate-files",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "similar": {
+      "title": "MacPaw: similar images",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/similar-images",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "downloads": {
+      "title": "MacPaw: downloads",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/downloads",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "space": {
+      "title": "MacPaw: Space Lens",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/space-lens",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "cloud": {
+      "title": "MacPaw: Cloud Cleanup",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/cloud-cleanup",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "icloud": {
+      "title": "MacPaw: iCloud connection",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/cloud-cleanup-icloud",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "browser": {
+      "title": "MacPaw: Browser Care",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/browser-care",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "email": {
+      "title": "MacPaw: Email Cleanup",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/email-cleanup-get-started",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "email_smart": {
+      "title": "MacPaw: email suggestions",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/smart-cleanup",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "tools": {
+      "title": "MacPaw: My Tools",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/my-tools",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "health": {
+      "title": "MacPaw: Mac health",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/mac-health",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "menu": {
+      "title": "MacPaw: Menu documentation",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/the-menu",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "editions": {
+      "title": "MacPaw: edition feature matrix",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/missing-features",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "release": {
+      "title": "MacPaw: release history",
+      "url": "https://macpaw.com/cleanmymac/whats-new",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "trash_api": {
+      "title": "Apple: move an item to Trash",
+      "url": "https://developer.apple.com/documentation/foundation/filemanager/trashitem(at:resultingitemurl:)",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "versions": {
+      "title": "Apple: document version removal and coordination",
+      "url": "https://developer.apple.com/documentation/foundation/nsfileversion/removeotherversionsofitem(at:)",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "signing": {
+      "title": "Apple: macOS code signing",
+      "url": "https://developer.apple.com/library/archive/technotes/tn2206/_index.html",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "snapshots": {
+      "title": "Apple: local Time Machine snapshots",
+      "url": "https://support.apple.com/en-lb/102154",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "service": {
+      "title": "Apple: login items and background tasks",
+      "url": "https://support.apple.com/en-gb/guide/deployment/depdca572563/1/web/1.0",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "clam": {
+      "title": "ClamAV: scanning",
+      "url": "https://docs.clamav.net/manual/Usage/Scanning.html",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "clam_limits": {
+      "title": "ClamAV: signatures and scan limits",
+      "url": "https://docs.clamav.net/manual/Signatures.html",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "xprotect": {
+      "title": "Apple: malware protection",
+      "url": "https://support.apple.com/en-lamr/guide/security/-sec469d47bd8/web",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "endpoint": {
+      "title": "Apple: Endpoint Security",
+      "url": "https://developer.apple.com/documentation/endpointsecurity.md",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "vision": {
+      "title": "Apple: Vision image feature prints",
+      "url": "https://developer.apple.com/documentation/vision/vngenerateimagefeatureprintrequest",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "photos": {
+      "title": "Apple: PhotoKit asset changes",
+      "url": "https://developer.apple.com/documentation/photos/phassetchangerequest",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "eviction": {
+      "title": "Apple: local iCloud eviction and APFS clones",
+      "url": "https://developer.apple.com/documentation/xcode/reducing-your-app-s-disk-usage",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "drive": {
+      "title": "Google: Drive trash versus deletion",
+      "url": "https://developers.google.com/workspace/drive/api/guides/delete",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "onedrive": {
+      "title": "Microsoft: DriveItem recycle and conditional deletion",
+      "url": "https://learn.microsoft.com/en-us/graph/api/driveitem-delete?view=graph-rest-1.0",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "dropbox": {
+      "title": "Dropbox: file IDs, revisions, enumeration, and metadata",
+      "url": "https://docs.dropboxapi.com/dropbox-api/docs/file-access",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "gmail_scopes": {
+      "title": "Google: Gmail OAuth scopes",
+      "url": "https://developers.google.com/workspace/gmail/api/auth/scopes",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "gmail_modify": {
+      "title": "Google: message label changes",
+      "url": "https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.messages/modify",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "oauth": {
+      "title": "Google: restricted scope verification",
+      "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "unsubscribe": {
+      "title": "IETF: RFC 8058 one-click unsubscribe",
+      "url": "https://www.rfc-editor.org/info/rfc8058/",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "tabs": {
+      "title": "Chrome: tabs API",
+      "url": "https://developer.chrome.com/docs/extensions/reference/api/tabs",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "processes": {
+      "title": "Chrome: processes API availability",
+      "url": "https://developer.chrome.com/docs/extensions/reference/api/processes",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "browsing": {
+      "title": "Chrome: browsingData API and deprecations",
+      "url": "https://developer.chrome.com/docs/extensions/reference/api/browsingData",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "ollama": {
+      "title": "Ollama: model inventory",
+      "url": "https://docs.ollama.com/api/tags",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "ollama_delete": {
+      "title": "Ollama: model deletion endpoint",
+      "url": "https://docs.ollama.com/api/delete",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "lmstudio": {
+      "title": "LM Studio: model inventory",
+      "url": "https://lmstudio.ai/docs/cli/local-models/ls",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "hf": {
+      "title": "Hugging Face: cache references and deletion planning",
+      "url": "https://huggingface.co/docs/huggingface_hub/en/guides/manage-cache",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "brew": {
+      "title": "Homebrew: supported package operations",
+      "url": "https://docs.brew.sh/Manpage",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "sparkle": {
+      "title": "Sparkle: update security",
+      "url": "https://sparkle-project.org/documentation/security-and-reliability/",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "spotlight": {
+      "title": "Apple: Spotlight indexing",
+      "url": "https://support.apple.com/en-us/102321",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "eventtap": {
+      "title": "Apple: event taps",
+      "url": "https://developer.apple.com/documentation/coregraphics/cgevent/tapcreate(tap:place:options:eventsofinterest:callback:userinfo:)",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "gmail_drafts": {
+      "title": "Google: permanent draft deletion",
+      "url": "https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.drafts/delete",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "gmail_trash": {
+      "title": "Google: message Trash operation",
+      "url": "https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.messages/trash",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "gmail_list": {
+      "title": "Google: message enumeration and metadata-scope restrictions",
+      "url": "https://developers.google.com/workspace/gmail/api/reference/rest/v1/users.messages/list",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "manual_tmutil": {
+      "title": "Apple's installed tmutil(8) manual",
+      "kind": "local-primary",
+      "path": "/usr/share/man/man8/tmutil.8",
+      "accessed": "2026-11-13",
+      "note": "Read-only inspection: local snapshot list/thin/delete semantics; date deletion spans mounted disks."
+    },
+    "manual_tcc": {
+      "title": "Apple's installed tccutil(1) manual",
+      "kind": "local-primary",
+      "path": "/usr/share/man/man1/tccutil.1",
+      "accessed": "2026-11-13",
+      "note": "Reset removes stored decisions; selected service and optional bundle ID."
+    },
+    "manual_dns": {
+      "title": "Apple's installed dscacheutil(1) manual",
+      "kind": "local-primary",
+      "path": "/usr/share/man/man1/dscacheutil.1",
+      "accessed": "2026-11-13",
+      "note": "flushcache is an exceptional resolver troubleshooting operation."
+    },
+    "manual_purge": {
+      "title": "Apple's installed purge(8) manual",
+      "kind": "local-primary",
+      "path": "/usr/share/man/man8/purge.8",
+      "accessed": "2026-11-13",
+      "note": "Cold disk-buffer-cache testing; does not free anonymous allocations."
+    },
+    "manual_diskutil": {
+      "title": "Apple's installed diskutil(8) manual",
+      "kind": "local-primary",
+      "path": "/usr/share/man/man8/diskutil.8",
+      "accessed": "2026-11-13",
+      "note": "Historical note: permission verification/repair verbs removed in OS X 10.11."
+    },
+    "manual_mdutil": {
+      "title": "Apple's installed mdutil(1) manual",
+      "kind": "local-primary",
+      "path": "/usr/share/man/man1/mdutil.1",
+      "accessed": "2026-11-13",
+      "note": "Read-only status and per-volume asynchronous rebuild semantics."
+    },
+    "manual_launchctl": {
+      "title": "Apple's installed launchctl(1) manual",
+      "kind": "local-primary",
+      "path": "/usr/share/man/man1/launchctl.1",
+      "accessed": "2026-11-13",
+      "note": "Domain-scoped enable/disable and bootstrap/bootout; diagnostic output may be unstable."
+    },
+    "full_disk_access": {
+      "title": "MacPaw: Full Disk Access",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/full-disk-access",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "privileged_agent": {
+      "title": "MacPaw: CleanMyMac Agent",
+      "url": "https://macpaw.com/support/cleanmymac/knowledgebase/cleanmymac-agent",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "apple_sandbox": {
+      "title": "Apple: App Sandbox",
+      "url": "https://developer.apple.com/documentation/security/app-sandbox",
+      "accessed": "2026-11-13",
+      "kind": "primary-web"
+    },
+    "local_app": {
+      "title": "Installed CleanMyMac 5.7.4: read-only static inspection",
+      "kind": "local-app-static-inspection",
+      "path": "/Applications/CleanMyMac_5.app",
+      "accessed": "2026-11-13",
+      "version": "5.7.4",
+      "build": "50704.0.2611060828",
+      "methods": [
+        "rg/fd bundle inventory",
+        "plutil metadata inspection",
+        "codesign entitlement inspection",
+        "nm imported-symbol inspection",
+        "strings component inspection",
+        "knowledge-base file size/header inspection"
+      ],
+      "components": [
+        "Contents/Info.plist",
+        "Contents/MacOS/CleanMyMac_5",
+        "Contents/Library/LaunchServices/com.macpaw.CleanMyMac5.Agent",
+        "Contents/Frameworks/PermissionsKit.framework",
+        "Contents/Frameworks/PrivilegedOperationsPerformerService.framework",
+        "Contents/Frameworks/LegacyScanningCore.framework",
+        "Contents/Frameworks/FileManagerService.framework",
+        "Contents/Frameworks/SystemJunkScanning.framework",
+        "Contents/Frameworks/KnowledgeBaseService.framework",
+        "Contents/Frameworks/DatabaseKit.framework",
+        "Contents/Frameworks/OrganizeScanning.framework",
+        "Contents/Frameworks/UninstallerScanning.framework",
+        "Contents/Frameworks/SpaceLensScanning.framework",
+        "Contents/Resources/info.cmmkb",
+        "Contents/Resources/userInfo.cmmkb"
+      ],
+      "note": "Observed metadata, entitlements, symbols, strings, packaging, and opaque database files. No cleanup, runtime scan tracing, performance benchmark, permission change, or knowledge-base decoding. Component presence does not prove execution, correctness, current authorization, or equivalent capability. See research.md#installed-app-inspection for evidence and limits."
+    }
+  }
+}
