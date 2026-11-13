@@ -1,0 +1,392 @@
+{
+  "schema_version": 1,
+  "repository": "joeblau/skills",
+  "published_at": "2026-11-13",
+  "epic": {
+    "number": 9,
+    "url": "https://github.com/joeblau/skills/issues/9",
+    "title": "[CleanMac] Research and implementation roadmap"
+  },
+  "features": {
+    "CM-001": {
+      "number": 10,
+      "url": "https://github.com/joeblau/skills/issues/10",
+      "title": "Portable runner and capability preflight"
+    },
+    "CM-002": {
+      "number": 11,
+      "url": "https://github.com/joeblau/skills/issues/11",
+      "title": "Versioned cleanup rules and exclusions"
+    },
+    "CM-003": {
+      "number": 12,
+      "url": "https://github.com/joeblau/skills/issues/12",
+      "title": "Read-only inventory and honest storage accounting"
+    },
+    "CM-004": {
+      "number": 13,
+      "url": "https://github.com/joeblau/skills/issues/13",
+      "title": "Selection plans bound to user approval"
+    },
+    "CM-005": {
+      "number": 14,
+      "url": "https://github.com/joeblau/skills/issues/14",
+      "title": "Action executor, Trash, recovery, and verification"
+    },
+    "CM-006": {
+      "number": 15,
+      "url": "https://github.com/joeblau/skills/issues/15",
+      "title": "Conversational scan, review, clean, and resume flow"
+    },
+    "CM-007": {
+      "number": 16,
+      "url": "https://github.com/joeblau/skills/issues/16",
+      "title": "Session history, receipts, and private local state"
+    },
+    "CM-008": {
+      "number": 17,
+      "url": "https://github.com/joeblau/skills/issues/17",
+      "title": "Compatibility fixtures and release gates"
+    },
+    "CM-009": {
+      "number": 18,
+      "url": "https://github.com/joeblau/skills/issues/18",
+      "title": "Smart Care orchestration and summary"
+    },
+    "CM-010": {
+      "number": 19,
+      "url": "https://github.com/joeblau/skills/issues/19",
+      "title": "My Tools, saved scopes, favorites, and ignore lists"
+    },
+    "CM-011": {
+      "number": 20,
+      "url": "https://github.com/joeblau/skills/issues/20",
+      "title": "User cache cleanup"
+    },
+    "CM-012": {
+      "number": 21,
+      "url": "https://github.com/joeblau/skills/issues/21",
+      "title": "System cache cleanup"
+    },
+    "CM-013": {
+      "number": 22,
+      "url": "https://github.com/joeblau/skills/issues/22",
+      "title": "User log cleanup"
+    },
+    "CM-014": {
+      "number": 23,
+      "url": "https://github.com/joeblau/skills/issues/23",
+      "title": "System log cleanup"
+    },
+    "CM-015": {
+      "number": 25,
+      "url": "https://github.com/joeblau/skills/issues/25",
+      "title": "Broken login-item detection"
+    },
+    "CM-016": {
+      "number": 26,
+      "url": "https://github.com/joeblau/skills/issues/26",
+      "title": "Damaged preference detection and reset"
+    },
+    "CM-017": {
+      "number": 27,
+      "url": "https://github.com/joeblau/skills/issues/27",
+      "title": "Deleted-user home archive review"
+    },
+    "CM-018": {
+      "number": 28,
+      "url": "https://github.com/joeblau/skills/issues/28",
+      "title": "Document version inventory and selective removal"
+    },
+    "CM-019": {
+      "number": 29,
+      "url": "https://github.com/joeblau/skills/issues/29",
+      "title": "iPhone and iPad local backup review"
+    },
+    "CM-020": {
+      "number": 30,
+      "url": "https://github.com/joeblau/skills/issues/30",
+      "title": "Unused app localization feasibility"
+    },
+    "CM-021": {
+      "number": 31,
+      "url": "https://github.com/joeblau/skills/issues/31",
+      "title": "Unused universal-binary slice feasibility"
+    },
+    "CM-022": {
+      "number": 32,
+      "url": "https://github.com/joeblau/skills/issues/32",
+      "title": "Xcode build and simulator cleanup"
+    },
+    "CM-023": {
+      "number": 33,
+      "url": "https://github.com/joeblau/skills/issues/33",
+      "title": "AI tool caches, logs, and temporary data"
+    },
+    "CM-024": {
+      "number": 34,
+      "url": "https://github.com/joeblau/skills/issues/34",
+      "title": "Local AI model inventory and removal"
+    },
+    "CM-025": {
+      "number": 35,
+      "url": "https://github.com/joeblau/skills/issues/35",
+      "title": "Recoverable Apple Mail attachment cleanup"
+    },
+    "CM-026": {
+      "number": 36,
+      "url": "https://github.com/joeblau/skills/issues/36",
+      "title": "Startup, external-drive, and Mail Trash review"
+    },
+    "CM-027": {
+      "number": 37,
+      "url": "https://github.com/joeblau/skills/issues/37",
+      "title": "On-demand malware scanning and quarantine"
+    },
+    "CM-028": {
+      "number": 38,
+      "url": "https://github.com/joeblau/skills/issues/38",
+      "title": "Archive, DMG, Mail, USB, and iCloud malware targets"
+    },
+    "CM-029": {
+      "number": 39,
+      "url": "https://github.com/joeblau/skills/issues/39",
+      "title": "Scheduled malware scans and real-time protection feasibility"
+    },
+    "CM-030": {
+      "number": 40,
+      "url": "https://github.com/joeblau/skills/issues/40",
+      "title": "Browser privacy by profile and data category"
+    },
+    "CM-031": {
+      "number": 41,
+      "url": "https://github.com/joeblau/skills/issues/41",
+      "title": "Recent apps, documents, and servers privacy"
+    },
+    "CM-032": {
+      "number": 42,
+      "url": "https://github.com/joeblau/skills/issues/42",
+      "title": "Remembered Wi-Fi network review"
+    },
+    "CM-033": {
+      "number": 43,
+      "url": "https://github.com/joeblau/skills/issues/43",
+      "title": "Application permission review and reset"
+    },
+    "CM-034": {
+      "number": 44,
+      "url": "https://github.com/joeblau/skills/issues/44",
+      "title": "Symptom-driven DNS cache reset"
+    },
+    "CM-035": {
+      "number": 48,
+      "url": "https://github.com/joeblau/skills/issues/48",
+      "title": "Purgeable-space assessment and supported reclamation"
+    },
+    "CM-036": {
+      "number": 50,
+      "url": "https://github.com/joeblau/skills/issues/50",
+      "title": "Memory-pressure diagnosis and RAM cleanup decision"
+    },
+    "CM-037": {
+      "number": 51,
+      "url": "https://github.com/joeblau/skills/issues/51",
+      "title": "Legacy periodic maintenance scripts"
+    },
+    "CM-038": {
+      "number": 52,
+      "url": "https://github.com/joeblau/skills/issues/52",
+      "title": "Spotlight indexing diagnosis and rebuild"
+    },
+    "CM-039": {
+      "number": 53,
+      "url": "https://github.com/joeblau/skills/issues/53",
+      "title": "Disk-permission repair feasibility and guided alternatives"
+    },
+    "CM-040": {
+      "number": 54,
+      "url": "https://github.com/joeblau/skills/issues/54",
+      "title": "Apple Mail performance and mailbox rebuild"
+    },
+    "CM-041": {
+      "number": 45,
+      "url": "https://github.com/joeblau/skills/issues/45",
+      "title": "Time Machine local snapshot review and thinning"
+    },
+    "CM-042": {
+      "number": 24,
+      "url": "https://github.com/joeblau/skills/issues/24",
+      "title": "Login-item inventory and management"
+    },
+    "CM-043": {
+      "number": 55,
+      "url": "https://github.com/joeblau/skills/issues/55",
+      "title": "Background agents and daemons management"
+    },
+    "CM-044": {
+      "number": 56,
+      "url": "https://github.com/joeblau/skills/issues/56",
+      "title": "Application inventory, unused apps, and compatibility"
+    },
+    "CM-045": {
+      "number": 57,
+      "url": "https://github.com/joeblau/skills/issues/57",
+      "title": "App uninstall with owned-component review"
+    },
+    "CM-046": {
+      "number": 58,
+      "url": "https://github.com/joeblau/skills/issues/58",
+      "title": "Orphaned app components and installer leftovers"
+    },
+    "CM-047": {
+      "number": 59,
+      "url": "https://github.com/joeblau/skills/issues/59",
+      "title": "App update discovery and verified installation"
+    },
+    "CM-048": {
+      "number": 60,
+      "url": "https://github.com/joeblau/skills/issues/60",
+      "title": "Large and old file discovery"
+    },
+    "CM-049": {
+      "number": 61,
+      "url": "https://github.com/joeblau/skills/issues/61",
+      "title": "Exact duplicate finder and keeper selection"
+    },
+    "CM-050": {
+      "number": 62,
+      "url": "https://github.com/joeblau/skills/issues/62",
+      "title": "Similar-image grouping and visual review"
+    },
+    "CM-051": {
+      "number": 63,
+      "url": "https://github.com/joeblau/skills/issues/63",
+      "title": "Downloads by source, age, and file type"
+    },
+    "CM-052": {
+      "number": 64,
+      "url": "https://github.com/joeblau/skills/issues/64",
+      "title": "Photos library integration for duplicate and similar-image review"
+    },
+    "CM-053": {
+      "number": 65,
+      "url": "https://github.com/joeblau/skills/issues/65",
+      "title": "Storage map, hidden files, and folder drilldown"
+    },
+    "CM-054": {
+      "number": 46,
+      "url": "https://github.com/joeblau/skills/issues/46",
+      "title": "Cloud account adapters and action semantics"
+    },
+    "CM-055": {
+      "number": 47,
+      "url": "https://github.com/joeblau/skills/issues/47",
+      "title": "iCloud Drive inventory, eviction, and deletion"
+    },
+    "CM-056": {
+      "number": 66,
+      "url": "https://github.com/joeblau/skills/issues/66",
+      "title": "Google Drive cleanup adapter"
+    },
+    "CM-057": {
+      "number": 67,
+      "url": "https://github.com/joeblau/skills/issues/67",
+      "title": "OneDrive cleanup adapter"
+    },
+    "CM-058": {
+      "number": 68,
+      "url": "https://github.com/joeblau/skills/issues/68",
+      "title": "Dropbox cleanup adapter"
+    },
+    "CM-059": {
+      "number": 69,
+      "url": "https://github.com/joeblau/skills/issues/69",
+      "title": "Browser tab inventory, duplicates, and old tabs"
+    },
+    "CM-060": {
+      "number": 70,
+      "url": "https://github.com/joeblau/skills/issues/70",
+      "title": "Pause, resume, close, and recover browser tabs"
+    },
+    "CM-061": {
+      "number": 72,
+      "url": "https://github.com/joeblau/skills/issues/72",
+      "title": "Browser CPU and memory attribution"
+    },
+    "CM-062": {
+      "number": 73,
+      "url": "https://github.com/joeblau/skills/issues/73",
+      "title": "Screen Cleaning Mode native companion"
+    },
+    "CM-063": {
+      "number": 74,
+      "url": "https://github.com/joeblau/skills/issues/74",
+      "title": "Gmail connection and metadata-only inventory"
+    },
+    "CM-064": {
+      "number": 75,
+      "url": "https://github.com/joeblau/skills/issues/75",
+      "title": "Email Smart Cleanup suggestions"
+    },
+    "CM-065": {
+      "number": 77,
+      "url": "https://github.com/joeblau/skills/issues/77",
+      "title": "Newsletter review and unsubscribe actions"
+    },
+    "CM-066": {
+      "number": 78,
+      "url": "https://github.com/joeblau/skills/issues/78",
+      "title": "Spam review and cleanup"
+    },
+    "CM-067": {
+      "number": 79,
+      "url": "https://github.com/joeblau/skills/issues/79",
+      "title": "Draft review and explicit deletion"
+    },
+    "CM-068": {
+      "number": 76,
+      "url": "https://github.com/joeblau/skills/issues/76",
+      "title": "Sender-based mail review, archive, trash, and restore"
+    },
+    "CM-069": {
+      "number": 71,
+      "url": "https://github.com/joeblau/skills/issues/71",
+      "title": "CPU activity, heavy consumers, and unresponsive apps"
+    },
+    "CM-070": {
+      "number": 49,
+      "url": "https://github.com/joeblau/skills/issues/49",
+      "title": "Memory pressure and process memory monitoring"
+    },
+    "CM-071": {
+      "number": 80,
+      "url": "https://github.com/joeblau/skills/issues/80",
+      "title": "Storage health and low-space monitoring"
+    },
+    "CM-072": {
+      "number": 81,
+      "url": "https://github.com/joeblau/skills/issues/81",
+      "title": "Battery condition, cycle, and drain monitoring"
+    },
+    "CM-073": {
+      "number": 82,
+      "url": "https://github.com/joeblau/skills/issues/82",
+      "title": "Network activity and optional speed checks"
+    },
+    "CM-074": {
+      "number": 83,
+      "url": "https://github.com/joeblau/skills/issues/83",
+      "title": "Connected-device storage and battery overview"
+    },
+    "CM-075": {
+      "number": 84,
+      "url": "https://github.com/joeblau/skills/issues/84",
+      "title": "Mac health, activity statistics, and explainable insights"
+    },
+    "CM-076": {
+      "number": 85,
+      "url": "https://github.com/joeblau/skills/issues/85",
+      "title": "Opt-in schedules, alerts, and background lifecycle"
+    }
+  }
+}

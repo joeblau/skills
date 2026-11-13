@@ -1,0 +1,22 @@
+#!/bin/sh
+# Resolve the installed skill before running its dependency-free Python entrypoint.
+set -eu
+cleanmac_script=$0
+while [ -L "$cleanmac_script" ]; do
+  cleanmac_dir=$(CDPATH= cd -- "$(dirname -- "$cleanmac_script")" && pwd -P)
+  cleanmac_link=$(readlink "$cleanmac_script")
+  case "$cleanmac_link" in
+    /*) cleanmac_script=$cleanmac_link ;;
+    *) cleanmac_script=$cleanmac_dir/$cleanmac_link ;;
+  esac
+done
+cleanmac_dir=$(CDPATH= cd -- "$(dirname -- "$cleanmac_script")" && pwd -P)
+if ! cleanmac_python=$(command -v python3); then
+  printf '%s\n' '{"status":"unavailable","error":{"code":"missing_runtime","message":"CleanMac requires Python 3.10 or later. Install it explicitly, then retry; no scan was run."}}' >&2
+  exit 2
+fi
+if ! "$cleanmac_python" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)'; then
+  printf '%s\n' '{"status":"unavailable","error":{"code":"unsupported_runtime","message":"CleanMac requires Python 3.10 or later; no scan was run."}}' >&2
+  exit 2
+fi
+exec "$cleanmac_python" "$cleanmac_dir/cleanmac.py" "$@"

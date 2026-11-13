@@ -1,0 +1,2399 @@
+{
+  "schema_version": 1,
+  "researched_at": "2026-11-13",
+  "product": "CleanMac",
+  "implementation_status": "initial-local-runtime",
+  "baseline": "CleanMyMac 5.7.4 public documentation and the user's ten screenshots; full MacPaw Store/Setapp functionality; supplemented by read-only static inspection of installed CleanMyMac 5.7.4 build 50704.0.2611060828",
+  "features": [
+    {
+      "id": "CM-001",
+      "title": "Portable runner and capability preflight",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Repository convention: one shared skill source supports Claude, Codex, and Kimi. Installed CleanMyMac 5.7.4 has no com.apple.security.app-sandbox entitlement on its main executable, includes a Full Disk Access authorizer, and declares com.macpaw.CleanMyMac5.Agent in SMPrivilegedExecutables. This establishes bundled capabilities, not currently granted permissions.",
+      "implementation": [
+        "Build a versioned local CLI with JSON output and discoverable capabilities; proposed Python 3 orchestration plus an optional signed Swift helper for native APIs. Freeze the distribution decision before shipping.",
+        "Detect macOS version, native CPU architecture (including a translated process), runtime dependencies, selected-volume permissions, and helper versions. Report each capability as available, unavailable, permission-needed, or unverified.",
+        "Support plain-text prompts and structured host prompts without requiring a particular vendor tool. Store state outside the skill installation; never silently install software or elevate privileges.",
+        "Report App Sandbox restrictions, selected-root access/TCC coverage, ordinary filesystem permissions, and optional helper installation/authorization/version as separate capability dimensions. An administrator helper does not substitute for Full Disk Access.",
+        "Identify the actual runner/host responsible for a denied operation and provide its precise permission handoff; continue accessible selected roots. Do not read or modify the TCC database or require a privileged helper for ordinary user-file scans."
+      ],
+      "acceptance": [
+        "A fresh host with no Python/helper returns actionable requirements instead of a scan result.",
+        "Claude, Codex, and Kimi complete the same fixture workflow; Linux exits without invoking macOS commands.",
+        "A TCC-denied root is reported as unscanned, not empty.",
+        "Fixtures distinguish TCC denial from filesystem permission denial and sandbox restrictions; installed-but-unauthorized helpers and helpers with incompatible versions produce distinct unavailable reasons.",
+        "Granting or withholding helper authorization does not falsely mark a TCC-denied root scanned, and an ordinary Downloads scan works with no helper installed."
+      ],
+      "depends": [],
+      "sources": [
+        "local_app",
+        "full_disk_access",
+        "privileged_agent",
+        "apple_sandbox"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Selected-root access and runtime preflight; not a global permission audit.",
+        "tests": [
+          "test_permissions.py",
+          "test_cli.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-002",
+      "title": "Versioned cleanup rules and exclusions",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "MacPaw documents a maintained, app-specific Safety Database; its rule contents are not public. Static inspection found info.cmmkb (299008 bytes), userInfo.cmmkb (2048 bytes), KnowledgeBaseService, SQLCipher, a cipher-compatibility setting, and ignore-rule types. Database contents were not decoded. MacPaw documents app-specific preservation rules and quit/reopen prerequisites.",
+      "implementation": [
+        "Define reviewed data rules with rule ID/version, app identity, allowed roots, macOS/app versions, ownership proof, data type, active-process checks, risk, exclusions, and restoration semantics.",
+        "Protect credentials, active agent sessions, offline libraries, user documents, source repositories, backups, app bundles, and cloud roots unless handled by their explicit feature adapter.",
+        "Unknown files remain review-only. Keep user ignores separate from built-in protections; attach evidence and fixtures to every rule change.",
+        "Keep discovery locations, removal eligibility, protected exceptions, and app lifecycle prerequisites separate in each independently authored rule. Record evidence type, app/OS applicability, validation date, and a rule revision in findings.",
+        "Support explicit path-prefix, extension, filename-pattern, hidden-item, and minimum-size filters with defined precedence; these are discovery filters, not proof of disposability. Built-in protections remain stronger than user inclusion choices."
+      ],
+      "acceptance": [
+        "A cache containing offline content or a license is excluded.",
+        "A rule update cannot expand an already approved action plan.",
+        "Untrusted filenames, plist text, and scanned documents cannot supply commands or alter policy.",
+        "A rule fixture with temporary cache, offline media, a license, and settings selects only validated disposable data; path-prefix collisions and unrecognized app versions stay excluded or report-only.",
+        "Every enabled rule has independent supporting evidence and executable fixtures; a competitor symbol or a copied path alone cannot enable deletion, and rule updates leave approved plans unchanged."
+      ],
+      "depends": [
+        "CM-001"
+      ],
+      "sources": [
+        "safety",
+        "local_app"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Only the bundled reviewed rules; unknown layouts remain report-only.",
+        "tests": [
+          "test_rules.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-003",
+      "title": "Read-only inventory and honest storage accounting",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "APFS clones and local cloud copies complicate the meaning of reclaimable space. LegacyScanningCore imports getattrlistbulk; FileManagerService imports fts_open/fts_read and MDItemCreate/MDItemCopyAttribute, with logical-size and kMDItemPhysicalSize markers. OrganizeScanning includes batched enumeration and path/type/size ignore rules. These are static references, not measured performance or accounting guarantees.",
+      "implementation": [
+        "Enumerate selected roots with lstat/resource keys; preserve byte-safe paths and display-escape control characters. Do not follow symlinks or cross unselected mounts.",
+        "Track volume/device/inode identities, logical size, allocated size, hard links, sparse files, packages, placeholders, protected and unreadable entries. Detect duplicate aliases of the same APFS data volume.",
+        "Build one shared inventory for overlapping features. Report shared/cloned allocation as uncertain and distinguish candidate size, selected size, Trash retention, and measured free-space change.",
+        "Prototype bounded batched metadata enumeration, comparing the portable implementation with an optional native getattrlistbulk/Foundation backend. Define identical scope, identity, link, placeholder, cancellation, and error semantics before choosing a backend.",
+        "Treat Spotlight metadata as supplemental and potentially unavailable or stale; record size provenance and uncertainty instead of treating indexed physical size as uniquely reclaimable bytes."
+      ],
+      "acceptance": [
+        "Hard links and overlapping roots are not double-counted.",
+        "A cloud placeholder is inventoried without reading or downloading its contents.",
+        "Concurrent changes, cancellation, unreadable paths, Unicode, and newline filenames yield bounded, partial reports.",
+        "Both candidate backends produce equivalent identities, coverage, and accounting on hidden/package/link/placeholder/denied-root fixtures; record elapsed time, peak memory, and cancellation latency on a documented large-tree fixture.",
+        "A disabled or stale Spotlight index does not turn accessible files into missing items or produce an exact reclaimable-space claim."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-002"
+      ],
+      "sources": [
+        "eviction",
+        "local_app"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Bounded metadata inventory of selected local roots; partial coverage is explicit.",
+        "tests": [
+          "test_inventory.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-004",
+      "title": "Selection plans bound to user approval",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "The requested experience separates choosing scan scope from choosing cleanup actions.",
+      "implementation": [
+        "Persist immutable scan and plan IDs with typed actions, item identities, selected scope, exact counts, effects, and recovery limits. Separate scan authorization from mutation authorization.",
+        "Bind approval to a plan digest and selected item versions; build argv without shell interpolation. Invalidate only changed or expanded selections, not an unchanged approved plan.",
+        "Batch routine selected actions into one review. Keep permanent erasure, snapshot loss, credential removal, and synced deletion explicit; never interpret scan-only or a broad 'clean my Mac' as approval of unknown findings."
+      ],
+      "acceptance": [
+        "A changed file, substituted symlink, edited plan, or changed cloud revision cannot be acted on silently.",
+        "A scan-only session invokes no mutation handler.",
+        "An unchanged approved plan runs without repeated questions; extra items require a revised review."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-002",
+        "CM-003"
+      ],
+      "sources": [],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Explicit regular-file selections only; protected items and unsupported actions are rejected.",
+        "tests": [
+          "test_plans.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-005",
+      "title": "Action executor, Trash, recovery, and verification",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Apple provides a Trash operation that returns the actual destination URL. The installed app bundles a signed privileged Agent, declares its signing requirement in SMPrivilegedExecutables, and includes PrivilegedOperationsPerformerService plus privileged enumeration/removal task types. MacPaw documents administrator authorization for system-file cleanup; static inspection did not establish that the helper is installed or active.",
+      "implementation": [
+        "Implement a serial, journaled executor with typed adapters, bounded retries, per-item outcomes and cancellation between operations. Revalidate file identity and ancestors immediately before mutation.",
+        "Use native Trash for eligible local files and record resulting URLs; do not fall back to permanent deletion when Trash fails. Design descriptor-relative traversal or quarantine capture to close check/use races.",
+        "Support conflict-aware restoration where possible; record irreversible actions separately. Verify actual effects and measure free space after execution without attributing unrelated system changes to CleanMac.",
+        "Specify an optional privilege adapter separately from the ordinary executor: caller validation, signed/versioned helper handshake, bounded typed operations, selected-target revalidation, and explicit install/authorize/deauthorize/uninstall lifecycle. Keep native Trash support distinct from elevated privileges.",
+        "Represent app quit/reopen as explicit rule prerequisites with observable outcomes. Never silently force-quit an app or elevate the entire scanner; the existing approved plan determines which prerequisite actions are authorized."
+      ],
+      "acceptance": [
+        "Interrupted execution resumes without repeating a completed destructive action.",
+        "Restore handles path collisions and never overwrites a newer file.",
+        "Moving to Trash reports bytes retained, not space freed; a failed action never appears as success.",
+        "Normal local Trash/recovery works without the privileged service. Missing, unauthorized, outdated, or disconnected helpers leave affected operations unavailable without widening scope or falling back to arbitrary commands.",
+        "Rejected caller, out-of-scope target, substituted symlink, interrupted authorization, and failed app quit produce no unintended mutation; revocation stops privileged work and is reflected in capability output."
+      ],
+      "depends": [
+        "CM-004"
+      ],
+      "sources": [
+        "trash_api",
+        "local_app",
+        "privileged_agent",
+        "safety"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Native Trash helper and same-volume private capture required; no permanent deletion.",
+        "tests": [
+          "test_executor.py",
+          "test_native.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-006",
+      "title": "Conversational scan, review, clean, and resume flow",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Screenshots show scan selection, summary tiles, detail review, and execution.",
+      "implementation": [
+        "Implement the interaction reference: Quick check, Choose areas, or One folder, then scope, real progress, findings, selected-action preview, execution, and receipt.",
+        "Support natural-language and numbered selections, drilldown, keep, ignore, back, stop, rescan, and resume. Show only a few relevant options per turn and preserve current choices.",
+        "Use actual capability availability and evidence; state unknown coverage and explain each recommendation without showing shell commands unless asked."
+      ],
+      "acceptance": [
+        "A user can scan Downloads, keep one duplicate, change the retained copy, and clean only the approved remainder.",
+        "Permission denial offers a narrower scan and a precise system-settings handoff.",
+        "Mid-scan questions and cancellation preserve the session; missing modules are never simulated."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Interactive local-file workflow; advanced categories remain unavailable.",
+        "tests": [
+          "test_review.py",
+          "test_forward_workflow.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-007",
+      "title": "Session history, receipts, and private local state",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "The product exposes activity, scan results, and action logs.",
+      "implementation": [
+        "Store versioned sessions and execution journals under an explicit CleanMac state directory, outside plugin installations, with owner-only permissions.",
+        "Record selected scope, rules, coverage, findings, approval references, outcomes, and restore handles. Redact credentials and minimize paths in host-visible summaries.",
+        "Provide history, export, forget, and recovery lookup; changing retention must explain when deleting state would remove the ability to restore."
+      ],
+      "acceptance": [
+        "Restart can recover an interrupted session without scanning new roots.",
+        "Exports contain no OAuth tokens, cookie values, or email bodies.",
+        "A corrupt or migrated session fails safely and preserves the original record."
+      ],
+      "depends": [
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "tools"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Private local sessions, plans, and receipts; no remote account history.",
+        "tests": [
+          "test_state.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-008",
+      "title": "Compatibility fixtures and release gates",
+      "group": "Foundation",
+      "phase": "P0",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "CleanMyMac's documented support varies by edition, OS, and architecture. The installed-app inspection exposed useful scanner symbols, paths, permissions, and helper packaging, but did not execute scans, benchmark traversal, decrypt the knowledge base, or validate cleanup. Static observations cannot establish detection parity or safe-removal behavior.",
+      "implementation": [
+        "Create disposable filesystem, database, cloud, browser, and mailbox fixtures for every adapter; keep live personal data out of tests.",
+        "Define and publish a tested macOS/architecture matrix and package signed helper artifacts where required. Do not make undocumented support claims.",
+        "Gate releases on read-only scan behavior, plan validation, race resistance, recovery, cancelled runs, stale cloud state, and three-host interaction transcripts.",
+        "Attach evidence levels to research and release records: vendor documentation, local static observation, CleanMac design proposal, and executed behavior. Capture inspected product/build and component provenance without redistributing proprietary binaries or datasets.",
+        "Extend disposable fixtures to permission/helper combinations, alternative enumeration backends, app-specific protected cache content, changed app layouts, and managed simulator resources."
+      ],
+      "acceptance": [
+        "Apple silicon and Intel support claims each have executed test evidence or are marked unverified.",
+        "Mock destructive commands prove scans cannot reach mutation endpoints.",
+        "All feature statuses remain planned until their acceptance evidence exists.",
+        "No static observation alone advances a feature from planned to implemented; permissions, cleanup behavior, and performance claims require their corresponding executed evidence.",
+        "Every newly enabled cache or app-component rule passes preserved-data and changed-layout fixtures, and each optional native backend/helper publishes its tested versions and failure behavior."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-006",
+        "CM-007"
+      ],
+      "sources": [
+        "editions",
+        "local_app"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Disposable behavior and integration test suite; broader OS/architecture/host coverage remains unverified.",
+        "tests": [
+          "tests/"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-009",
+      "title": "Smart Care orchestration and summary",
+      "group": "Core experience",
+      "phase": "P1",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Smart Care combines cleanup, quick malware checks, maintenance, app updates, and duplicate Downloads.",
+      "implementation": [
+        "Create a configurable overview using the common capability registry and shared inventory; separate supported scans from unavailable categories.",
+        "Default to read-only recommendations. Do not silently run DNS maintenance, install updates, or select personal-file deletion.",
+        "Merge findings by identity, preserve per-module review, and generate a single selected-action plan with independent outcomes."
+      ],
+      "acceptance": [
+        "The overview never describes a skipped malware scan as 'no threats'.",
+        "A file found in Downloads, duplicates, and large files contributes once to selected storage.",
+        "Users can skip a module, review a tile, and retain choices when returning."
+      ],
+      "depends": [
+        "CM-003",
+        "CM-004",
+        "CM-006"
+      ],
+      "sources": [
+        "smart"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Launch cleanmac with no subcommand for the interactive menu. Selected local storage areas only; no malware, updates, or maintenance automation.",
+        "tests": [
+          "test_review.py",
+          "test_cli.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-010",
+      "title": "My Tools, saved scopes, favorites, and ignore lists",
+      "group": "Core experience",
+      "phase": "P1",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "My Tools exposes focused entry points into the modules.",
+      "implementation": [
+        "Route every screenshot tool name to a stable feature ID; support favorites, custom roots, remembered filters, and named scan presets.",
+        "Keep remembered scan settings separate from action approval. Provide inspect/remove controls for ignores and explain any rule-level protected items.",
+        "Use current capability and implementation status so planned tools remain visible as unavailable with a reason."
+      ],
+      "acceptance": [
+        "Each of the 21 My Tools tiles resolves to a documented feature.",
+        "A saved Downloads preset cannot acquire cloud or external-volume scope after an update.",
+        "Ignoring a folder works for descendants without hiding unrelated prefix-matching paths."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-002",
+        "CM-006"
+      ],
+      "sources": [
+        "tools"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Persistent ignores and saved reviews/history are supported; favorites and named scan presets are not implemented.",
+        "tests": [
+          "test_cli.py",
+          "test_forward_workflow.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-011",
+      "title": "User cache cleanup",
+      "group": "Cleanup",
+      "phase": "P1",
+      "feasibility": "conditional",
+      "status": "partial",
+      "evidence": "System Junk includes per-app user caches. SystemJunkScanning contains separate Electron, Gradle, Spotify, Dropbox, sandbox-container, and hardcoded-path cache tasks, including Telegram, WeChat, and Adobe media-cache locations outside the generic Caches directory. These strings reveal discovery leads, not complete deletion rules.",
+      "implementation": [
+        "Discover known cache locations such as ~/Library/Caches and sandbox cache directories using app-specific rules; path names alone are insufficient proof of disposability.",
+        "Classify regenerable caches separately from offline media, licenses, databases, and active downloads. Detect active processes; offer skip or an authorized app quit.",
+        "Plan only selected rule matches and report first-launch rebuild costs.",
+        "Prioritize independently documented rule packs for Electron/Chromium-derived apps, Gradle, Spotify, Adobe media caches, and Telegram/WeChat layouts. Discover by exact app identity and supported version, including Application Support, Containers, and Group Containers.",
+        "Evaluate each pack separately before enabling it; distinguish temporary media from offline downloads and authored content, respect configured/custom cache locations, and bind any required app quit/reopen to the selected plan."
+      ],
+      "acceptance": [
+        "Offline media and unknown cache layouts are preserved.",
+        "A running-app fixture is skipped until the approved prerequisite is satisfied.",
+        "A dry scan makes no writes in scanned roots.",
+        "For every enabled pack, a fixture finds known disposable data outside ~/Library/Caches while preserving offline media, licenses, settings, shared data, and active downloads.",
+        "A changed or unknown layout produces report-only findings; process detection and a denied quit preserve app data and report the skipped cleanup."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk",
+        "safety",
+        "local_app"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Only individually eligible cache rules; a cache-folder name is not permission to remove it.",
+        "tests": [
+          "test_rules.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-012",
+      "title": "System cache cleanup",
+      "group": "Cleanup",
+      "phase": "P2",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "System Junk also lists system caches. SystemJunkScanning exposes system-cache, Darwin-user-cache, CoreSymbolication, App Store download-cache, and system-migration-cache identifiers; the bundle also contains a privileged Agent. Their presence does not establish safe targets or current authorization.",
+      "implementation": [
+        "Inventory only documented, rule-approved system cache locations; distinguish system ownership from user scope.",
+        "Evaluate each proposed cache on supported macOS versions in disposable machines. Default to report-only until an OS-specific recovery path and least-privilege operation are validated.",
+        "Do not recursively erase /Library/Caches, /System, or /private/var/folders; privileged operations require narrow helper actions.",
+        "Use these categories as a research checklist, requiring independent OS-specific ownership, regeneration, and support evidence for each proposed rule. Distinguish per-user Darwin caches from system-owned data.",
+        "Request only validated typed helper operations from CM-005 when ordinary access is insufficient; retain partial inventory and precise denied/protected reasons instead of granting broad scan-time elevation."
+      ],
+      "acceptance": [
+        "Unknown and sealed system locations remain untouched.",
+        "Missing privilege produces a partial result with no escalation loop.",
+        "Every enabled removal rule has an OS-specific regeneration test.",
+        "Each researched category has a documented enable/report-only/unsupported decision; neither a hardcoded candidate path nor Full Disk Access is treated as sufficient deletion authorization.",
+        "System-protected and unknown files remain excluded with or without an authorized helper, and eligible fixture caches regenerate on each claimed supported OS."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk",
+        "safety",
+        "local_app",
+        "privileged_agent",
+        "full_disk_access"
+      ]
+    },
+    {
+      "id": "CM-013",
+      "title": "User log cleanup",
+      "group": "Cleanup",
+      "phase": "P1",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "System Junk includes user logs.",
+      "implementation": [
+        "Inventory known application logs and rotated crash reports under scoped user locations. Apply configurable retention and application ownership rules.",
+        "Keep active logs, current investigations, agent transcripts, and unrecognized files out of default selections.",
+        "Offer date/size filters and individual review before Trash or explicit permanent deletion."
+      ],
+      "acceptance": [
+        "The newest active log and protected session history survive.",
+        "Date filtering uses an explicit timezone and cutoff.",
+        "Selection is unchanged when a later scan discovers new files."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk"
+      ]
+    },
+    {
+      "id": "CM-014",
+      "title": "System log cleanup",
+      "group": "Cleanup",
+      "phase": "P2",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "System Junk includes system logs. SystemJunkScanning has distinct diagnostic, Apple, sandbox, user, and system-log task identifiers. MacPaw documents privileged helper use for some system-log removal, but the inspection did not reveal exact eligibility rules.",
+      "implementation": [
+        "Inventory eligible archived diagnostics with an OS-versioned rule catalog; expose age, owner, and event category without dumping sensitive contents.",
+        "Leave live unified logging stores and audit/security logs under OS control; no generic log erase or blanket /var/log deletion.",
+        "Enable individual archived-report cleanup only after permission, retention, and recovery behavior is tested.",
+        "Keep diagnostic/archive category, app or system owner, retention cutoff, and required privilege in each log rule and finding. Research any new category independently; existing exclusions for live unified logs and audit/security data still apply.",
+        "Route only validated selected system-owned archived reports through CM-005's narrow helper interface; permission failures must remain unknown coverage or skipped actions."
+      ],
+      "acceptance": [
+        "Unified-log and active audit files never enter a cleanup plan.",
+        "Unreadable diagnostics are counted as unknown coverage.",
+        "A selected historical report can be restored when its adapter uses Trash.",
+        "Mixed diagnostic fixtures classify user versus system-owned archived reports correctly while active unified/audit logs remain protected; no helper grant broadens the approved retention or target set."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk",
+        "local_app",
+        "privileged_agent"
+      ]
+    },
+    {
+      "id": "CM-015",
+      "title": "Broken login-item detection",
+      "group": "Cleanup",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "MacPaw identifies login entries whose target application is missing.",
+      "implementation": [
+        "Reuse login/background inventories; resolve bookmarks, bundle identities, executable targets, and volume availability.",
+        "Distinguish a genuinely missing target from an unmounted disk, inaccessible location, or renamed app.",
+        "Offer removal or supported disable through the login adapter; retain the registration evidence for recovery."
+      ],
+      "acceptance": [
+        "An unavailable external target is not called broken.",
+        "A missing executable with verified registration produces one finding.",
+        "Managed or protected entries cannot be removed through this shortcut."
+      ],
+      "depends": [
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-042"
+      ],
+      "sources": [
+        "junk",
+        "service"
+      ]
+    },
+    {
+      "id": "CM-016",
+      "title": "Damaged preference detection and reset",
+      "group": "Cleanup",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The Broken Preferences group targets damaged preference files.",
+      "implementation": [
+        "Validate supported plist formats using plutil or a parser against read-only copies; do not equate an unfamiliar extension with corruption.",
+        "Map candidates to owning apps and preserve originals. Reset only selected damaged preferences after the app is closed; use CFPreferences-aware behavior where applicable.",
+        "Exclude authentication, security settings, MDM profiles, and valid preference files."
+      ],
+      "acceptance": [
+        "Valid binary/XML plists remain unselected.",
+        "A malformed fixture yields parser evidence and a restorable original.",
+        "An app restart verifies recreation without claiming all behavior is repaired."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk"
+      ]
+    },
+    {
+      "id": "CM-017",
+      "title": "Deleted-user home archive review",
+      "group": "Cleanup",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "System Junk can surface saved home archives from deleted accounts.",
+      "implementation": [
+        "Inventory /Users/Deleted Users and explicitly selected legacy archive locations using metadata only; verify against account records and current home roots.",
+        "Treat archives as user backups, never automatic junk. Show owner, date, size, and absence/presence of a matching account.",
+        "Do not mount encrypted archives or inspect personal contents during discovery."
+      ],
+      "acceptance": [
+        "A current user's home is never a candidate.",
+        "An archived home requires item-level selection and an explicit backup-loss description.",
+        "Unreadable account metadata causes an uncertain finding, not a deletion recommendation."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk"
+      ]
+    },
+    {
+      "id": "CM-018",
+      "title": "Document version inventory and selective removal",
+      "group": "Cleanup",
+      "phase": "P3",
+      "feasibility": "native-helper",
+      "status": "planned",
+      "evidence": "CleanMyMac exposes document revision cleanup while retaining some versions.",
+      "implementation": [
+        "Use NSFileVersion and NSFileCoordinator for selected documents; never delete /.DocumentRevisions-V100 directly.",
+        "Prototype enumeration and individual-version removal with stable version IDs; protect current, earliest, conflict, and user-pinned versions by default.",
+        "Describe loss of document history before an irreversible plan; do not use removeOtherVersionsOfItem as a substitute for selective retention."
+      ],
+      "acceptance": [
+        "The current document bytes and protected versions remain unchanged.",
+        "A version disappearing after review is skipped.",
+        "A coordinator failure never falls back to deleting the revision store."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk",
+        "versions"
+      ]
+    },
+    {
+      "id": "CM-019",
+      "title": "iPhone and iPad local backup review",
+      "group": "Cleanup",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "System Junk surfaces device backups and avoids auto-selecting the latest.",
+      "implementation": [
+        "Read backup metadata under configured MobileSync backup roots and group complete backups by device identifier.",
+        "Preserve latest-known and incomplete/in-progress backups; do not use folder mtime as the sole retention signal.",
+        "Prefer Finder Manage Backups for unsupported formats; distinguish removing a local device backup from deleting content on the device."
+      ],
+      "acceptance": [
+        "Encrypted backups can be listed without decrypting payloads.",
+        "The latest complete backup per device is protected by default.",
+        "A changed or active backup cannot be deleted from an old plan."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk"
+      ]
+    },
+    {
+      "id": "CM-020",
+      "title": "Unused app localization feasibility",
+      "group": "Cleanup",
+      "phase": "P3",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "System Junk advertises removal of unused language resources.",
+      "implementation": [
+        "Inventory .lproj resources, selected language preferences, bundle signatures, and estimated footprint without modifying bundles.",
+        "Test vendor-approved or unsigned development fixtures separately; assess code-signing, localization fallback, updater, and notarization behavior.",
+        "Ship report-only for signed apps unless a validated, vendor-preserving method exists. Never ad-hoc re-sign third-party apps or remove signatures to force parity."
+      ],
+      "acceptance": [
+        "Inspection preserves app signatures and file hashes.",
+        "A decision record explains supported and unsupported bundle types.",
+        "A tested update/relaunch scenario is required before any removal capability is advertised."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-008"
+      ],
+      "sources": [
+        "junk",
+        "signing"
+      ]
+    },
+    {
+      "id": "CM-021",
+      "title": "Unused universal-binary slice feasibility",
+      "group": "Cleanup",
+      "phase": "P3",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "System Junk advertises removing unused CPU architectures.",
+      "implementation": [
+        "Inspect Mach-O architecture metadata and native/Rosetta requirements, including nested frameworks and helpers.",
+        "Use scratch copies to test architecture thinning, code verification, launch, plugins, and updating; estimates must distinguish slice size from actual allocation.",
+        "Leave production bundles report-only until compatibility and signing invariants are proven. Never disable Gatekeeper or repair signatures with a local signature."
+      ],
+      "acceptance": [
+        "A translated agent detects the machine's actual architecture.",
+        "A plugin requiring another architecture prevents a safe-removal claim.",
+        "Read-only inventory is useful even when mutation remains unsupported."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-008"
+      ],
+      "sources": [
+        "junk",
+        "signing"
+      ]
+    },
+    {
+      "id": "CM-022",
+      "title": "Xcode build and simulator cleanup",
+      "group": "Cleanup",
+      "phase": "P1",
+      "feasibility": "conditional",
+      "status": "partial",
+      "evidence": "Xcode junk spans build data, device support, logs, archives, and simulators. SystemJunkScanning names Xcode DerivedData, module caches, archives, device logs/support, CoreSimulator caches, downloaded runtimes, and simulator devices. It also contains simctl references, including a private CoreSimulator tool path; this is not a supported API contract for CleanMac.",
+      "implementation": [
+        "Discover selected developer directories and installed Xcode/CLT tooling. Separately inventory DerivedData, module caches, DeviceSupport, device logs, Archives, and simulator runtimes/devices.",
+        "Prefer xcrun simctl's supported operations for selected unavailable devices. Treat runtimes as managed resources; inspect current help before planning removal.",
+        "Protect archives, dSYMs, projects, signing assets, active builds, and available simulator data by default; disclose rebuild and re-download costs.",
+        "Expose each Xcode category as a separate inventory/rule group with its own eligibility and cost. Resolve tooling through the selected developer environment and validate supported xcrun simctl commands for that version instead of copying the observed private-framework path.",
+        "Treat downloaded runtime images, installed runtimes, and device data as distinct managed resources; capture runtime/device identifiers and refuse unknown or active states."
+      ],
+      "acceptance": [
+        "Archives and source repositories are never auto-selected.",
+        "Unavailable devices are distinguished from valid devices with valuable app data.",
+        "Custom Xcode paths, multiple installations, and no-Xcode machines produce accurate capability results.",
+        "Fixtures cover multiple Xcodes, a changed developer selection, booted devices, unavailable devices, runtime downloads, archives, and an active build. Unsupported simctl versions remain report-only.",
+        "An approved simulator action is rejected if its owning developer environment or resource identity changes; no archive, dSYM, or valid device data is automatically selected."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "junk",
+        "local_app"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Read-only Xcode category inventory; simulator/runtime deletion is unavailable.",
+        "tests": [
+          "test_adapters.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-023",
+      "title": "AI tool caches, logs, and temporary data",
+      "group": "Cleanup",
+      "phase": "P1",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "AI Clutter names Claude, Codex, Gemini, and Cursor temporary data.",
+      "implementation": [
+        "Create versioned adapters for actual tool cache/log layouts; inspect installed versions and documented configuration rather than treating hidden tool directories as disposable.",
+        "Protect conversations, checkpoints, workspace indexes with non-regenerable state, credentials, settings, skills, MCP config, and the currently executing agent/session.",
+        "Show app, data type, retention, and rebuild cost; unknown versions are inventory-only."
+      ],
+      "acceptance": [
+        "A fixture containing auth.json, settings, skills, sessions, and a safe cache removes only the approved cache.",
+        "The running agent cannot erase its own workspace or session.",
+        "Each supported tool version has independent fixture evidence."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "ai",
+        "safety"
+      ]
+    },
+    {
+      "id": "CM-024",
+      "title": "Local AI model inventory and removal",
+      "group": "Cleanup",
+      "phase": "P1",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "AI Clutter lists downloaded Ollama and LM Studio models.",
+      "implementation": [
+        "Use Ollama inventory/running-model APIs and its model deletion operation; use lms ls --json for LM Studio and verify the installed version's supported removal workflow.",
+        "Add optional Hugging Face cache support as a CleanMac extension using its reference-aware deletion strategy. Honor configured storage roots and shared blobs.",
+        "Show model ID, variant, physical estimate, loaded/in-use state, re-download cost, and compatibility uncertainty. Preserve models by default."
+      ],
+      "acceptance": [
+        "Deleting one model/revision cannot remove blobs still needed by another.",
+        "Loaded models are skipped unless unloading is separately selected.",
+        "An unsupported LM Studio removal interface provides a precise manual handoff, not invented commands."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "ai",
+        "ollama",
+        "ollama_delete",
+        "lmstudio",
+        "hf"
+      ]
+    },
+    {
+      "id": "CM-025",
+      "title": "Recoverable Apple Mail attachment cleanup",
+      "group": "Cleanup",
+      "phase": "P3",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "MacPaw targets recoverable Mail attachments and preserves modified copies.",
+      "implementation": [
+        "Prototype read-only Mail metadata adapters per supported OS to establish remote-message linkage and local-edit provenance; folder names and mtimes alone cannot prove recoverability.",
+        "Protect On My Mac, POP-only, disconnected accounts, modified attachments, and unsupported Mail layouts. Keep the initial module report-only when provenance is uncertain.",
+        "Use supported Mail operations where possible; never erase entire Mail databases or attachments trees."
+      ],
+      "acceptance": [
+        "A locally edited attachment and a local-only message are preserved.",
+        "A remote copy must be verifiably recoverable before any local-eviction recommendation.",
+        "Versioned fixtures and a disposable Mail account demonstrate messages remain intact."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "mail"
+      ]
+    },
+    {
+      "id": "CM-026",
+      "title": "Startup, external-drive, and Mail Trash review",
+      "group": "Cleanup",
+      "phase": "P1",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Trash Bins includes startup-volume, external-volume, and Mail trash.",
+      "implementation": [
+        "Enumerate only the current user's Trash and selected mounted-volume Trash with volume identity checks.",
+        "Treat emptying Trash as permanent erasure, with an exact item manifest; newly arrived items are excluded. Route Mail Trash through a version-tested Mail/provider adapter because deletion may synchronize.",
+        "Separate local disk erasure from mailbox deletion and report unsupported Mail trash without suppressing local results."
+      ],
+      "acceptance": [
+        "New Trash contents added after approval survive.",
+        "A detached/replaced external disk cannot receive the old plan.",
+        "Mail-trash actions identify account/sync scope and are unavailable until their adapter is tested."
+      ],
+      "depends": [
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "trash"
+      ]
+    },
+    {
+      "id": "CM-027",
+      "title": "On-demand malware scanning and quarantine",
+      "group": "Protection",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "CleanMyMac uses Moonlock with quick, balanced, and deep modes.",
+      "implementation": [
+        "Integrate an explicitly installed scanner such as ClamAV with current signatures; define our own documented quick/balanced/deep root and resource policies.",
+        "Return engine/version/signature age, scanned/skipped counts, detection evidence, and uncertainty. Separate signature detections, potentially unwanted software, and heuristic concerns.",
+        "Quarantine selected detections with restricted permissions and restore metadata; never infer malware solely from filename, nationality, lack of signature, or an LLM opinion."
+      ],
+      "acceptance": [
+        "An absent/outdated engine is reported without claiming protection.",
+        "Inert test signatures exercise found/clean/error/partial results and quarantine restoration.",
+        "Gatekeeper/code-signature checks are not represented as a full malware scan or Moonlock-equivalent coverage."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "malware",
+        "modes",
+        "clam",
+        "xprotect"
+      ]
+    },
+    {
+      "id": "CM-028",
+      "title": "Archive, DMG, Mail, USB, and iCloud malware targets",
+      "group": "Protection",
+      "phase": "P3",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "MacPaw offers optional archive, disk-image, attachment, USB, and downloaded-iCloud scans.",
+      "implementation": [
+        "Extend the malware adapter with explicit target toggles and budgets for bytes, recursion, file count, time, and decompression ratio.",
+        "Prefer scanner-supported parsing; use isolated scratch space for extraction, rejecting traversal and links. No automatic mounting, executing packages, or hydrating cloud placeholders.",
+        "Document supported archive/encryption formats and image handling; attachments require the necessary access and USB scans bind to volume identity."
+      ],
+      "acceptance": [
+        "Nested archives, zip bombs, path traversal, encrypted items, and unsupported formats return bounded partial coverage.",
+        "Scanning a DMG never runs its installer.",
+        "Unselected external and cloud locations remain untouched."
+      ],
+      "depends": [
+        "CM-027",
+        "CM-003",
+        "CM-008"
+      ],
+      "sources": [
+        "targets",
+        "clam_limits"
+      ]
+    },
+    {
+      "id": "CM-029",
+      "title": "Scheduled malware scans and real-time protection feasibility",
+      "group": "Protection",
+      "phase": "P3",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "Moonlock powers both background scanning and real-time monitoring.",
+      "implementation": [
+        "Offer opt-in scheduled scans through a user LaunchAgent with explicit scope, battery/load limits, logs, and uninstall controls.",
+        "Investigate a signed/notarized native Endpoint Security companion and required entitlements for true event-driven coverage. A periodic scan or FSEvents watcher must not be marketed as equivalent.",
+        "Keep detections reviewable; no automatic broad remediation, scan scheduling, or persistent daemon installation during ordinary skill invocation."
+      ],
+      "acceptance": [
+        "Users can inspect, disable, and remove the installed schedule.",
+        "Missed/coalesced events and unavailable entitlements are reflected in coverage.",
+        "A crash or logoff cannot leave an undocumented privileged service behind."
+      ],
+      "depends": [
+        "CM-027",
+        "CM-028",
+        "CM-007",
+        "CM-008"
+      ],
+      "sources": [
+        "moonlock",
+        "endpoint",
+        "service"
+      ]
+    },
+    {
+      "id": "CM-030",
+      "title": "Browser privacy by profile and data category",
+      "group": "Protection",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Privacy covers Safari, Chrome, and Firefox browser traces.",
+      "implementation": [
+        "Implement separate profile/version adapters for history, cookies, autofill, download history, site storage, search history, and previous-session tabs; saved-password deletion is a distinct capability.",
+        "Use supported browser APIs/UI where available. Chrome browsingData cannot delete passwords on current versions; provide a settings handoff rather than reporting a no-op as success.",
+        "Preserve bookmarks and actual downloaded files. Show sync effects, logouts, lost form/session state, and category-specific time/origin limits. Never print password or cookie values."
+      ],
+      "acceptance": [
+        "Each browser/category pair is supported, manual, or unavailable in the capability matrix.",
+        "Cleaning download history leaves downloaded files unchanged.",
+        "Active profile databases are not edited directly; password, autofill, and session changes are never bundled into a cache action."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "privacy",
+        "browsing"
+      ]
+    },
+    {
+      "id": "CM-031",
+      "title": "Recent apps, documents, and servers privacy",
+      "group": "Protection",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "CleanMyMac can clear recent-item lists.",
+      "implementation": [
+        "Inventory supported recent-item stores without reading document contents; route clearing through supported per-app/system APIs or a guided UI handoff.",
+        "Keep individual app history and system recent lists distinct, with metadata-only previews and schema/version gates.",
+        "Do not delete the referenced documents or clear all preferences to reset a recent-items list."
+      ],
+      "acceptance": [
+        "Actual documents and applications remain byte-identical.",
+        "Unsupported recent-store formats are not rewritten.",
+        "A selected list is cleared without changing unrelated lists."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "privacy"
+      ]
+    },
+    {
+      "id": "CM-032",
+      "title": "Remembered Wi-Fi network review",
+      "group": "Protection",
+      "phase": "P2",
+      "feasibility": "guided",
+      "status": "planned",
+      "evidence": "MacPaw routes network removal to System Settings on Sonoma and later.",
+      "implementation": [
+        "Discover only available network metadata using supported OS interfaces; label incomplete inventory and avoid accessing passwords.",
+        "Use a version-specific System Settings handoff for forgetting selected networks. Explain reconnect consequences and highlight the active connection.",
+        "Verify state after the user completes the handoff when supported; do not claim success from merely opening Settings."
+      ],
+      "acceptance": [
+        "The current network is not silently removed.",
+        "No keychain password is requested or logged.",
+        "A cancelled Settings handoff is recorded as unchanged."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-006"
+      ],
+      "sources": [
+        "privacy"
+      ]
+    },
+    {
+      "id": "CM-033",
+      "title": "Application permission review and reset",
+      "group": "Protection",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "CleanMyMac groups app permissions for review and revocation.",
+      "implementation": [
+        "Use System Settings and permitted, version-tested metadata for Contacts, camera, microphone, screen capture, files, photos, and other TCC services.",
+        "Document that tccutil reset resets a decision and may cause a future prompt; it does not establish a permanent deny. Limit it to a selected service and bundle where supported.",
+        "Do not write TCC databases, bypass SIP, or grant permissions programmatically. Respect MDM and native user prompts."
+      ],
+      "acceptance": [
+        "A single-app reset never becomes reset All.",
+        "A permission-denied inventory remains partial.",
+        "UI reports 'reset; app may ask again' accurately and distinguishes a settings toggle from a reset."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-006",
+        "CM-008"
+      ],
+      "sources": [
+        "permissions",
+        "manual_tcc"
+      ]
+    },
+    {
+      "id": "CM-034",
+      "title": "Symptom-driven DNS cache reset",
+      "group": "Performance",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "CleanMyMac includes DNS cache flushing.",
+      "implementation": [
+        "Expose reset only as an explicit troubleshooting action with the affected resolver context; do not promise a measured cache size or routine speed improvement.",
+        "Validate dscacheutil -flushcache and any mDNSResponder signaling separately against the running OS and privilege requirements.",
+        "Record pre/post resolution checks against a user-specified hostname without collecting browsing history."
+      ],
+      "acceptance": [
+        "A normal Quick check never flushes DNS.",
+        "Privilege failure is reported without retrying a broader command.",
+        "The receipt distinguishes command completion from successful resolution of the user's network problem."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "maintenance",
+        "manual_dns"
+      ]
+    },
+    {
+      "id": "CM-035",
+      "title": "Purgeable-space assessment and supported reclamation",
+      "group": "Performance",
+      "phase": "P2",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "Performance includes a purgeable-space task.",
+      "implementation": [
+        "Read volume capacity values and show immediately free versus potentially purgeable space without adding overlapping figures.",
+        "Route actual candidates to proven cache, local-cloud-eviction, or snapshot adapters; there is no assumed universal safe 'purge all' operation.",
+        "Do not fill the disk with dummy data, delete swap, disable backups, or invoke private storage daemons to force reclamation."
+      ],
+      "acceptance": [
+        "APFS shared-container capacities are not double-counted.",
+        "No action is proposed merely because macOS reports purgeable storage.",
+        "Measured changes identify uncertainty from concurrent OS activity."
+      ],
+      "depends": [
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-041",
+        "CM-055"
+      ],
+      "sources": [
+        "maintenance",
+        "snapshots",
+        "eviction"
+      ]
+    },
+    {
+      "id": "CM-036",
+      "title": "Memory-pressure diagnosis and RAM cleanup decision",
+      "group": "Performance",
+      "phase": "P2",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "MacPaw limits its Free Up RAM task to Intel Macs.",
+      "implementation": [
+        "Assess pressure, compression, swap, and process use; offer selected app quit/restart with unsaved-work consequences.",
+        "Document that the installed purge manual describes cold disk-buffer-cache testing, not freeing anonymous app allocations. Do not implement synthetic memory exhaustion or a universal 'free RAM' promise.",
+        "Evaluate any Intel-specific parity operation with workload measurements before enabling it; default to diagnostics and user-selected app actions."
+      ],
+      "acceptance": [
+        "Low free memory alone does not trigger a problem finding.",
+        "An Apple silicon host does not receive an Intel-only action.",
+        "Before/after measurements include responsiveness and pressure, not just a larger free-memory number."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-070"
+      ],
+      "sources": [
+        "maintenance",
+        "manual_purge"
+      ]
+    },
+    {
+      "id": "CM-037",
+      "title": "Legacy periodic maintenance scripts",
+      "group": "Performance",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "MacPaw documents periodic scripts only for Ventura 13 and earlier.",
+      "implementation": [
+        "Probe OS version and the existence/meaning of the native periodic facility; current systems without it report unsupported.",
+        "On a validated legacy system, offer explicitly selected daily/weekly/monthly native jobs with known privileges and bounded execution.",
+        "Do not recreate removed jobs or run guessed scripts on newer macOS."
+      ],
+      "acceptance": [
+        "Newer macOS never invokes a missing periodic command.",
+        "A fixture verifies the selected schedule rather than always running all jobs.",
+        "Output and return status are captured without claiming performance improvement."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "CM-038",
+      "title": "Spotlight indexing diagnosis and rebuild",
+      "group": "Performance",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Performance offers Spotlight reindexing.",
+      "implementation": [
+        "Inspect indexing state for a chosen volume and explain rebuild load; select a narrow native mdutil action or Apple Settings workflow.",
+        "Distinguish command acceptance from asynchronous completion and keep the action cancellable where supported.",
+        "Do not delete Spotlight folders directly or reindex every mounted volume when only one was chosen."
+      ],
+      "acceptance": [
+        "A disabled or excluded volume is reported accurately.",
+        "A rebuild does not complete in the receipt until verified or is labeled 'started; still running'.",
+        "Other volumes' indexes are unchanged."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "maintenance",
+        "spotlight",
+        "manual_mdutil"
+      ]
+    },
+    {
+      "id": "CM-039",
+      "title": "Disk-permission repair feasibility and guided alternatives",
+      "group": "Performance",
+      "phase": "P3",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "CleanMyMac lists permission repair, but does not disclose its implementation.",
+      "implementation": [
+        "Document that the installed diskutil manual says verifyPermissions/repairPermissions were removed starting with OS X 10.11.",
+        "Identify the concrete user symptom and test only a supported, narrowly scoped recovery workflow for that OS; otherwise provide a manual diagnostic path.",
+        "Do not substitute recursive chmod/chown, reset all home permissions, or filesystem First Aid while calling it equivalent permission repair."
+      ],
+      "acceptance": [
+        "Modern systems never receive obsolete diskutil repairPermissions commands.",
+        "Every enabled action has a specific supported target and recovery evidence.",
+        "Unavailable parity is visible in capabilities and the completion report."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-008"
+      ],
+      "sources": [
+        "maintenance",
+        "manual_diskutil"
+      ]
+    },
+    {
+      "id": "CM-040",
+      "title": "Apple Mail performance and mailbox rebuild",
+      "group": "Performance",
+      "phase": "P3",
+      "feasibility": "guided",
+      "status": "planned",
+      "evidence": "The Speed Up Mail task rebuilds Mail's index.",
+      "implementation": [
+        "Start with selected mailbox symptoms and the supported Mailbox > Rebuild workflow; validate any automation on the exact Mail version.",
+        "Explain possible server re-downloads and local-only mail handling. Do not delete Envelope Index files or run VACUUM against a live Mail database.",
+        "Record the mailbox/account scope, native operation start, and completion/remaining work."
+      ],
+      "acceptance": [
+        "Offline and local-only accounts receive explicit constraints.",
+        "No live Mail database is modified by a generic shell recipe.",
+        "Cancelling before a rebuild leaves the mailbox unchanged."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-006",
+        "CM-008"
+      ],
+      "sources": [
+        "maintenance"
+      ]
+    },
+    {
+      "id": "CM-041",
+      "title": "Time Machine local snapshot review and thinning",
+      "group": "Performance",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "CleanMyMac exposes local snapshot thinning; macOS also manages snapshots automatically.",
+      "implementation": [
+        "Inventory Time Machine snapshots and backup state with tmutil, binding selection to the mount's volume UUID.",
+        "Make thinning and deletion distinct irreversible actions. tmutil deletelocalsnapshots by date can affect all mounted disks; reject ambiguous cross-volume plans.",
+        "State that local recovery history is lost, remote backup contents are a different scope, and exact reclaimable bytes may be unknown. Never manipulate arbitrary APFS/system snapshots."
+      ],
+      "acceptance": [
+        "An unselected volume's snapshots survive.",
+        "An active backup, changed mount, or ambiguous date target prevents execution.",
+        "A result records which snapshots disappeared and does not promise a byte total the API cannot establish."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "maintenance",
+        "snapshots",
+        "manual_tmutil"
+      ]
+    },
+    {
+      "id": "CM-042",
+      "title": "Login-item inventory and management",
+      "group": "Performance",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Performance exposes apps that open at login.",
+      "implementation": [
+        "Correlate supported login metadata, sfltool dumpbtm diagnostic output when available, app identities, and legacy registrations; avoid treating diagnostic text as a stable API.",
+        "Use native System Settings for modern third-party items when no supported direct API exists. SMAppService manages an app's own services; it is not a universal controller for every installed app.",
+        "Protect MDM-managed and essential items, and show enable/disable/remove semantics separately."
+      ],
+      "acceptance": [
+        "Renamed apps and multiple registrations are correlated without losing provenance.",
+        "A Settings handoff is verified or labeled manual/unverified.",
+        "Saved selections cannot disable the current agent's execution dependency unexpectedly."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-004",
+        "CM-006",
+        "CM-008"
+      ],
+      "sources": [
+        "login",
+        "service"
+      ]
+    },
+    {
+      "id": "CM-043",
+      "title": "Background agents and daemons management",
+      "group": "Performance",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "CleanMyMac exposes background items associated with applications.",
+      "implementation": [
+        "Inventory launch plists in user and system Library locations plus supported modern app service metadata. Resolve label, domain, executable, owner, team identity, and observed state.",
+        "For validated legacy jobs, use narrowly scoped launchctl disable/enable and bootout/bootstrap; preserve original configuration. Use Settings/vendor uninstall for unsupported modern services.",
+        "Exclude Apple system jobs, MDM controls, security tools, and current execution dependencies from routine optimization; unknown does not mean malicious."
+      ],
+      "acceptance": [
+        "User and system domains are never confused.",
+        "Disable/re-enable tests restore both persistent and current state.",
+        "Missing or malformed service evidence yields review-only, not automatic deletion."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "background",
+        "service",
+        "manual_launchctl"
+      ]
+    },
+    {
+      "id": "CM-044",
+      "title": "Application inventory, unused apps, and compatibility",
+      "group": "Applications",
+      "phase": "P1",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Applications includes app metadata, usage groups, install sources, vendors, and plug-ins.",
+      "implementation": [
+        "Discover apps in selected application roots and Spotlight results, then verify existence and parse bundle metadata, signature team, architectures, receipts, and known package-manager ownership.",
+        "Use last-used metadata only as a hint; present missing timestamps as unknown. Inventory audio plug-ins and related components separately.",
+        "Show unsupported architectures, update sources, and vendor identity as evidence. Do not reproduce a nationality-based 'suspicious' score."
+      ],
+      "acceptance": [
+        "App bundles with the same name but different IDs remain distinct.",
+        "No last-used timestamp is not interpreted as never used.",
+        "A 32-bit app on unsupported macOS is identified without calling it malware."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-008"
+      ],
+      "sources": [
+        "uninstall",
+        "signing"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Read-only app bundle inventory; app removal and compatibility guarantees are unavailable.",
+        "tests": [
+          "test_adapters.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-045",
+      "title": "App uninstall with owned-component review",
+      "group": "Applications",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Uninstaller removes apps and associated components. UninstallerScanning includes app-container metadata, saved-state, preferences, cookies, logs, support-file, documentation, and plugin-path references, plus protected-file and symlink-aware enumeration checks. This reveals candidate coverage, not the complete ownership algorithm.",
+      "implementation": [
+        "Build an ownership graph from exact bundle IDs, entitlements, receipts, app groups, known support paths, and vendor-specific rules.",
+        "Prefer a trusted vendor uninstaller or owning package manager; otherwise plan app Trash and proven-owned components. Never execute an unverified uninstaller discovered in untrusted metadata.",
+        "Separate user documents, shared containers, license data, and components used by another app; disclose service stops and irreversible vendor-script effects.",
+        "Extend ownership research and fixtures across these component classes using exact bundle IDs, entitlements, container metadata, receipts, and independently validated vendor rules. Treat name or path matches as leads that require corroboration.",
+        "Present each component's owning evidence and shared/unknown status before selection; preserve sibling app groups, documents, licenses, and dependencies of the running agent."
+      ],
+      "acceptance": [
+        "Shared group containers survive uninstalling one sibling app.",
+        "System apps and current-agent dependencies are protected.",
+        "Reinstall/restore fixtures verify recoverable files and clearly record non-reversible steps.",
+        "Fixtures include colliding bundle-name prefixes, shared plugins/group containers, unrelated similarly named support folders, and inaccessible container metadata; uncertain ownership prevents automatic selection."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-004",
+        "CM-005",
+        "CM-043",
+        "CM-044"
+      ],
+      "sources": [
+        "uninstall",
+        "safety",
+        "local_app"
+      ]
+    },
+    {
+      "id": "CM-046",
+      "title": "Orphaned app components and installer leftovers",
+      "group": "Applications",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The feature matrix includes leftover files and installers. The bundle includes UninstallerScanning and UnusedDiskImagesScanning, with known app-component path references. No inspected symbol establishes how CleanMyMac proves that a component is orphaned or an installer is no longer needed.",
+      "implementation": [
+        "Compare known component ownership against a complete-enough app inventory; external-volume or inaccessible apps must not become false orphans.",
+        "Group caches, settings, launch items, support files, and installers by provenance/confidence, with manual selection for user data.",
+        "Treat downloaded DMG/PKG files as user files until selected; deduplicate these candidates against Downloads and large-file reports.",
+        "Reuse CM-045's component ownership evidence and CM-003's coverage records rather than adding a separate pathname-based orphan heuristic. Carry the exact reason ownership or app presence could not be established.",
+        "Deduplicate unused-image candidates with Downloads and storage findings, preserving mounted/in-use or unknown images and treating age or filename alone as insufficient removal evidence."
+      ],
+      "acceptance": [
+        "An app on an offline drive does not cause automatic data removal.",
+        "A same-vendor prefix is insufficient to establish ownership.",
+        "Removing a reviewed installer never mounts or executes it.",
+        "App data remains protected when its app inventory is incomplete or a sibling app uses it; mounted/in-use images are excluded from default cleanup and each remaining image still requires user selection."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-044",
+        "CM-045"
+      ],
+      "sources": [
+        "editions",
+        "safety",
+        "local_app"
+      ]
+    },
+    {
+      "id": "CM-047",
+      "title": "App update discovery and verified installation",
+      "group": "Applications",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "CleanMyMac detects App Store/macOS updates but cannot install them; it supports other update sources.",
+      "implementation": [
+        "Classify source before comparing versions: Homebrew-owned casks, verified Sparkle feeds, approved vendor sources, App Store, or unsupported.",
+        "Prefer the application's updater or owning package manager; verify feed URL provenance, signatures/checksums, architecture, OS minimum, release channel, and paid-major-version implications.",
+        "Separate read-only detection from download/install, app quit, relaunch, and OS/App Store handoff. Never run a feed-provided shell command."
+      ],
+      "acceptance": [
+        "Version comparison handles vendor schemes without lexical sorting.",
+        "A signed-app update preserves trust and has a failure/recovery path.",
+        "App Store and OS updates are displayed with a truthful native handoff; no claim that every app is supported."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008",
+        "CM-044"
+      ],
+      "sources": [
+        "update",
+        "sparkle",
+        "brew"
+      ]
+    },
+    {
+      "id": "CM-048",
+      "title": "Large and old file discovery",
+      "group": "My Clutter",
+      "phase": "P1",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "CleanMyMac lists files at least 50 MB and groups by type, size, and access date.",
+      "implementation": [
+        "Use shared inventory with configurable size/date filters and selected home/folder/external scopes. Use 50 MB as an optional documented parity preset, not a universal definition of junk.",
+        "Display modification, creation, and available last-used dates separately; reading/access metadata is not reliable proof the file is unwanted.",
+        "Exclude package internals, backups, and cloud placeholders from generic cleanup; use exact selection and native Trash."
+      ],
+      "acceptance": [
+        "Missing access dates remain unknown.",
+        "Large source files and archives are never auto-selected solely by size.",
+        "A changed file is skipped and Trash retention is reported accurately."
+      ],
+      "depends": [
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "large"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Explicit local file review; age or size never automatically selects a file.",
+        "tests": [
+          "test_cli.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-049",
+      "title": "Exact duplicate finder and keeper selection",
+      "group": "My Clutter",
+      "phase": "P1",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "My Clutter groups duplicate files; the documented display threshold is above 100 KB.",
+      "implementation": [
+        "Group by size, then bounded partial hashes, then full cryptographic hashes and a final content/identity check before applying a plan.",
+        "Skip same-inode hard links; explain APFS clone allocation uncertainty. Keep at least one verified copy and let users choose keeper priority by location.",
+        "Preserve meaningful xattrs/resource forks, permissions, provenance, and application context; byte equality alone does not make an app component disposable."
+      ],
+      "acceptance": [
+        "Same-name different-content files never match.",
+        "Removing all copies is rejected; a vanished keeper invalidates the plan.",
+        "Cross-volume copies, sparse files, concurrent edits, and retained metadata differences have fixtures."
+      ],
+      "depends": [
+        "CM-002",
+        "CM-003",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "duplicates"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Exact local-file duplicates with retained keepers; no cloud hydration or similar-image matching.",
+        "tests": [
+          "test_duplicates.py",
+          "test_duplicate_workflow.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-050",
+      "title": "Similar-image grouping and visual review",
+      "group": "My Clutter",
+      "phase": "P2",
+      "feasibility": "native-helper",
+      "status": "planned",
+      "evidence": "CleanMyMac groups similar images separately from exact duplicates.",
+      "implementation": [
+        "Use local perceptual hashes for candidate generation and evaluate Vision feature-print distances for near-duplicate ranking.",
+        "Normalize orientation, respect color/alpha differences, bound image decode size, and version algorithms/thresholds. Handle HEIC/RAW/Live Photo assets through appropriate adapters.",
+        "Show previews, dimensions, capture date, quality hints, and selected keeper; similarity never authorizes automatic deletion."
+      ],
+      "acceptance": [
+        "Visually related but distinct images require human selection.",
+        "Rotated/resized copies, transparency, malformed images, and different scenes validate false-positive behavior.",
+        "Model/revision changes invalidate old similarity scores without silently changing selections."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "similar",
+        "vision"
+      ]
+    },
+    {
+      "id": "CM-051",
+      "title": "Downloads by source, age, and file type",
+      "group": "My Clutter",
+      "phase": "P1",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Downloads groups files attributed to Safari, Chrome, and Slack.",
+      "implementation": [
+        "Inventory chosen Downloads locations and supported per-app locations; use provenance metadata/history only when authorized and available.",
+        "Label unattributed files as unknown source; do not infer the originating app from an extension. Detect active/incomplete downloads and browser activity.",
+        "Offer installer/archive/media filters and duplicate integration while preserving browser history unless that separate privacy action is chosen."
+      ],
+      "acceptance": [
+        "Partial downloads and selected keepers survive.",
+        "Custom download paths and unknown provenance remain usable.",
+        "A download surfaced by multiple modules results in one action."
+      ],
+      "depends": [
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-049"
+      ],
+      "sources": [
+        "downloads"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Selected Downloads file inventory; download-origin attribution is not implemented.",
+        "tests": [
+          "test_cli.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-052",
+      "title": "Photos library integration for duplicate and similar-image review",
+      "group": "My Clutter",
+      "phase": "P3",
+      "feasibility": "native-helper",
+      "status": "planned",
+      "evidence": "CleanMyMac distinguishes Photos assets from ordinary image files when deleting.",
+      "implementation": [
+        "Use PhotoKit authorization and stable asset identifiers; never traverse or mutate a .photoslibrary package as ordinary cleanup data.",
+        "Account for limited permissions, edits, RAW+JPEG pairs, Live Photos, shared albums, and cloud-only originals. Do not trigger downloads without an explicit expanded scope.",
+        "Use Photos change requests/native confirmation for selected asset deletion and explain iCloud synchronization and Recently Deleted recovery."
+      ],
+      "acceptance": [
+        "An asset deletion does not remove another component of a different Live Photo.",
+        "Limited-library permissions produce partial coverage.",
+        "Photo-library originals and databases are never modified with raw filesystem deletion."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008",
+        "CM-049",
+        "CM-050"
+      ],
+      "sources": [
+        "duplicates",
+        "similar",
+        "photos"
+      ]
+    },
+    {
+      "id": "CM-053",
+      "title": "Storage map, hidden files, and folder drilldown",
+      "group": "Space Lens",
+      "phase": "P1",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Space Lens maps files and folders on selected drives or folders. SpaceLensScanning has Full Disk Access, protected-file, cloud-root, directory-enumeration, and volume-backup-size references. FileManagerService separately exposes logical size and physical-size metadata. The inspection does not establish how these are reconciled at runtime.",
+      "implementation": [
+        "Aggregate the shared inventory into a size-sorted tree with hidden-item toggle, breadcrumbs, search, and parent/child selection reconciliation.",
+        "Render a text table on all hosts; offer a local static HTML treemap with no remote scripts when useful. Escape all filenames and disable actions embedded in reports.",
+        "Keep logical/allocated/unknown totals distinct and route cleanup back through the common plan rather than deleting from a report.",
+        "Show partial-coverage and protected/unreadable indicators on each affected tree branch, carrying size provenance from CM-003. Keep snapshot/backup estimates and cloud-local allocation separate from traversed file totals.",
+        "Make UI aggregation reuse the shared inventory; a metadata-based physical-size estimate must not imply that deleting a parent releases all displayed bytes."
+      ],
+      "acceptance": [
+        "Parent and child selections cannot double-count or double-delete.",
+        "Hidden files remain visible without implying they are disposable.",
+        "The text fallback supports the same drilldown and selection choices as the visual artifact.",
+        "A partially denied tree, cloud placeholders, hard links, and snapshot/shared-allocation fixtures render known, unknown, and separately estimated amounts without double counting or implicit hydration."
+      ],
+      "depends": [
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-006"
+      ],
+      "sources": [
+        "space",
+        "eviction",
+        "local_app",
+        "full_disk_access"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Local inventory and size reporting; allocated estimates are not guaranteed reclaimable space.",
+        "tests": [
+          "test_inventory.py",
+          "test_cli.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-054",
+      "title": "Cloud account adapters and action semantics",
+      "group": "Cloud Cleanup",
+      "phase": "P3",
+      "feasibility": "build",
+      "status": "planned",
+      "evidence": "Cloud Cleanup separates cloud deletion from freeing local synced storage.",
+      "implementation": [
+        "Define provider-neutral metadata, pagination, ownership, version, hydration, local-presence, recycle/restore, and capability contracts.",
+        "Use per-account OAuth with minimum necessary scopes, state/PKCE where applicable, OS Keychain token storage, revocation/disconnect, bounded retries, and no token output to agents.",
+        "Use distinct action types for local eviction and cloud deletion. Bind each plan to account, stable item IDs, versions, sharing impact, and provider recovery policy."
+      ],
+      "acceptance": [
+        "Local-only intent cannot reach a cloud-delete endpoint.",
+        "Expired tokens and partial pagination never appear as a complete scan.",
+        "OAuth scope upgrades and a changed account cannot reuse a prior plan approval."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-004",
+        "CM-005",
+        "CM-007",
+        "CM-008"
+      ],
+      "sources": [
+        "cloud",
+        "oauth"
+      ]
+    },
+    {
+      "id": "CM-055",
+      "title": "iCloud Drive inventory, eviction, and deletion",
+      "group": "Cloud Cleanup",
+      "phase": "P3",
+      "feasibility": "native-helper",
+      "status": "planned",
+      "evidence": "CleanMyMac connects to the Mac's configured iCloud Drive rather than a web login.",
+      "implementation": [
+        "Discover the native user's iCloud Drive with supported metadata APIs; handle placeholders without content reads. Do not treat CloudKit as an API to enumerate all personal iCloud Drive files.",
+        "Use FileManager.evictUbiquitousItem only after verifying uploaded/current state and supported access; keep deletion as a distinct synced operation.",
+        "Provide Finder Remove Download/native management handoff for inaccessible or unsupported cases; never use rm as an eviction substitute."
+      ],
+      "acceptance": [
+        "A local eviction preserves the remote file.",
+        "An upload-pending or conflicted file cannot be evicted.",
+        "An unavailable iCloud account is not replaced by a private/password-scraping API."
+      ],
+      "depends": [
+        "CM-054"
+      ],
+      "sources": [
+        "icloud",
+        "eviction"
+      ]
+    },
+    {
+      "id": "CM-056",
+      "title": "Google Drive cleanup adapter",
+      "group": "Cloud Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Google Drive is a supported Cloud Cleanup provider.",
+      "implementation": [
+        "Enumerate Drive API v3 metadata with pagination, explicit fields, drive/account scope, shared-drive ownership, capabilities, and shortcut handling.",
+        "Trash selected eligible items with files.update trashed=true; do not use files.delete for routine cleanup. Revalidate item state before mutation; document residual races if no conditional operation is available.",
+        "Local online-only conversion requires the sync client's supported workflow; the cloud REST API does not itself evict a local cached file. Address restricted scopes for whole-drive discovery."
+      ],
+      "acceptance": [
+        "Shared and read-only files cannot be silently removed.",
+        "Shortcuts and their targets are not conflated.",
+        "The receipt distinguishes cloud trash, restoration window, and local eviction/manual work."
+      ],
+      "depends": [
+        "CM-054"
+      ],
+      "sources": [
+        "cloud",
+        "drive",
+        "oauth"
+      ]
+    },
+    {
+      "id": "CM-057",
+      "title": "OneDrive cleanup adapter",
+      "group": "Cloud Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "OneDrive is a supported Cloud Cleanup provider.",
+      "implementation": [
+        "Enumerate Graph drives and children/delta metadata with pagination and account/drive IDs; handle shared items and permissions.",
+        "Use supported DriveItem deletion to the recycle bin with If-Match version preconditions; do not bypass shared locks or checkout.",
+        "Delegate local space reclamation to supported OneDrive/File Provider mechanisms or a native UI handoff, without deleting the synced file."
+      ],
+      "acceptance": [
+        "A stale eTag returns a changed-item result rather than a forced delete.",
+        "Personal and work accounts remain isolated.",
+        "Locked/shared items and recycle-bin outcomes are verified per account policy."
+      ],
+      "depends": [
+        "CM-054"
+      ],
+      "sources": [
+        "cloud",
+        "onedrive"
+      ]
+    },
+    {
+      "id": "CM-058",
+      "title": "Dropbox cleanup adapter",
+      "group": "Cloud Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Dropbox is a supported Cloud Cleanup provider.",
+      "implementation": [
+        "Use paginated list_folder metadata, stable IDs, revisions, sharing/lock flags, and content hashes; distinguish team namespaces and personal folders.",
+        "Validate delete_v2/restore behavior and revision preconditions against the current API before enabling mutation. Do not assume unlimited retention or permanent-delete access.",
+        "Use Dropbox's supported online-only UI/API for local eviction; filesystem deletion is a remote change, not a storage-only operation."
+      ],
+      "acceptance": [
+        "Cursor pagination and moves preserve identity.",
+        "Changed revisions and team restrictions prevent stale actions.",
+        "A disposable account verifies delete/restore and records its recovery limit."
+      ],
+      "depends": [
+        "CM-054"
+      ],
+      "sources": [
+        "cloud",
+        "dropbox"
+      ]
+    },
+    {
+      "id": "CM-059",
+      "title": "Browser tab inventory, duplicates, and old tabs",
+      "group": "Browser Care",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Browser Care finds same-address duplicates and tabs older than a chosen threshold.",
+      "implementation": [
+        "Use a scoped Chrome extension/native-messaging bridge or a host browser connector with equivalent tab capabilities; keep profiles and Incognito separate.",
+        "Track tab IDs, windows, URLs, pinned/audible/active state, and observed creation time; pre-install tab age is unknown unless the browser provides it.",
+        "Review exact-URL duplicates and configurable age groups; keep a chosen copy, allow filtering/grouping, and preview closures. Revalidate tab IDs to prevent closing a replacement tab."
+      ],
+      "acceptance": [
+        "Auth query strings and fragments are not discarded by aggressive URL normalization.",
+        "Pinned, media, form, and active tabs require an explicit decision.",
+        "Unknown age and cross-profile tabs cannot be silently classified as old duplicates."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-006",
+        "CM-008"
+      ],
+      "sources": [
+        "browser",
+        "tabs"
+      ]
+    },
+    {
+      "id": "CM-060",
+      "title": "Pause, resume, close, and recover browser tabs",
+      "group": "Browser Care",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Browser Care supports pausing, resuming, and closing tabs.",
+      "implementation": [
+        "Use supported tabs.discard for eligible tabs, reload/activate for resume, and selected tab removal for close; document that discarding may cause a later reload.",
+        "Distinguish reversible discard from closure and from possible loss of unsaved form state. Avoid claiming that tab reopen fully restores in-page state.",
+        "Provide a closure receipt with safe reopen references and native session restore where supported; do not persist sensitive full URLs unnecessarily."
+      ],
+      "acceptance": [
+        "A nondiscardable tab reports unavailable rather than forced closure.",
+        "A user can discard and resume a test tab with clear state semantics.",
+        "A navigation between review and execution invalidates that selected action."
+      ],
+      "depends": [
+        "CM-059"
+      ],
+      "sources": [
+        "browser",
+        "tabs"
+      ]
+    },
+    {
+      "id": "CM-061",
+      "title": "Browser CPU and memory attribution",
+      "group": "Browser Care",
+      "phase": "P3",
+      "feasibility": "research",
+      "status": "planned",
+      "evidence": "Browser Care reports browser and per-tab resource use.",
+      "implementation": [
+        "Prototype process-to-tab attribution using supported native/browser interfaces. Chrome's processes API is documented as Dev-channel-only; do not promise stable-extension access.",
+        "Account for shared renderers, extensions, cross-origin frames, and sampling windows; browser-total metrics can ship independently.",
+        "Use a Task Manager handoff or 'unavailable' per-tab values where no reliable API exists; do not label a process total as a single tab's usage."
+      ],
+      "acceptance": [
+        "Shared renderer memory is not summed once per tab.",
+        "Stable Chrome works without relying on Dev-only API availability.",
+        "Measurements include timestamp, scope, and unknown attribution."
+      ],
+      "depends": [
+        "CM-059",
+        "CM-069",
+        "CM-070"
+      ],
+      "sources": [
+        "browser",
+        "processes"
+      ]
+    },
+    {
+      "id": "CM-062",
+      "title": "Screen Cleaning Mode native companion",
+      "group": "My Tools",
+      "phase": "P3",
+      "feasibility": "native-helper",
+      "status": "planned",
+      "evidence": "The current release notes describe a two-minute keyboard/trackpad lock across displays.",
+      "implementation": [
+        "Build an optional foreground native overlay and input-control helper; the text skill alone cannot guarantee event suppression.",
+        "Evaluate event taps, permission requirements, secure-input limitations, and monitor hot-plug behavior. Never alter login security or disable input devices persistently.",
+        "Provide an independent watchdog, maximum two-minute timeout, deliberate escape gesture, visible countdown, and immediate cleanup on crash, sleep, permission loss, or process exit."
+      ],
+      "acceptance": [
+        "A disposable multi-display test confirms automatic release without an agent reply.",
+        "Failure to establish reliable input control prevents entering the mode.",
+        "Emergency exit and process termination both restore normal input."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-006",
+        "CM-008"
+      ],
+      "sources": [
+        "release",
+        "eventtap"
+      ]
+    },
+    {
+      "id": "CM-063",
+      "title": "Gmail connection and metadata-only inventory",
+      "group": "Email Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Email Cleanup currently supports Gmail and analyzes metadata rather than message bodies.",
+      "implementation": [
+        "Implement personal-account OAuth with Keychain storage, reconnect/disconnect, pagination, stable message IDs, labels, sender/List headers, internal date, and size estimates.",
+        "Use metadata-only fetching by default; gmail.metadata does not support all search conveniences, so verify query support or filter locally. A modification scope can grant broader access than the app uses; explain the exact grant.",
+        "Do not download bodies/attachments or send messages. Return partial scope and token expiry without losing completed scan state."
+      ],
+      "acceptance": [
+        "Fixtures verify no message-body or attachment endpoint is called during scan.",
+        "Two accounts with identical message IDs cannot cross-mutate.",
+        "Restricted-scope verification and user-owned development OAuth options are documented before release."
+      ],
+      "depends": [
+        "CM-054",
+        "CM-007"
+      ],
+      "sources": [
+        "email",
+        "gmail_scopes",
+        "oauth",
+        "gmail_list"
+      ]
+    },
+    {
+      "id": "CM-064",
+      "title": "Email Smart Cleanup suggestions",
+      "group": "Email Cleanup",
+      "phase": "P3",
+      "feasibility": "build",
+      "status": "planned",
+      "evidence": "Smart Cleanup groups old promotions, automated, unread, archived, and high-volume senders.",
+      "implementation": [
+        "Build transparent metadata rules for the documented age presets: promotions older than six months, automated older than one month, unread older than three months, archived items, and top senders.",
+        "Label automated/newsletter classification confidence and make filters configurable; archived or unread does not imply unneeded.",
+        "Show per-group and unique selected counts, partial-scan progress, and evidence. Feed action selection into the shared email action handlers."
+      ],
+      "acceptance": [
+        "Overlapping suggestions never double-count messages.",
+        "Boundary dates/timezones and already-trashed messages have fixtures.",
+        "No suggestion automatically deletes a user's mail."
+      ],
+      "depends": [
+        "CM-063",
+        "CM-004"
+      ],
+      "sources": [
+        "email_smart"
+      ]
+    },
+    {
+      "id": "CM-065",
+      "title": "Newsletter review and unsubscribe actions",
+      "group": "Email Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Email Cleanup offers newsletter and subscription review with unsubscribe options.",
+      "implementation": [
+        "Group senders and List-ID metadata; use RFC 8058 one-click headers only after explicit sender/action selection and validation of authentication evidence.",
+        "Separate archive/trash from unsubscribe; record partial success for combined actions. Treat header URLs as untrusted: HTTPS, SSRF protections, redirect policy, and no arbitrary body-link clicking.",
+        "Mailto unsubscribe sends a message and requires explicit authorization; unsupported mechanisms receive a native handoff. Do not unsubscribe merely while scanning."
+      ],
+      "acceptance": [
+        "A scan performs no unsubscribe request.",
+        "A localhost/private-network or redirecting unsubscribe target cannot access local services.",
+        "Unsubscribe success is reported separately from message cleanup; absence of confirmation is not fabricated."
+      ],
+      "depends": [
+        "CM-063",
+        "CM-004",
+        "CM-005",
+        "CM-068"
+      ],
+      "sources": [
+        "email",
+        "unsubscribe"
+      ]
+    },
+    {
+      "id": "CM-066",
+      "title": "Spam review and cleanup",
+      "group": "Email Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Email Cleanup includes messages already classified as spam.",
+      "implementation": [
+        "Read the provider's spam labels instead of inventing a spam classifier. Allow sender/date/size filters and native inspection.",
+        "Default to trashing the explicitly selected message IDs with current permissions; any permanent purge is a distinct action with provider-specific semantics.",
+        "Revalidate labels/state before action so messages the user rescued during review are skipped."
+      ],
+      "acceptance": [
+        "A rescued message is not removed by a stale plan.",
+        "Scanning spam does not open links or attachments.",
+        "Partial batch failures are reported per message without an all-success claim."
+      ],
+      "depends": [
+        "CM-063",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "email",
+        "gmail_modify",
+        "gmail_trash"
+      ]
+    },
+    {
+      "id": "CM-067",
+      "title": "Draft review and explicit deletion",
+      "group": "Email Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Email Cleanup includes removal of unused drafts.",
+      "implementation": [
+        "Inventory draft IDs and minimal metadata; treat drafts as authored user content and show last-change information.",
+        "Gmail documents drafts.delete as immediate, permanent deletion. Present it as a distinct irreversible action, never as moving mail to Trash; validate actual behavior in a disposable account before enabling it.",
+        "Revalidate draft/message identity and modification state immediately before action; exclude a draft currently being edited when detectable."
+      ],
+      "acceptance": [
+        "Newly edited drafts are skipped.",
+        "No body content is needed for default listing.",
+        "A disposable-account test establishes deletion behavior before capability is enabled."
+      ],
+      "depends": [
+        "CM-063",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "email",
+        "gmail_drafts"
+      ]
+    },
+    {
+      "id": "CM-068",
+      "title": "Sender-based mail review, archive, trash, and restore",
+      "group": "Email Cleanup",
+      "phase": "P3",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "Email Cleanup allows per-sender review and separate archive/trash actions.",
+      "implementation": [
+        "Provide search/sort/grouping with exact account/message IDs, avoiding thread-wide actions that affect unselected mail.",
+        "Archive by removing INBOX, trash through the provider's supported operation, and store prior labels for possible restoration. Protect selected-important/starred exclusions.",
+        "Recheck message state, chunk requests, honor rate limits, and expose recovery limits; moving mail changes server state, not just local disk usage."
+      ],
+      "acceptance": [
+        "Archiving selected messages leaves other messages in the same thread unchanged.",
+        "Retries do not expand the selected set.",
+        "Restore handles independently changed labels without clobbering the user's newer work."
+      ],
+      "depends": [
+        "CM-063",
+        "CM-004",
+        "CM-005"
+      ],
+      "sources": [
+        "email",
+        "gmail_modify",
+        "gmail_trash"
+      ]
+    },
+    {
+      "id": "CM-069",
+      "title": "CPU activity, heavy consumers, and unresponsive apps",
+      "group": "Monitoring",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The Menu includes processor monitoring and alerts for unresponsive apps.",
+      "implementation": [
+        "Use bounded native process samples/ps where validated, recording PID plus start time, CPU interval, app identity, and system load.",
+        "Offer quit, force-quit, and relaunch as separate selected actions; distinguish observed high load from confirmed unresponsiveness.",
+        "Protect critical system and current-agent processes; require unsaved-work consequences for force quit."
+      ],
+      "acceptance": [
+        "PID reuse cannot target a different process.",
+        "A busy compiler is not automatically labeled hung.",
+        "No process termination occurs from a monitoring scan."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-004",
+        "CM-005",
+        "CM-008"
+      ],
+      "sources": [
+        "menu"
+      ]
+    },
+    {
+      "id": "CM-070",
+      "title": "Memory pressure and process memory monitoring",
+      "group": "Monitoring",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The Menu includes RAM monitoring.",
+      "implementation": [
+        "Sample host VM statistics and process memory with timestamps and documented units; include compressed memory, pressure, swap, and free/cache distinctions.",
+        "Explain that shared resident pages and per-process totals do not necessarily sum to system physical RAM.",
+        "Present actionable process candidates through the quit/relaunch executor without automatically purging memory."
+      ],
+      "acceptance": [
+        "Memory figures use runtime page size and correct byte conversions.",
+        "Unavailable pressure signals remain unknown.",
+        "Sampling does not induce memory pressure or change VM settings."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-008"
+      ],
+      "sources": [
+        "menu"
+      ]
+    },
+    {
+      "id": "CM-071",
+      "title": "Storage health and low-space monitoring",
+      "group": "Monitoring",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The Menu includes internal/external storage monitoring.",
+      "implementation": [
+        "Read supported volume capacity and disk health metadata (for example diskutil plist output), keeping APFS containers, volumes, and external mounts distinct.",
+        "Report SMART/health availability honestly; SSD wear or health may be unavailable through a bridge. Do not derive a fake health percentage.",
+        "Link low-space findings to an explicitly chosen scan; avoid automatic volume repair."
+      ],
+      "acceptance": [
+        "Shared APFS capacity is not summed across volumes.",
+        "An external enclosure with no health telemetry shows unknown.",
+        "A disk identity change invalidates prior thresholds and action plans."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-008"
+      ],
+      "sources": [
+        "menu",
+        "eviction"
+      ]
+    },
+    {
+      "id": "CM-072",
+      "title": "Battery condition, cycle, and drain monitoring",
+      "group": "Monitoring",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The Menu includes battery status and drain alerts.",
+      "implementation": [
+        "Use supported power-source and battery metadata, with OS/model-specific IOKit or system reporting adapters as needed.",
+        "Display condition, charge, cycles, power source, and sampled drain; availability and estimation quality accompany each measurement.",
+        "Relate heavy app use to CPU samples without claiming proof of causation or altering power settings."
+      ],
+      "acceptance": [
+        "Desktop Macs report no internal battery rather than zero health.",
+        "Charging transitions and unsupported counters do not create false drain alerts.",
+        "No private battery data beyond the selected report is exposed."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-008",
+        "CM-069"
+      ],
+      "sources": [
+        "menu"
+      ]
+    },
+    {
+      "id": "CM-073",
+      "title": "Network activity and optional speed checks",
+      "group": "Monitoring",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The Menu includes network monitoring.",
+      "implementation": [
+        "Sample interface byte counters and active connectivity with interval/delta handling; keep local traffic reporting independent of remote tests.",
+        "Make speed tests optional network operations with disclosed endpoints and data usage. Use supported native tools only after capability checks.",
+        "Never capture packet payloads, DNS history, or credentials for a basic health report."
+      ],
+      "acceptance": [
+        "Counter reset/interface changes cannot produce negative or absurd speeds.",
+        "An offline scan makes no hidden speed-test request.",
+        "VPN and multiple-interface traffic are labeled rather than double-counted."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-008"
+      ],
+      "sources": [
+        "menu"
+      ]
+    },
+    {
+      "id": "CM-074",
+      "title": "Connected-device storage and battery overview",
+      "group": "Monitoring",
+      "phase": "P2",
+      "feasibility": "conditional",
+      "status": "planned",
+      "evidence": "The Menu includes connected-device monitoring.",
+      "implementation": [
+        "Discover selected external storage and supported Bluetooth/mobile device metadata through OS interfaces; keep trusted pairing requirements visible.",
+        "Expose capacity, mount identity, and battery only where the device supplies them. Avoid private pairing databases and automatic device connections.",
+        "Route cleanup to a chosen external-volume scan; a device's cloud or backup data is a separate scope."
+      ],
+      "acceptance": [
+        "Unsupported Bluetooth battery readings remain unknown.",
+        "Unplugging a device ends its pending scan cleanly.",
+        "Device serial numbers are omitted from ordinary agent-visible summaries."
+      ],
+      "depends": [
+        "CM-001",
+        "CM-003",
+        "CM-008"
+      ],
+      "sources": [
+        "menu"
+      ]
+    },
+    {
+      "id": "CM-075",
+      "title": "Mac health, activity statistics, and explainable insights",
+      "group": "Core experience",
+      "phase": "P2",
+      "feasibility": "build",
+      "status": "partial",
+      "evidence": "Mac health considers storage, battery, threats, app updates, and other factors.",
+      "implementation": [
+        "Build an evidence-based status summary with per-factor measurements, timestamps, source, and coverage; keep any score transparent and optional.",
+        "Use the session ledger for scans, actions, bytes actually freed, and pending recovery. Explain recommendations from deterministic evidence before optional language-model wording.",
+        "Do not score users negatively for declining a permission, agent service, or subscription; never infer absence of malware from an unperformed scan."
+      ],
+      "acceptance": [
+        "Every recommendation links to evidence and an available action.",
+        "Missing factors remain unknown instead of improving the score.",
+        "Totals distinguish selected, moved-to-Trash, permanently removed, and measured-free-space changes."
+      ],
+      "depends": [
+        "CM-007",
+        "CM-009",
+        "CM-027",
+        "CM-047",
+        "CM-069",
+        "CM-070",
+        "CM-071",
+        "CM-072",
+        "CM-073",
+        "CM-074"
+      ],
+      "sources": [
+        "health"
+      ],
+      "runtime": {
+        "release": "0.1.0",
+        "scope": "Read-only system overview; no continuous health monitor or automated optimization.",
+        "tests": [
+          "test_adapters.py"
+        ],
+        "acceptance_complete": false
+      }
+    },
+    {
+      "id": "CM-076",
+      "title": "Opt-in schedules, alerts, and background lifecycle",
+      "group": "Core experience",
+      "phase": "P3",
+      "feasibility": "build",
+      "status": "planned",
+      "evidence": "The Menu provides resource, storage, update, and protection alerts.",
+      "implementation": [
+        "Implement explicit opt-in local schedules and notifications for selected thresholds, with quiet periods, deduplication, battery/load policy, and inspect/disable/uninstall controls.",
+        "Cover low disk/external space, Trash volume, high memory, unresponsive apps, battery/device drain, app-update availability, and supported malware detections.",
+        "Schedules authorize scanning/notification only unless a separately designed narrowly scoped action policy exists; reminders must not silently clean or connect accounts."
+      ],
+      "acceptance": [
+        "Invoking the skill does not install a LaunchAgent.",
+        "A user can remove all CleanMac persistence without removing personal data.",
+        "Alert wording reflects measured evidence and avoids repeat notifications or fabricated urgency."
+      ],
+      "depends": [
+        "CM-007",
+        "CM-029",
+        "CM-075"
+      ],
+      "sources": [
+        "menu",
+        "service"
+      ]
+    }
+  ],
+  "runtime_release": "0.1.0",
+  "validation": {
+    "date": "2026-11-13",
+    "platform": "macOS 27.2.1 arm64",
+    "python": "3.14.7",
+    "swift": "6.4.2",
+    "suite": {
+      "command": "python3 -m unittest discover -s b/skills/cleanmac/tests -q",
+      "tests": 267,
+      "passed": 266,
+      "skipped": 1
+    },
+    "native_integration": "Explicit live preflight verified host Trash access denial before any file moves; full product Trash/restore roundtrip remains unverified under current host permissions. Earlier generated fixture was restored and removed.",
+    "other_checks": [
+      "skill-creator quick_validate",
+      "Python bytecode compilation",
+      "shell syntax",
+      "git diff whitespace",
+      "native build and external output build",
+      "installed skill symlink invocation"
+    ],
+    "compatibility_limits": "Other macOS versions, Intel, and full Claude/Kimi conversational host runs are unverified."
+  }
+}
