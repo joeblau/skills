@@ -2,7 +2,7 @@
   "schema_version": 1,
   "researched_at": "2026-11-13",
   "product": "CleanMac",
-  "implementation_status": "initial-local-runtime",
+  "implementation_status": "expanded-tool-workflows",
   "baseline": "CleanMyMac 5.7.4 public documentation and the user's ten screenshots; full MacPaw Store/Setapp functionality; supplemented by read-only static inspection of installed CleanMyMac 5.7.4 build 50704.0.2611060828",
   "features": [
     {
@@ -35,13 +35,25 @@
         "apple_sandbox"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Selected-root access and runtime preflight; not a global permission audit.",
-        "tests": [
-          "test_permissions.py",
-          "test_cli.py"
+        "release": "0.2.0",
+        "scope": "Runtime and explicit-root permission preflight; global TCC/sandbox grants remain unknown.",
+        "tools": [
+          "setup"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "setup": [
+            "inspect",
+            "smoke"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cli.py",
+          "test_permission_workflow.py",
+          "test_permissions.py",
+          "test_setup_tools.py"
+        ]
       }
     },
     {
@@ -74,12 +86,17 @@
         "local_app"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Only the bundled reviewed rules; unknown layouts remain report-only.",
+        "release": "0.2.0",
+        "scope": "Ten versioned rules; npm blobs and retained .ips reports have conditional handlers; unknown layouts remain report-only.",
+        "tools": [],
+        "actions_by_tool": {},
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
         "tests": [
+          "test_rule_execution.py",
           "test_rules.py"
         ],
-        "acceptance_complete": false
+        "core_command": "rules"
       }
     },
     {
@@ -113,12 +130,19 @@
         "local_app"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Bounded metadata inventory of selected local roots; partial coverage is explicit.",
+        "release": "0.2.0",
+        "scope": "Descriptor-anchored local inventory and honest allocation; native bulk-enumeration comparison remains a separate performance gate.",
+        "tools": [],
+        "actions_by_tool": {},
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
         "tests": [
+          "test_adapter_scope_review.py",
+          "test_adapters.py",
+          "test_incomplete_downloads.py",
           "test_inventory.py"
         ],
-        "acceptance_complete": false
+        "core_command": "scan"
       }
     },
     {
@@ -146,12 +170,28 @@
       ],
       "sources": [],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Explicit regular-file selections only; protected items and unsupported actions are rejected.",
-        "tests": [
-          "test_plans.py"
+        "release": "0.2.0",
+        "scope": "Exact local and specialized action plans bind selection, keeper, identity, account, revisions, effects and approval digest.",
+        "tools": [
+          "duplicates"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "duplicates": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_actions.py",
+          "test_cross_tool_workflow.py",
+          "test_duplicate_workflow.py",
+          "test_plan_execution.py",
+          "test_plans.py",
+          "test_retention.py"
+        ]
       }
     },
     {
@@ -186,13 +226,20 @@
         "safety"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Native Trash helper and same-volume private capture required; no permanent deletion.",
+        "release": "0.2.0",
+        "scope": "Local native Trash and recovery plus durable specialized action receipts; live host Trash access remains a validation gate.",
+        "tools": [],
+        "actions_by_tool": {},
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
         "tests": [
+          "test_actions.py",
           "test_executor.py",
-          "test_native.py"
+          "test_native.py",
+          "test_native_roundtrip.py",
+          "test_retention.py"
         ],
-        "acceptance_complete": false
+        "core_command": "apply / restore"
       }
     },
     {
@@ -220,13 +267,20 @@
       ],
       "sources": [],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Interactive local-file workflow; advanced categories remain unavailable.",
+        "release": "0.2.0",
+        "scope": "Conversational JSON CLI and terminal My Tools review/plan/apply/resume, including exact remote scope IDs.",
+        "tools": [],
+        "actions_by_tool": {},
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
         "tests": [
-          "test_review.py",
-          "test_forward_workflow.py"
+          "test_cli.py",
+          "test_cross_tool_workflow.py",
+          "test_extensions.py",
+          "test_forward_workflow.py",
+          "test_review.py"
         ],
-        "acceptance_complete": false
+        "core_command": "review"
       }
     },
     {
@@ -255,12 +309,19 @@
         "tools"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Private local sessions, plans, and receipts; no remote account history.",
+        "release": "0.2.0",
+        "scope": "Private durable records, atomic shared settings, preserved ambiguous outcomes, and executor-locked history retention. Active OAuth records and recovery-referenced plans cannot be forgotten; disconnected accounts require a noninteractive credential-absence check.",
+        "tools": [],
+        "actions_by_tool": {},
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
         "tests": [
+          "test_actions.py",
+          "test_atomic_settings.py",
+          "test_retention.py",
           "test_state.py"
         ],
-        "acceptance_complete": false
+        "core_command": "history"
       }
     },
     {
@@ -299,12 +360,24 @@
         "local_app"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Disposable behavior and integration test suite; broader OS/architecture/host coverage remains unverified.",
-        "tests": [
-          "tests/"
+        "release": "0.2.0",
+        "scope": "Expanded disposable provider/native/CLI fixtures and ARM/Intel/minimum-Python CI configuration; remote CI executions and real agent-host matrix are separate evidence.",
+        "tools": [
+          "setup"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "setup": [
+            "inspect",
+            "smoke"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_adapters.py",
+          "test_catalog_coverage.py",
+          "test_setup_tools.py"
+        ]
       }
     },
     {
@@ -334,13 +407,25 @@
         "smart"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Launch cleanmac with no subcommand for the interactive menu. Selected local storage areas only; no malware, updates, or maintenance automation.",
-        "tests": [
-          "test_review.py",
-          "test_cli.py"
+        "release": "0.2.0",
+        "scope": "One shared local inventory plus explicitly selected malware, update, health and maintenance checks; actions remain independently reviewed.",
+        "tools": [
+          "smart-care"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "smart-care": [
+            "inspect",
+            "review"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cli.py",
+          "test_cross_tool_workflow.py",
+          "test_lifecycle_tools.py",
+          "test_review.py"
+        ]
       }
     },
     {
@@ -370,13 +455,33 @@
         "tools"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Persistent ignores and saved reviews/history are supported; favorites and named scan presets are not implemented.",
+        "release": "0.2.0",
+        "scope": "Named scopes, favorites, persistent ignores, saved selections and schedule snapshots with directory-identity binding.",
+        "tools": [
+          "favorites",
+          "saved-scopes"
+        ],
+        "actions_by_tool": {
+          "favorites": [
+            "inspect",
+            "add",
+            "remove"
+          ],
+          "saved-scopes": [
+            "inspect",
+            "save",
+            "remove",
+            "run"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
         "tests": [
           "test_cli.py",
-          "test_forward_workflow.py"
-        ],
-        "acceptance_complete": false
+          "test_cross_tool_workflow.py",
+          "test_forward_workflow.py",
+          "test_lifecycle_tools.py"
+        ]
       }
     },
     {
@@ -413,12 +518,24 @@
         "local_app"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Only individually eligible cache rules; a cache-folder name is not permission to remove it.",
-        "tests": [
-          "test_rules.py"
+        "release": "0.2.0",
+        "scope": "Rule-gated user cache review and exact selected-file Trash; unsupported cache formats remain protected.",
+        "tools": [
+          "user-caches"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "user-caches": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py",
+          "test_rules.py"
+        ]
       }
     },
     {
@@ -427,7 +544,7 @@
       "group": "Cleanup",
       "phase": "P2",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "System Junk also lists system caches. SystemJunkScanning exposes system-cache, Darwin-user-cache, CoreSymbolication, App Store download-cache, and system-migration-cache identifiers; the bundle also contains a privileged Agent. Their presence does not establish safe targets or current authorization.",
       "implementation": [
         "Inventory only documented, rule-approved system cache locations; distinguish system ownership from user scope.",
@@ -455,7 +572,24 @@
         "local_app",
         "privileged_agent",
         "full_disk_access"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Explicit system-cache metadata review; no generic system cache deletion.",
+        "tools": [
+          "system-caches"
+        ],
+        "actions_by_tool": {
+          "system-caches": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-013",
@@ -463,7 +597,7 @@
       "group": "Cleanup",
       "phase": "P1",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "System Junk includes user logs.",
       "implementation": [
         "Inventory known application logs and rotated crash reports under scoped user locations. Apply configurable retention and application ownership rules.",
@@ -483,7 +617,26 @@
       ],
       "sources": [
         "junk"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Conditional old user .ips crash-report cleanup with format/retention/writer/content checks and native Trash recovery.",
+        "tools": [
+          "user-logs"
+        ],
+        "actions_by_tool": {
+          "user-logs": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-014",
@@ -491,7 +644,7 @@
       "group": "Cleanup",
       "phase": "P2",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "System Junk includes system logs. SystemJunkScanning has distinct diagnostic, Apple, sandbox, user, and system-log task identifiers. MacPaw documents privileged helper use for some system-log removal, but the inspection did not reveal exact eligibility rules.",
       "implementation": [
         "Inventory eligible archived diagnostics with an OS-versioned rule catalog; expose age, owner, and event category without dumping sensitive contents.",
@@ -516,7 +669,24 @@
         "junk",
         "local_app",
         "privileged_agent"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Explicit system-log metadata review; OS-managed logs remain report-only.",
+        "tools": [
+          "system-logs"
+        ],
+        "actions_by_tool": {
+          "system-logs": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-015",
@@ -524,7 +694,7 @@
       "group": "Cleanup",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "MacPaw identifies login entries whose target application is missing.",
       "implementation": [
         "Reuse login/background inventories; resolve bookmarks, bundle identities, executable targets, and volume availability.",
@@ -545,7 +715,34 @@
       "sources": [
         "junk",
         "service"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Selected legacy login/background plist and missing-target detection; modern registrations use Settings.",
+        "tools": [
+          "background-items",
+          "login-items"
+        ],
+        "actions_by_tool": {
+          "background-items": [
+            "inspect",
+            "plan",
+            "apply"
+          ],
+          "login-items": [
+            "inspect",
+            "plan",
+            "apply",
+            "verify"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-016",
@@ -553,7 +750,7 @@
       "group": "Cleanup",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Broken Preferences group targets damaged preference files.",
       "implementation": [
         "Validate supported plist formats using plutil or a parser against read-only copies; do not equate an unfamiliar extension with corruption.",
@@ -573,7 +770,24 @@
       ],
       "sources": [
         "junk"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Bounded preference plist validation; resets remain unavailable without validated app/CFPreferences recovery.",
+        "tools": [
+          "preferences"
+        ],
+        "actions_by_tool": {
+          "preferences": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-017",
@@ -581,7 +795,7 @@
       "group": "Cleanup",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "System Junk can surface saved home archives from deleted accounts.",
       "implementation": [
         "Inventory /Users/Deleted Users and explicitly selected legacy archive locations using metadata only; verify against account records and current home roots.",
@@ -601,7 +815,24 @@
       ],
       "sources": [
         "junk"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Deleted-home archive metadata/account-name comparison; no mounting or automatic deletion.",
+        "tools": [
+          "home-archives"
+        ],
+        "actions_by_tool": {
+          "home-archives": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-018",
@@ -609,7 +840,7 @@
       "group": "Cleanup",
       "phase": "P3",
       "feasibility": "native-helper",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac exposes document revision cleanup while retaining some versions.",
       "implementation": [
         "Use NSFileVersion and NSFileCoordinator for selected documents; never delete /.DocumentRevisions-V100 directly.",
@@ -629,7 +860,27 @@
       "sources": [
         "junk",
         "versions"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Native NSFileVersion inventory and exact selected historical revision removal; current bytes and earliest revision retained.",
+        "tools": [
+          "document-versions"
+        ],
+        "actions_by_tool": {
+          "document-versions": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_native_monitoring_forward.py",
+          "test_native_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-019",
@@ -637,7 +888,7 @@
       "group": "Cleanup",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "System Junk surfaces device backups and avoids auto-selecting the latest.",
       "implementation": [
         "Read backup metadata under configured MobileSync backup roots and group complete backups by device identifier.",
@@ -657,7 +908,24 @@
       ],
       "sources": [
         "junk"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Backup metadata/encryption/completion/latest-known review and Finder handoff; no payload deletion or decryption.",
+        "tools": [
+          "device-backups"
+        ],
+        "actions_by_tool": {
+          "device-backups": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-020",
@@ -665,7 +933,7 @@
       "group": "Cleanup",
       "phase": "P3",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "System Junk advertises removal of unused language resources.",
       "implementation": [
         "Inventory .lproj resources, selected language preferences, bundle signatures, and estimated footprint without modifying bundles.",
@@ -685,7 +953,25 @@
       "sources": [
         "junk",
         "signing"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Read-only localization footprint and signing evidence; signed-bundle removal unsupported.",
+        "tools": [
+          "localizations"
+        ],
+        "actions_by_tool": {
+          "localizations": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_app_tools.py",
+          "test_maintenance_app_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-021",
@@ -693,7 +979,7 @@
       "group": "Cleanup",
       "phase": "P3",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "System Junk advertises removing unused CPU architectures.",
       "implementation": [
         "Inspect Mach-O architecture metadata and native/Rosetta requirements, including nested frameworks and helpers.",
@@ -713,7 +999,25 @@
       "sources": [
         "junk",
         "signing"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Read-only nested Mach-O architecture/compatibility review; binary slimming/signature changes unsupported.",
+        "tools": [
+          "architectures"
+        ],
+        "actions_by_tool": {
+          "architectures": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_app_tools.py",
+          "test_maintenance_app_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-022",
@@ -748,12 +1052,24 @@
         "local_app"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Read-only Xcode category inventory; simulator/runtime deletion is unavailable.",
-        "tests": [
-          "test_adapters.py"
+        "release": "0.2.0",
+        "scope": "Developer inventory and exact unavailable, shutdown simulator deletion through the selected validated simctl; broader build/runtime cleanup remains conditional/report-only.",
+        "tools": [
+          "xcode-cleanup"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "xcode-cleanup": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_adapters.py",
+          "test_cleanup_tools.py"
+        ]
       }
     },
     {
@@ -762,7 +1078,7 @@
       "group": "Cleanup",
       "phase": "P1",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "AI Clutter names Claude, Codex, Gemini, and Cursor temporary data.",
       "implementation": [
         "Create versioned adapters for actual tool cache/log layouts; inspect installed versions and documented configuration rather than treating hidden tool directories as disposable.",
@@ -783,7 +1099,24 @@
       "sources": [
         "ai",
         "safety"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "AI-data inspection preserves agent sessions, credentials, conversations and unknown layouts.",
+        "tools": [
+          "ai-data"
+        ],
+        "actions_by_tool": {
+          "ai-data": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-024",
@@ -791,7 +1124,7 @@
       "group": "Cleanup",
       "phase": "P1",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "AI Clutter lists downloaded Ollama and LM Studio models.",
       "implementation": [
         "Use Ollama inventory/running-model APIs and its model deletion operation; use lms ls --json for LM Studio and verify the installed version's supported removal workflow.",
@@ -815,7 +1148,26 @@
         "ollama_delete",
         "lmstudio",
         "hf"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Ollama inventory and approved unloaded-model deletion; LM Studio inventory and Hugging Face reference-aware guidance.",
+        "tools": [
+          "models"
+        ],
+        "actions_by_tool": {
+          "models": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cleanup_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-025",
@@ -823,7 +1175,7 @@
       "group": "Cleanup",
       "phase": "P3",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "MacPaw targets recoverable Mail attachments and preserves modified copies.",
       "implementation": [
         "Prototype read-only Mail metadata adapters per supported OS to establish remote-message linkage and local-edit provenance; folder names and mtimes alone cannot prove recoverability.",
@@ -844,7 +1196,25 @@
       ],
       "sources": [
         "mail"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Selected Apple Mail attachment metadata review; eviction unavailable without remote recoverability provenance.",
+        "tools": [
+          "mail-attachments"
+        ],
+        "actions_by_tool": {
+          "mail-attachments": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_mail_tools.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-026",
@@ -852,7 +1222,7 @@
       "group": "Cleanup",
       "phase": "P1",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Trash Bins includes startup-volume, external-volume, and Mail trash.",
       "implementation": [
         "Enumerate only the current user's Trash and selected mounted-volume Trash with volume identity checks.",
@@ -872,7 +1242,27 @@
       ],
       "sources": [
         "trash"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Current-user selected-volume Trash inventory and exact one-file irreversible erasure; folders and Mail Trash remain unsupported.",
+        "tools": [
+          "trash"
+        ],
+        "actions_by_tool": {
+          "trash": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_trash_forward.py",
+          "test_trash_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-027",
@@ -880,7 +1270,7 @@
       "group": "Protection",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac uses Moonlock with quick, balanced, and deep modes.",
       "implementation": [
         "Integrate an explicitly installed scanner such as ClamAV with current signatures; define our own documented quick/balanced/deep root and resource policies.",
@@ -904,7 +1294,28 @@
         "modes",
         "clam",
         "xprotect"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Maintained ClamAV dependency/signature checks, bounded scans, approved private quarantine and no-overwrite restore.",
+        "tools": [
+          "malware-scan"
+        ],
+        "actions_by_tool": {
+          "malware-scan": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore-plan",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_malware_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-028",
@@ -912,7 +1323,7 @@
       "group": "Protection",
       "phase": "P3",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "MacPaw offers optional archive, disk-image, attachment, USB, and downloaded-iCloud scans.",
       "implementation": [
         "Extend the malware adapter with explicit target toggles and budgets for bytes, recursion, file count, time, and decompression ratio.",
@@ -932,7 +1343,28 @@
       "sources": [
         "targets",
         "clam_limits"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Bounded archive/DMG/mail/external/cloud-resident malware targets without mounting, execution or placeholder hydration.",
+        "tools": [
+          "malware-scan"
+        ],
+        "actions_by_tool": {
+          "malware-scan": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore-plan",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_malware_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-029",
@@ -940,7 +1372,7 @@
       "group": "Protection",
       "phase": "P3",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Moonlock powers both background scanning and real-time monitoring.",
       "implementation": [
         "Offer opt-in scheduled scans through a user LaunchAgent with explicit scope, battery/load limits, logs, and uninstall controls.",
@@ -962,7 +1394,24 @@
         "moonlock",
         "endpoint",
         "service"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Opt-in scheduled read-only scans; Endpoint Security real-time protection unavailable without a separate entitled companion.",
+        "tools": [
+          "malware-protection"
+        ],
+        "actions_by_tool": {
+          "malware-protection": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_malware_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-030",
@@ -970,7 +1419,7 @@
       "group": "Protection",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Privacy covers Safari, Chrome, and Firefox browser traces.",
       "implementation": [
         "Implement separate profile/version adapters for history, cookies, autofill, download history, site storage, search history, and previous-session tabs; saved-password deletion is a distinct capability.",
@@ -991,7 +1440,33 @@
       "sources": [
         "privacy",
         "browsing"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Chrome companion category/profile/time/origin cleanup with exact approval; other browsers and password clearing use native handoffs.",
+        "tools": [
+          "browser-bridge",
+          "browser-privacy"
+        ],
+        "actions_by_tool": {
+          "browser-bridge": [
+            "inspect",
+            "plan",
+            "apply"
+          ],
+          "browser-privacy": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_browser_forward.py",
+          "test_browser_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-031",
@@ -999,7 +1474,7 @@
       "group": "Protection",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac can clear recent-item lists.",
       "implementation": [
         "Inventory supported recent-item stores without reading document contents; route clearing through supported per-app/system APIs or a guided UI handoff.",
@@ -1019,7 +1494,25 @@
       ],
       "sources": [
         "privacy"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Recent-store metadata review and distinct Finder/app/system native clearing guidance; no private-store rewriting.",
+        "tools": [
+          "recent-items"
+        ],
+        "actions_by_tool": {
+          "recent-items": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_browser_forward.py",
+          "test_browser_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-032",
@@ -1027,7 +1520,7 @@
       "group": "Protection",
       "phase": "P2",
       "feasibility": "guided",
-      "status": "planned",
+      "status": "partial",
       "evidence": "MacPaw routes network removal to System Settings on Sonoma and later.",
       "implementation": [
         "Discover only available network metadata using supported OS interfaces; label incomplete inventory and avoid accessing passwords.",
@@ -1046,7 +1539,28 @@
       ],
       "sources": [
         "privacy"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Remembered network metadata and selected Settings handoff with fresh removal verification; no password reads.",
+        "tools": [
+          "wifi"
+        ],
+        "actions_by_tool": {
+          "wifi": [
+            "inspect",
+            "plan",
+            "apply",
+            "verify"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-033",
@@ -1054,7 +1568,7 @@
       "group": "Protection",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac groups app permissions for review and revocation.",
       "implementation": [
         "Use System Settings and permitted, version-tested metadata for Contacts, camera, microphone, screen capture, files, photos, and other TCC services.",
@@ -1075,7 +1589,27 @@
       "sources": [
         "permissions",
         "manual_tcc"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Exact app/service permission reset; no TCC database writes or automated permission grants.",
+        "tools": [
+          "app-permissions"
+        ],
+        "actions_by_tool": {
+          "app-permissions": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-034",
@@ -1083,7 +1617,7 @@
       "group": "Performance",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac includes DNS cache flushing.",
       "implementation": [
         "Expose reset only as an explicit troubleshooting action with the affected resolver context; do not promise a measured cache size or routine speed improvement.",
@@ -1104,7 +1638,27 @@
       "sources": [
         "maintenance",
         "manual_dns"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Named DNS lookups before/after approved DirectoryService flush; mDNSResponder signaling/elevation unsupported.",
+        "tools": [
+          "dns"
+        ],
+        "actions_by_tool": {
+          "dns": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-035",
@@ -1112,7 +1666,7 @@
       "group": "Performance",
       "phase": "P2",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Performance includes a purgeable-space task.",
       "implementation": [
         "Read volume capacity values and show immediately free versus potentially purgeable space without adding overlapping figures.",
@@ -1135,7 +1689,25 @@
         "maintenance",
         "snapshots",
         "eviction"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Selected-volume capacity assessment with APFS uncertainty; no invented purgeable total or purge-all operation.",
+        "tools": [
+          "purgeable"
+        ],
+        "actions_by_tool": {
+          "purgeable": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-036",
@@ -1143,7 +1715,7 @@
       "group": "Performance",
       "phase": "P2",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "MacPaw limits its Free Up RAM task to Intel Macs.",
       "implementation": [
         "Assess pressure, compression, swap, and process use; offer selected app quit/restart with unsaved-work consequences.",
@@ -1164,7 +1736,25 @@
       "sources": [
         "maintenance",
         "manual_purge"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Memory pressure/swap diagnostics and recommendations; no RAM purge or artificial memory pressure.",
+        "tools": [
+          "memory-diagnosis"
+        ],
+        "actions_by_tool": {
+          "memory-diagnosis": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-037",
@@ -1172,7 +1762,7 @@
       "group": "Performance",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "MacPaw documents periodic scripts only for Ventura 13 and earlier.",
       "implementation": [
         "Probe OS version and the existence/meaning of the native periodic facility; current systems without it report unsupported.",
@@ -1192,7 +1782,27 @@
       ],
       "sources": [
         "maintenance"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Version/facility-gated legacy periodic invocation; modern unsupported systems receive an explicit explanation.",
+        "tools": [
+          "periodic"
+        ],
+        "actions_by_tool": {
+          "periodic": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-038",
@@ -1200,7 +1810,7 @@
       "group": "Performance",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Performance offers Spotlight reindexing.",
       "implementation": [
         "Inspect indexing state for a chosen volume and explain rebuild load; select a narrow native mdutil action or Apple Settings workflow.",
@@ -1222,7 +1832,27 @@
         "maintenance",
         "spotlight",
         "manual_mdutil"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Exact mounted-volume UUID-bound Spotlight rebuild request; completion remains asynchronously unverified.",
+        "tools": [
+          "spotlight"
+        ],
+        "actions_by_tool": {
+          "spotlight": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-039",
@@ -1230,7 +1860,7 @@
       "group": "Performance",
       "phase": "P3",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac lists permission repair, but does not disclose its implementation.",
       "implementation": [
         "Document that the installed diskutil manual says verifyPermissions/repairPermissions were removed starting with OS X 10.11.",
@@ -1249,7 +1879,25 @@
       "sources": [
         "maintenance",
         "manual_diskutil"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Permission/ownership diagnostics and supported native alternatives; obsolete disk-permission repair is not offered.",
+        "tools": [
+          "disk-permissions"
+        ],
+        "actions_by_tool": {
+          "disk-permissions": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-040",
@@ -1257,7 +1905,7 @@
       "group": "Performance",
       "phase": "P3",
       "feasibility": "guided",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Speed Up Mail task rebuilds Mail's index.",
       "implementation": [
         "Start with selected mailbox symptoms and the supported Mailbox > Rebuild workflow; validate any automation on the exact Mail version.",
@@ -1277,7 +1925,28 @@
       ],
       "sources": [
         "maintenance"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Account/mailbox-specific native Mail rebuild handoff; user-reported completion is distinguished from verification.",
+        "tools": [
+          "mail-rebuild"
+        ],
+        "actions_by_tool": {
+          "mail-rebuild": [
+            "inspect",
+            "plan",
+            "apply",
+            "verify"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-041",
@@ -1285,7 +1954,7 @@
       "group": "Performance",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac exposes local snapshot thinning; macOS also manages snapshots automatically.",
       "implementation": [
         "Inventory Time Machine snapshots and backup state with tmutil, binding selection to the mount's volume UUID.",
@@ -1308,7 +1977,27 @@
         "maintenance",
         "snapshots",
         "manual_tmutil"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Exact-volume snapshot inventory, thinning and mount-scoped deletion with active-backup/pool/UUID checks; measured removed names, no promised bytes.",
+        "tools": [
+          "snapshots"
+        ],
+        "actions_by_tool": {
+          "snapshots": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-042",
@@ -1316,7 +2005,7 @@
       "group": "Performance",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Performance exposes apps that open at login.",
       "implementation": [
         "Correlate supported login metadata, sfltool dumpbtm diagnostic output when available, app identities, and legacy registrations; avoid treating diagnostic text as a stable API.",
@@ -1338,7 +2027,28 @@
       "sources": [
         "login",
         "service"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Modern login-item Settings flow and selected legacy registration review/verification.",
+        "tools": [
+          "login-items"
+        ],
+        "actions_by_tool": {
+          "login-items": [
+            "inspect",
+            "plan",
+            "apply",
+            "verify"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-043",
@@ -1346,7 +2056,7 @@
       "group": "Performance",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac exposes background items associated with applications.",
       "implementation": [
         "Inventory launch plists in user and system Library locations plus supported modern app service metadata. Resolve label, domain, executable, owner, team identity, and observed state.",
@@ -1369,7 +2079,27 @@
         "background",
         "service",
         "manual_launchctl"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Exact eligible user LaunchAgent persistent enable/disable; current processes are not implicitly stopped or started.",
+        "tools": [
+          "background-items"
+        ],
+        "actions_by_tool": {
+          "background-items": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_maintenance_app_forward.py",
+          "test_maintenance_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-044",
@@ -1399,12 +2129,23 @@
         "signing"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Read-only app bundle inventory; app removal and compatibility guarantees are unavailable.",
-        "tests": [
-          "test_adapters.py"
+        "release": "0.2.0",
+        "scope": "App metadata, signatures, nested architectures, compatibility hints and explicit unknown usage.",
+        "tools": [
+          "applications"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "applications": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_adapters.py",
+          "test_app_tools.py",
+          "test_maintenance_app_forward.py"
+        ]
       }
     },
     {
@@ -1413,7 +2154,7 @@
       "group": "Applications",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Uninstaller removes apps and associated components. UninstallerScanning includes app-container metadata, saved-state, preferences, cookies, logs, support-file, documentation, and plugin-path references, plus protected-file and symlink-aware enumeration checks. This reveals candidate coverage, not the complete ownership algorithm.",
       "implementation": [
         "Build an ownership graph from exact bundle IDs, entitlements, receipts, app groups, known support paths, and vendor-specific rules.",
@@ -1439,7 +2180,27 @@
         "uninstall",
         "safety",
         "local_app"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Exact Homebrew-owned app-only cask uninstall with ownership/signature/process/provider checks; other uninstallers and uncertain/shared data stay protected.",
+        "tools": [
+          "app-uninstall"
+        ],
+        "actions_by_tool": {
+          "app-uninstall": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_app_tools.py",
+          "test_maintenance_app_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-046",
@@ -1447,7 +2208,7 @@
       "group": "Applications",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The feature matrix includes leftover files and installers. The bundle includes UninstallerScanning and UnusedDiskImagesScanning, with known app-component path references. No inspected symbol establishes how CleanMyMac proves that a component is orphaned or an installer is no longer needed.",
       "implementation": [
         "Compare known component ownership against a complete-enough app inventory; external-volume or inaccessible apps must not become false orphans.",
@@ -1474,7 +2235,25 @@
         "editions",
         "safety",
         "local_app"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Candidate leftover review preserves uncertain/shared ownership and incomplete inventory; no name-prefix deletion.",
+        "tools": [
+          "app-leftovers"
+        ],
+        "actions_by_tool": {
+          "app-leftovers": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_app_tools.py",
+          "test_maintenance_app_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-047",
@@ -1482,7 +2261,7 @@
       "group": "Applications",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac detects App Store/macOS updates but cannot install them; it supports other update sources.",
       "implementation": [
         "Classify source before comparing versions: Homebrew-owned casks, verified Sparkle feeds, approved vendor sources, App Store, or unsupported.",
@@ -1505,7 +2284,27 @@
         "update",
         "sparkle",
         "brew"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Exact reviewed Homebrew cask upgrade with source/checksum/vendor/version verification; arbitrary installers and native-store updates use handoffs.",
+        "tools": [
+          "app-updates"
+        ],
+        "actions_by_tool": {
+          "app-updates": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_app_tools.py",
+          "test_maintenance_app_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-048",
@@ -1534,12 +2333,23 @@
         "large"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Explicit local file review; age or size never automatically selects a file.",
-        "tests": [
-          "test_cli.py"
+        "release": "0.2.0",
+        "scope": "Selected local large/old-file filters feed the common exact plan workflow.",
+        "tools": [
+          "large-old-files"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "large-old-files": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cli.py",
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
       }
     },
     {
@@ -1570,13 +2380,25 @@
         "duplicates"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Exact local-file duplicates with retained keepers; no cloud hydration or similar-image matching.",
-        "tests": [
-          "test_duplicates.py",
-          "test_duplicate_workflow.py"
+        "release": "0.2.0",
+        "scope": "Exact duplicates, explicit keeper selection and reusable My Tools route; no automatic selection.",
+        "tools": [
+          "duplicates"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "duplicates": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cross_tool_workflow.py",
+          "test_duplicate_workflow.py",
+          "test_duplicates.py"
+        ]
       }
     },
     {
@@ -1585,7 +2407,7 @@
       "group": "My Clutter",
       "phase": "P2",
       "feasibility": "native-helper",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac groups similar images separately from exact duplicates.",
       "implementation": [
         "Use local perceptual hashes for candidate generation and evaluate Vision feature-print distances for near-duplicate ranking.",
@@ -1607,7 +2429,27 @@
       "sources": [
         "similar",
         "vision"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Bounded native local image similarity with visual review and retained-image hashes; supported selected files feed native Trash plans.",
+        "tools": [
+          "similar-images"
+        ],
+        "actions_by_tool": {
+          "similar-images": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_native_monitoring_forward.py",
+          "test_native_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-051",
@@ -1637,12 +2479,23 @@
         "downloads"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Selected Downloads file inventory; download-origin attribution is not implemented.",
-        "tests": [
-          "test_cli.py"
+        "release": "0.2.0",
+        "scope": "Download size/age/type/source-origin review with bounded native xattrs, redaction and incomplete-download protection.",
+        "tools": [
+          "downloads"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "downloads": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cli.py",
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
       }
     },
     {
@@ -1651,7 +2504,7 @@
       "group": "My Clutter",
       "phase": "P3",
       "feasibility": "native-helper",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac distinguishes Photos assets from ordinary image files when deleting.",
       "implementation": [
         "Use PhotoKit authorization and stable asset identifiers; never traverse or mutate a .photoslibrary package as ordinary cleanup data.",
@@ -1675,7 +2528,28 @@
         "duplicates",
         "similar",
         "photos"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "PhotoKit metadata/local-only thumbnail review, explicit user permission request and selected whole-asset deletion; no library bundle mutation.",
+        "tools": [
+          "photos"
+        ],
+        "actions_by_tool": {
+          "photos": [
+            "inspect",
+            "request-access",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_native_monitoring_forward.py",
+          "test_native_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-053",
@@ -1711,13 +2585,24 @@
         "full_disk_access"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Local inventory and size reporting; allocated estimates are not guaranteed reclaimable space.",
-        "tests": [
-          "test_inventory.py",
-          "test_cli.py"
+        "release": "0.2.0",
+        "scope": "Hidden-aware storage drilldown, text/static HTML export and unique-inode/protected/unknown allocation reporting.",
+        "tools": [
+          "storage-map"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "storage-map": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cli.py",
+          "test_inventory.py",
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
       }
     },
     {
@@ -1726,7 +2611,7 @@
       "group": "Cloud Cleanup",
       "phase": "P3",
       "feasibility": "build",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Cloud Cleanup separates cloud deletion from freeing local synced storage.",
       "implementation": [
         "Define provider-neutral metadata, pagination, ownership, version, hydration, local-presence, recycle/restore, and capability contracts.",
@@ -1749,7 +2634,38 @@
       "sources": [
         "cloud",
         "oauth"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Explicit account-bound adapters and managed OAuth/credential references; local eviction and remote deletion remain distinct.",
+        "tools": [
+          "accounts",
+          "cloud-accounts"
+        ],
+        "actions_by_tool": {
+          "accounts": [
+            "inspect",
+            "connect",
+            "status",
+            "cancel",
+            "refresh",
+            "disconnect-plan",
+            "apply"
+          ],
+          "cloud-accounts": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cloud_forward.py",
+          "test_cloud_tools.py",
+          "test_oauth.py",
+          "test_oauth_forward.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-055",
@@ -1757,7 +2673,7 @@
       "group": "Cloud Cleanup",
       "phase": "P3",
       "feasibility": "native-helper",
-      "status": "planned",
+      "status": "partial",
       "evidence": "CleanMyMac connects to the Mac's configured iCloud Drive rather than a web login.",
       "implementation": [
         "Discover the native user's iCloud Drive with supported metadata APIs; handle placeholders without content reads. Do not treat CloudKit as an API to enumerate all personal iCloud Drive files.",
@@ -1775,7 +2691,28 @@
       "sources": [
         "icloud",
         "eviction"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Native iCloud current/uploaded/conflict metadata and conditional local eviction; remote deletion unsupported.",
+        "tools": [
+          "icloud"
+        ],
+        "actions_by_tool": {
+          "icloud": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cloud_forward.py",
+          "test_cloud_tools.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-056",
@@ -1783,7 +2720,7 @@
       "group": "Cloud Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Google Drive is a supported Cloud Cleanup provider.",
       "implementation": [
         "Enumerate Drive API v3 metadata with pagination, explicit fields, drive/account scope, shared-drive ownership, capabilities, and shortcut handling.",
@@ -1802,7 +2739,42 @@
         "cloud",
         "drive",
         "oauth"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Owned unshared Google Drive file metadata, approved Trash and conflict-aware restore; folders/shared data remain report-only.",
+        "tools": [
+          "accounts",
+          "google-drive"
+        ],
+        "actions_by_tool": {
+          "accounts": [
+            "inspect",
+            "connect",
+            "status",
+            "cancel",
+            "refresh",
+            "disconnect-plan",
+            "apply"
+          ],
+          "google-drive": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore-plan",
+            "evict"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cloud_forward.py",
+          "test_cloud_tools.py",
+          "test_oauth.py",
+          "test_oauth_forward.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-057",
@@ -1810,7 +2782,7 @@
       "group": "Cloud Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "OneDrive is a supported Cloud Cleanup provider.",
       "implementation": [
         "Enumerate Graph drives and children/delta metadata with pagination and account/drive IDs; handle shared items and permissions.",
@@ -1828,7 +2800,42 @@
       "sources": [
         "cloud",
         "onedrive"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Personal owned OneDrive file metadata and conditional recycle with If-Match; work/shared data report-only and restore guided.",
+        "tools": [
+          "accounts",
+          "onedrive"
+        ],
+        "actions_by_tool": {
+          "accounts": [
+            "inspect",
+            "connect",
+            "status",
+            "cancel",
+            "refresh",
+            "disconnect-plan",
+            "apply"
+          ],
+          "onedrive": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore-plan",
+            "evict"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cloud_forward.py",
+          "test_cloud_tools.py",
+          "test_oauth.py",
+          "test_oauth_forward.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-058",
@@ -1836,7 +2843,7 @@
       "group": "Cloud Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Dropbox is a supported Cloud Cleanup provider.",
       "implementation": [
         "Use paginated list_folder metadata, stable IDs, revisions, sharing/lock flags, and content hashes; distinguish team namespaces and personal folders.",
@@ -1854,7 +2861,42 @@
       "sources": [
         "cloud",
         "dropbox"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Unshared personal Dropbox file metadata and conditional revision-bound deletion; team/shared data report-only and restore guided.",
+        "tools": [
+          "accounts",
+          "dropbox"
+        ],
+        "actions_by_tool": {
+          "accounts": [
+            "inspect",
+            "connect",
+            "status",
+            "cancel",
+            "refresh",
+            "disconnect-plan",
+            "apply"
+          ],
+          "dropbox": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore-plan",
+            "evict"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cloud_forward.py",
+          "test_cloud_tools.py",
+          "test_oauth.py",
+          "test_oauth_forward.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-059",
@@ -1862,7 +2904,7 @@
       "group": "Browser Care",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Browser Care finds same-address duplicates and tabs older than a chosen threshold.",
       "implementation": [
         "Use a scoped Chrome extension/native-messaging bridge or a host browser connector with equivalent tab capabilities; keep profiles and Incognito separate.",
@@ -1884,7 +2926,33 @@
       "sources": [
         "browser",
         "tabs"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Connected Chrome profile tab inventory, exact URL groups and observed age; private tabs excluded and protected state explicit.",
+        "tools": [
+          "browser-bridge",
+          "browser-tabs"
+        ],
+        "actions_by_tool": {
+          "browser-bridge": [
+            "inspect",
+            "plan",
+            "apply"
+          ],
+          "browser-tabs": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_browser_forward.py",
+          "test_browser_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-060",
@@ -1892,7 +2960,7 @@
       "group": "Browser Care",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Browser Care supports pausing, resuming, and closing tabs.",
       "implementation": [
         "Use supported tabs.discard for eligible tabs, reload/activate for resume, and selected tab removal for close; document that discarding may cause a later reload.",
@@ -1910,7 +2978,33 @@
       "sources": [
         "browser",
         "tabs"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Chrome discard/resume/close and safe receipt-based reopening with independent native-host approval and at-most-once dispatch.",
+        "tools": [
+          "browser-bridge",
+          "browser-tabs"
+        ],
+        "actions_by_tool": {
+          "browser-bridge": [
+            "inspect",
+            "plan",
+            "apply"
+          ],
+          "browser-tabs": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_browser_forward.py",
+          "test_browser_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-061",
@@ -1918,7 +3012,7 @@
       "group": "Browser Care",
       "phase": "P3",
       "feasibility": "research",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Browser Care reports browser and per-tab resource use.",
       "implementation": [
         "Prototype process-to-tab attribution using supported native/browser interfaces. Chrome's processes API is documented as Dev-channel-only; do not promise stable-extension access.",
@@ -1938,7 +3032,25 @@
       "sources": [
         "browser",
         "processes"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Browser process CPU/RSS totals with accounting limits; precise per-tab attribution unsupported.",
+        "tools": [
+          "browser-resources"
+        ],
+        "actions_by_tool": {
+          "browser-resources": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_browser_forward.py",
+          "test_browser_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-062",
@@ -1946,7 +3058,7 @@
       "group": "My Tools",
       "phase": "P3",
       "feasibility": "native-helper",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The current release notes describe a two-minute keyboard/trackpad lock across displays.",
       "implementation": [
         "Build an optional foreground native overlay and input-control helper; the text skill alone cannot guarantee event suppression.",
@@ -1966,7 +3078,27 @@
       "sources": [
         "release",
         "eventtap"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Native screen-cleaning overlays, permission preflight, Escape/timeout/watchdog; live input suppression remains an explicit validation gate.",
+        "tools": [
+          "screen-cleaning"
+        ],
+        "actions_by_tool": {
+          "screen-cleaning": [
+            "inspect",
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_native_monitoring_forward.py",
+          "test_native_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-063",
@@ -1974,7 +3106,7 @@
       "group": "Email Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Email Cleanup currently supports Gmail and analyzes metadata rather than message bodies.",
       "implementation": [
         "Implement personal-account OAuth with Keychain storage, reconnect/disconnect, pagination, stable message IDs, labels, sender/List headers, internal date, and size estimates.",
@@ -1995,7 +3127,40 @@
         "gmail_scopes",
         "oauth",
         "gmail_list"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Account-bound metadata-only Gmail pagination with managed OAuth and credential references; partial coverage persisted.",
+        "tools": [
+          "accounts",
+          "gmail"
+        ],
+        "actions_by_tool": {
+          "accounts": [
+            "inspect",
+            "connect",
+            "status",
+            "cancel",
+            "refresh",
+            "disconnect-plan",
+            "apply"
+          ],
+          "gmail": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_mail_tools.py",
+          "test_oauth.py",
+          "test_oauth_forward.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-064",
@@ -2003,7 +3168,7 @@
       "group": "Email Cleanup",
       "phase": "P3",
       "feasibility": "build",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Smart Cleanup groups old promotions, automated, unread, archived, and high-volume senders.",
       "implementation": [
         "Build transparent metadata rules for the documented age presets: promotions older than six months, automated older than one month, unread older than three months, archived items, and top senders.",
@@ -2021,7 +3186,28 @@
       ],
       "sources": [
         "email_smart"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Explainable calendar-month/sender suggestions and deduplicated metadata counts.",
+        "tools": [
+          "gmail"
+        ],
+        "actions_by_tool": {
+          "gmail": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_mail_tools.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-065",
@@ -2029,7 +3215,7 @@
       "group": "Email Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Email Cleanup offers newsletter and subscription review with unsubscribe options.",
       "implementation": [
         "Group senders and List-ID metadata; use RFC 8058 one-click headers only after explicit sender/action selection and validation of authentication evidence.",
@@ -2050,7 +3236,28 @@
       "sources": [
         "email",
         "unsubscribe"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Newsletter/List-ID and bounded unsubscribe-header review; unsubscribe uses a separate native handoff, no automatic email/POST.",
+        "tools": [
+          "gmail"
+        ],
+        "actions_by_tool": {
+          "gmail": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_mail_tools.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-066",
@@ -2058,7 +3265,7 @@
       "group": "Email Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Email Cleanup includes messages already classified as spam.",
       "implementation": [
         "Read the provider's spam labels instead of inventing a spam classifier. Allow sender/date/size filters and native inspection.",
@@ -2079,7 +3286,28 @@
         "email",
         "gmail_modify",
         "gmail_trash"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Provider spam-label review and exact selected-message Trash plans with stale-state protection.",
+        "tools": [
+          "gmail"
+        ],
+        "actions_by_tool": {
+          "gmail": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_mail_tools.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-067",
@@ -2087,7 +3315,7 @@
       "group": "Email Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Email Cleanup includes removal of unused drafts.",
       "implementation": [
         "Inventory draft IDs and minimal metadata; treat drafts as authored user content and show last-change information.",
@@ -2108,7 +3336,28 @@
       "sources": [
         "email",
         "gmail_drafts"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Draft metadata review with authored-content protection; permanent draft deletion unavailable.",
+        "tools": [
+          "gmail"
+        ],
+        "actions_by_tool": {
+          "gmail": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_mail_tools.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-068",
@@ -2116,7 +3365,7 @@
       "group": "Email Cleanup",
       "phase": "P3",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "Email Cleanup allows per-sender review and separate archive/trash actions.",
       "implementation": [
         "Provide search/sort/grouping with exact account/message IDs, avoiding thread-wide actions that affect unselected mail.",
@@ -2137,7 +3386,28 @@
         "email",
         "gmail_modify",
         "gmail_trash"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Exact message archive/Trash and conflict-aware restore with per-message durable journals; no mailbox-wide mutations.",
+        "tools": [
+          "gmail"
+        ],
+        "actions_by_tool": {
+          "gmail": [
+            "inspect",
+            "plan",
+            "apply",
+            "restore"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_mail_tools.py",
+          "test_transport_privacy.py"
+        ]
+      }
     },
     {
       "id": "CM-069",
@@ -2145,7 +3415,7 @@
       "group": "Monitoring",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Menu includes processor monitoring and alerts for unresponsive apps.",
       "implementation": [
         "Use bounded native process samples/ps where validated, recording PID plus start time, CPU interval, app identity, and system load.",
@@ -2165,7 +3435,32 @@
       ],
       "sources": [
         "menu"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Bounded CPU/start-time sampling and exact native app normal quit, separately approved force quit, and same-verified-bundle relaunch from completed receipts. Agent ancestors/system/background apps protected; responsiveness diagnosis remains unknown.",
+        "tools": [
+          "app-process",
+          "cpu"
+        ],
+        "actions_by_tool": {
+          "app-process": [
+            "inspect",
+            "plan",
+            "apply"
+          ],
+          "cpu": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py",
+          "test_native_tools.py"
+        ]
+      }
     },
     {
       "id": "CM-070",
@@ -2173,7 +3468,7 @@
       "group": "Monitoring",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Menu includes RAM monitoring.",
       "implementation": [
         "Sample host VM statistics and process memory with timestamps and documented units; include compressed memory, pressure, swap, and free/cache distinctions.",
@@ -2192,7 +3487,25 @@
       ],
       "sources": [
         "menu"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Runtime-page-size VM/pressure/swap/RSS measurements with unknown state preserved.",
+        "tools": [
+          "memory"
+        ],
+        "actions_by_tool": {
+          "memory": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-071",
@@ -2200,7 +3513,7 @@
       "group": "Monitoring",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Menu includes internal/external storage monitoring.",
       "implementation": [
         "Read supported volume capacity and disk health metadata (for example diskutil plist output), keeping APFS containers, volumes, and external mounts distinct.",
@@ -2220,7 +3533,25 @@
       "sources": [
         "menu",
         "eviction"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Selected-volume storage/APFS/SMART metadata and measured low-space monitoring; unsupported health fields remain unknown.",
+        "tools": [
+          "disks"
+        ],
+        "actions_by_tool": {
+          "disks": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-072",
@@ -2228,7 +3559,7 @@
       "group": "Monitoring",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Menu includes battery status and drain alerts.",
       "implementation": [
         "Use supported power-source and battery metadata, with OS/model-specific IOKit or system reporting adapters as needed.",
@@ -2247,7 +3578,25 @@
       ],
       "sources": [
         "menu"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Reported battery condition/cycles/charge and short-interval drain estimates; no fabricated causal app attribution.",
+        "tools": [
+          "battery"
+        ],
+        "actions_by_tool": {
+          "battery": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-073",
@@ -2255,7 +3604,7 @@
       "group": "Monitoring",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Menu includes network monitoring.",
       "implementation": [
         "Sample interface byte counters and active connectivity with interval/delta handling; keep local traffic reporting independent of remote tests.",
@@ -2273,7 +3622,30 @@
       ],
       "sources": [
         "menu"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Local interface deltas and separately approved native networkQuality test with exact executable and receipt binding.",
+        "tools": [
+          "network",
+          "network-speed"
+        ],
+        "actions_by_tool": {
+          "network": [
+            "inspect"
+          ],
+          "network-speed": [
+            "plan",
+            "apply"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-074",
@@ -2281,7 +3653,7 @@
       "group": "Monitoring",
       "phase": "P2",
       "feasibility": "conditional",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Menu includes connected-device monitoring.",
       "implementation": [
         "Discover selected external storage and supported Bluetooth/mobile device metadata through OS interfaces; keep trusted pairing requirements visible.",
@@ -2300,7 +3672,25 @@
       ],
       "sources": [
         "menu"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Connected external disk inventory; Bluetooth/mobile battery telemetry unavailable.",
+        "tools": [
+          "devices"
+        ],
+        "actions_by_tool": {
+          "devices": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
+      }
     },
     {
       "id": "CM-075",
@@ -2336,12 +3726,23 @@
         "health"
       ],
       "runtime": {
-        "release": "0.1.0",
-        "scope": "Read-only system overview; no continuous health monitor or automated optimization.",
-        "tests": [
-          "test_adapters.py"
+        "release": "0.2.0",
+        "scope": "Measured health factors and actual action-receipt statistics without a synthetic health score.",
+        "tools": [
+          "health"
         ],
-        "acceptance_complete": false
+        "actions_by_tool": {
+          "health": [
+            "inspect"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_adapters.py",
+          "test_monitoring_tools.py",
+          "test_native_monitoring_forward.py"
+        ]
       }
     },
     {
@@ -2350,7 +3751,7 @@
       "group": "Core experience",
       "phase": "P3",
       "feasibility": "build",
-      "status": "planned",
+      "status": "partial",
       "evidence": "The Menu provides resource, storage, update, and protection alerts.",
       "implementation": [
         "Implement explicit opt-in local schedules and notifications for selected thresholds, with quiet periods, deduplication, battery/load policy, and inspect/disable/uninstall controls.",
@@ -2370,30 +3771,102 @@
       "sources": [
         "menu",
         "service"
-      ]
+      ],
+      "runtime": {
+        "release": "0.2.0",
+        "scope": "Explicit user LaunchAgent scan schedules, scope identities, AC/load/quiet policies, deduplicated measured alerts and disable/remove recovery; no unattended cleanup.",
+        "tools": [
+          "schedules"
+        ],
+        "actions_by_tool": {
+          "schedules": [
+            "inspect",
+            "plan",
+            "apply",
+            "run"
+          ]
+        },
+        "acceptance_complete": false,
+        "verification": "Disposable fixtures and selected native fixture behavior; see validation record. Installed adapters do not imply granted permissions, configured accounts, or live integration validation.",
+        "tests": [
+          "test_cross_tool_workflow.py",
+          "test_lifecycle_tools.py"
+        ]
+      }
     }
   ],
-  "runtime_release": "0.1.0",
+  "runtime_release": "0.2.0",
   "validation": {
     "date": "2026-11-13",
+    "release": "0.2.0",
     "platform": "macOS 27.2.1 arm64",
     "python": "3.14.7",
     "swift": "6.4.2",
     "suite": {
-      "command": "python3 -m unittest discover -s b/skills/cleanmac/tests -q",
-      "tests": 267,
-      "passed": 266,
-      "skipped": 1
+      "command": "python3 -B -m unittest discover -s b/skills/cleanmac/tests -q",
+      "tests": 805,
+      "passed": 803,
+      "skipped": 2,
+      "seconds": 23.767
     },
-    "native_integration": "Explicit live preflight verified host Trash access denial before any file moves; full product Trash/restore roundtrip remains unverified under current host permissions. Earlier generated fixture was restored and removed.",
+    "compatibility_suites": [
+      {
+        "platform": "macOS 27.2.1 arm64",
+        "python": "3.10.20",
+        "command": "uv run --python 3.10 python -B -m unittest discover -s b/skills/cleanmac/tests -q",
+        "tests": 805,
+        "passed": 803,
+        "skipped": 2,
+        "seconds": 19.512
+      },
+      {
+        "platform": "Linux aarch64 container",
+        "python": "3.10.22",
+        "command": "python -B -m unittest discover -s tests -q",
+        "tests": 805,
+        "passed": 739,
+        "skipped": 66,
+        "seconds": 8.272,
+        "scope": "Portable and mocked behavior only; native macOS and missing Node integration tests skipped. Non-macOS operational CLI correctly remains unsupported. Container had no network, read-only source and non-root execution."
+      }
+    ],
+    "default_mac_skips": [
+      "Explicit opt-in native Trash/restore roundtrip",
+      "Explicit opt-in generated app quit/relaunch roundtrip"
+    ],
+    "native_integration": "All three native helpers built and signed locally. Generated document-version inspection/removal and generated-image similarity passed. A separate opt-in run verified a disposable signed app inspection, validation, normal quit, same-bundle relaunch and normal quit. Direct watchdog callers are rejected; same-helper preflight succeeds without locking input. Explicit native Trash preflight confirms current host access denial before any file moves; full product Trash/restore remains unverified.",
     "other_checks": [
+      "805-test integrated suites on both macOS Python versions and Linux",
+      "Independent forward reviews of action, provider, browser, app, maintenance, native, Trash and retention behavior",
+      "Repository make validate",
       "skill-creator quick_validate",
       "Python bytecode compilation",
-      "shell syntax",
-      "git diff whitespace",
-      "native build and external output build",
-      "installed skill symlink invocation"
+      "Shell and browser JavaScript syntax",
+      "actionlint for configured GitHub workflow",
+      "Whitespace checks including new files",
+      "Installed shared-skill discovery and isolated setup smoke",
+      "Unrelated workspace changes preserved"
     ],
-    "compatibility_limits": "Other macOS versions, Intel, and full Claude/Kimi conversational host runs are unverified."
+    "ci": {
+      "workflow": ".github/workflows/cleanmac.yml",
+      "configured_matrix": [
+        "ubuntu-24.04 / Python 3.10",
+        "macos-15 arm64 / Python 3.10",
+        "macos-15-intel / Python 3.13"
+      ],
+      "execution": "Configured and linted locally; remote workflow has not run for this branch."
+    },
+    "live_validation_gates": [
+      "Full native Trash/restore with user-granted host access",
+      "Real OAuth consent, credential lifecycle and cloud/mail provider accounts",
+      "Installed Chrome extension and native messaging against real profiles",
+      "Actual maintained ClamAV engine/signatures",
+      "PhotoKit mutation and permission dialogs",
+      "Screen input, Escape, timeout and multiple displays",
+      "Real launchd schedule and notification lifecycle",
+      "Live Homebrew, maintenance and external-volume mutations",
+      "Other macOS versions, Intel and complete Claude/Kimi conversational host runs"
+    ],
+    "scope": "Disposable fixtures, mocked provider/native transports, actual local browser-host sockets with inert extension fixtures, and selected generated native fixtures. No user permission grants, personal-file cleanup, real account connection, browser extension installation or persistent schedule was performed. All feature acceptance records remain partial pending their declared live/platform gates."
   }
 }

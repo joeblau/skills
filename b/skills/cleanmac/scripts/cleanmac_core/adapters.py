@@ -101,7 +101,7 @@ def _open_dir(path: str) -> int:
             if getattr(before, "st_flags", 0) & _DATALESS:
                 raise OSError(errno.EPERM, "Cloud-only directory was not hydrated", path)
             next_fd = os.open(part, _DIR_FLAGS, dir_fd=fd)
-            if _identity(before) != _identity(os.fstat(next_fd)):
+            if _directory_identity(before) != _directory_identity(os.fstat(next_fd)):
                 os.close(next_fd)
                 raise OSError(errno.ESTALE, "Directory changed while opening", path)
             os.close(fd)
@@ -114,6 +114,19 @@ def _open_dir(path: str) -> int:
 
 def _identity(st: os.stat_result) -> tuple[int, int, int, int]:
     return (st.st_dev, st.st_ino, st.st_mtime_ns, st.st_ctime_ns)
+
+
+def _directory_identity(st: os.stat_result) -> tuple[int, int, int, int, int, int]:
+    """Stable directory identity and access policy, not its changing contents.
+
+    Adding an unrelated sibling changes an ancestor's mtime/ctime (notably the
+    shared macOS temporary parent). Those timestamps are content versions, not
+    evidence that the descriptor opened a different directory. Device/inode,
+    type/permissions, ownership, flags, and O_NOFOLLOW still bind every open.
+    Regular file reads retain their separate full content-version checks.
+    """
+    return (st.st_dev, st.st_ino, st.st_mode, st.st_uid, st.st_gid,
+            getattr(st, "st_flags", 0))
 
 
 def _open_relative_dir(root_fd: int, relative: str, *, expected_device: int) -> int:
@@ -132,7 +145,7 @@ def _open_relative_dir(root_fd: int, relative: str, *, expected_device: int) -> 
             if getattr(before, "st_flags", 0) & _DATALESS:
                 raise OSError(errno.EPERM, "Cloud-only category was not hydrated", relative)
             next_fd = os.open(part, _DIR_FLAGS, dir_fd=fd)
-            if _identity(before) != _identity(os.fstat(next_fd)):
+            if _directory_identity(before) != _directory_identity(os.fstat(next_fd)):
                 os.close(next_fd)
                 raise OSError(errno.ESTALE, "Category changed while opening", relative)
             os.close(fd)
@@ -154,7 +167,7 @@ def _read_plist(bundle_fd: int, bundle_path: str) -> dict[str, Any]:
         raise OSError(errno.EPERM, "Cloud-only bundle was not hydrated", bundle_path)
     contents_fd = os.open("Contents", _DIR_FLAGS, dir_fd=bundle_fd)
     try:
-        if _identity(contents_st) != _identity(os.fstat(contents_fd)):
+        if _directory_identity(contents_st) != _directory_identity(os.fstat(contents_fd)):
             raise OSError(errno.ESTALE, "Bundle changed while reading", bundle_path)
         plist_st = os.stat("Info.plist", dir_fd=contents_fd, follow_symlinks=False)
         if not stat.S_ISREG(plist_st.st_mode) or getattr(plist_st, "st_flags", 0) & _DATALESS:
@@ -295,7 +308,7 @@ def scan_applications(roots: list[str] | None = None, *, cancel: Callable[[], bo
                                 continue
                             child_fd = os.open(entry.name, _DIR_FLAGS, dir_fd=fd)
                             try:
-                                if _identity(child_st) != _identity(os.fstat(child_fd)):
+                                if _directory_identity(child_st) != _directory_identity(os.fstat(child_fd)):
                                     raise OSError(errno.ESTALE, "Directory changed", child_path)
                                 if not visit(child_path, child_fd, depth + 1):
                                     return False
@@ -458,7 +471,7 @@ def _tree_size(path: str, budget: dict[str, Any], *, expected_device: int, direc
                                 continue
                             child_fd = os.open(entry.name, _DIR_FLAGS, dir_fd=current_fd)
                             try:
-                                if _identity(st) != _identity(os.fstat(child_fd)):
+                                if _directory_identity(st) != _directory_identity(os.fstat(child_fd)):
                                     raise OSError(errno.ESTALE, "Directory changed", child_path)
                                 if not visit(child_path, child_fd, depth + 1):
                                     return False

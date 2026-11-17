@@ -71,7 +71,9 @@ print(json.dumps(value))
         if duplicates:
             scan["duplicate_groups"] = find_duplicates(scan["items"])["groups"]
         selected = [item["id"] for item in scan["items"] if item["path"] in {str(p) for p in paths}]
-        return make_plan(scan, selected)
+        plan = make_plan(scan, selected)
+        self.store.put("plans", plan)
+        return plan
 
     def apply(self, plan, **kwargs):
         return apply_plan(plan, approval_digest=plan["digest"], store=self.store, native_path=self.helper, **kwargs)

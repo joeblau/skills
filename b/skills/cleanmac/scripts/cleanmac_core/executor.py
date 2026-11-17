@@ -435,6 +435,15 @@ def apply_plan(plan, *, approval_digest, store, native_path=None, cancel=None):
     _rename_function()  # Check no-overwrite support before capturing anything.
     receipt_id = "receipt-" + digest({"plan_id": plan["id"], "digest": plan["digest"]})[:32]
     with store.lock("mutation"):
+        try:
+            persisted_plan = store.get("plans", plan["id"])
+        except CleanMacError as error:
+            if error.code == "state_not_found":
+                raise _error("This plan is no longer saved. Create and review a new plan before cleanup.", "plan_not_saved") from None
+            raise
+        validate_plan(persisted_plan)
+        if persisted_plan != plan:
+            raise _error("The saved plan differs from the approved plan. Review it again before cleanup.", "plan_changed")
         receipt = _existing_receipt(store, receipt_id)
         if receipt is not None:
             _validate_receipt(receipt, plan=plan)

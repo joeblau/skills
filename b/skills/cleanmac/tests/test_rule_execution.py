@@ -61,7 +61,9 @@ class RuleExecutionTests(unittest.TestCase):
         return self.path
 
     def plan(self):
-        return make_plan(self.scan, [self.item["id"]])
+        plan = make_plan(self.scan, [self.item["id"]])
+        self.store.put("plans", plan)
+        return plan
 
     def apply(self, plan):
         return executor.apply_plan(plan, approval_digest=plan["digest"], store=self.store)

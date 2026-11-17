@@ -1,4 +1,4 @@
-"""Reviewed discovery rules and one narrow, content-verified cache handler.
+"""Reviewed discovery rules and narrow content-verified cleanup handlers.
 
 This module never removes files or launches an owning application. It reads only
 the caller's inventory, the trusted bundled catalog, process executable names,
@@ -9,6 +9,7 @@ before planning/applying; findings are observations, not durable authorization.
 from __future__ import annotations
 
 import hashlib
+import datetime
 import json
 import os
 from pathlib import Path
@@ -34,7 +35,7 @@ _PROTECTED_NAMES = {
     "license", "license.key", "licence", "licence.key",
 }
 _HARD_PACKAGE_SUFFIXES = (".app", ".photoslibrary", ".photolibrary", ".backupbundle", ".sparsebundle")
-_KNOWN_MATCHERS = {"npm_sha512_content_v2", "prefix", "app_data", "electron_cache", "dropbox_cache"}
+_KNOWN_MATCHERS = {"npm_sha512_content_v2", "ips_crash_report", "prefix", "app_data", "electron_cache", "dropbox_cache"}
 
 
 def load_rules() -> dict:
@@ -62,9 +63,10 @@ def load_rules() -> dict:
                     raise ValueError("Invalid cleanup rule root")
             if not isinstance(rule.get("provenance"), list) or not rule["provenance"]:
                 raise ValueError("Missing rule provenance")
-            if rule["mode"] == "conditional" and (rule["id"], rule["matcher"], rule["version"]) != (
-                "npm-cacache-sha512-v2", "npm_sha512_content_v2", "1.0.0"
-            ):
+            if rule["mode"] == "conditional" and (rule["id"], rule["matcher"], rule["version"]) not in {
+                ("npm-cacache-sha512-v2", "npm_sha512_content_v2", "1.0.0"),
+                ("user-ips-crash-report", "ips_crash_report", "1.0.0"),
+            }:
                 raise ValueError("No implemented handler for conditional rule revision")
         if "unknown-app-data-review" not in seen:
             raise ValueError("Required unknown-data protection rule is missing")
@@ -276,6 +278,70 @@ def _verify_npm(item: dict, path: Path, home: Path, active_apps, budget: list[in
             os.close(fd)
 
 
+def _verify_crash_report(item: dict, path: Path, home: Path, active_apps, budget: list[int], cancel=None) -> tuple[bool, str, dict]:
+    """Allow only completed, old, explicitly selected Apple JSON crash reports.
+
+    Contents are parsed for format/retention but never copied into findings.
+    A SHA-512 proof binds this read to plan and captured-file verification.
+    """
+    root = home / "Library" / "Logs" / "DiagnosticReports"
+    if path.parent != root or path.suffix != ".ips":
+        return False, "Only top-level JSON .ips crash reports are supported; other diagnostics stay report-only", {}
+    if active_apps is None:
+        return False, "Writer state is unknown; diagnostics remain report-only", {"process_status": "unknown"}
+    size = item.get("logical_size")
+    if type(size) is not int or not 1 <= size <= min(8 * 1024 * 1024, budget[0]):
+        return False, "The report exceeds the bounded format-validation budget", {}
+    cutoff = datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=30)
+    if item.get("mtime_ns", 0) / 1_000_000_000 >= cutoff.timestamp():
+        return False, "Reports modified within the last 30 days are retained", {}
+    fd = None
+    try:
+        fd = _open_item(item, path)
+        before = os.fstat(fd)
+        if not stat.S_ISREG(before.st_mode) or before.st_uid != os.getuid() or not _same_identity(before, item):
+            return False, "The report ownership or scanned identity changed", {}
+        if getattr(before, "st_flags", 0) & getattr(stat, "SF_DATALESS", 0x40000000):
+            return False, "Cloud-only diagnostic content is not read", {}
+        chunks, consumed = [], 0
+        while consumed <= size:
+            if cancel and cancel():
+                return False, "Report validation cancelled", {"cancelled": True}
+            block = os.read(fd, min(256 * 1024, size - consumed + 1))
+            if not block:
+                break
+            consumed += len(block)
+            budget[0] -= len(block)
+            chunks.append(block)
+        if consumed != size or not _same_identity(os.fstat(fd), item):
+            return False, "The report changed during validation", {}
+        raw = b"".join(chunks)
+        header_raw, report_raw = raw.split(b"\n", 1)
+        header, report = json.loads(header_raw), json.loads(report_raw)
+        if not isinstance(header, dict) or not isinstance(report, dict) or str(header.get("bug_type")) != "309":
+            return False, "Unknown diagnostic format; only Apple's documented JSON crash-report schema is supported", {}
+        name = header.get("name")
+        if not isinstance(name, str) or not name or report.get("procName") != name or not isinstance(header.get("incident_id"), str):
+            return False, "The crash report lacks consistent process and incident metadata", {}
+        if not isinstance(header.get("timestamp"), str):
+            return False, "The report timestamp is missing or unsupported", {}
+        stamp = datetime.datetime.fromisoformat(header["timestamp"].replace("Z", "+00:00"))
+        if stamp.tzinfo is None or stamp >= cutoff:
+            return False, "A timezone-qualified report date older than 30 days is required", {}
+        active = {Path(str(value)).name.casefold() for value in active_apps}
+        if active.intersection({name.casefold(), "reportcrash", "diagnosticreporter"}):
+            return False, "The owning application or crash-report writer is active; retain its reports", {"process_status": "active"}
+        return True, "Validated archived crash report older than 30 days; selection removes diagnostic history and supports Trash recovery", {
+            "content_sha512": hashlib.sha512(raw).hexdigest(), "process_status": "inactive",
+            "report_date": stamp.astimezone(datetime.timezone.utc).isoformat(), "retention_days": 30,
+        }
+    except (OSError, ValueError, TypeError, UnicodeError, RecursionError):
+        return False, "The report could not be parsed and verified; original diagnostic data is preserved", {}
+    finally:
+        if fd is not None:
+            os.close(fd)
+
+
 def classify_items(items: Iterable[dict], *, home=None, active_apps=None, cancel=None) -> list[dict]:
     """Return findings for cache/app-data candidates; ordinary files are omitted.
 
@@ -288,7 +354,10 @@ def classify_items(items: Iterable[dict], *, home=None, active_apps=None, cancel
         return []
     catalog = load_rules()
     user_home = _home_path(home)
-    active = detect_active_apps() if active_apps is None else active_apps
+    # Ordinary files and report-only layouts do not need process inspection.
+    # Resolve the process snapshot once, only when an enabled rule needs it.
+    active = active_apps
+    active_checked = active_apps is not None
     if active is not None and (isinstance(active, (str, bytes, dict)) or not isinstance(active, (list, tuple, set, frozenset))):
         active = None
     findings = []
@@ -310,14 +379,18 @@ def classify_items(items: Iterable[dict], *, home=None, active_apps=None, cancel
         reason = _protection(item, path)
         extra = {}
         if reason is None and rule["mode"] == "conditional":
-            eligible, reason, extra = _verify_npm(item, path, user_home, active, budget, cancel=cancel)
+            if not active_checked:
+                active = detect_active_apps()
+                active_checked = True
+            verifier = _verify_crash_report if rule["matcher"] == "ips_crash_report" else _verify_npm
+            eligible, reason, extra = verifier(item, path, user_home, active, budget, cancel=cancel)
             if extra.get("cancelled"):
                 break
         elif reason is None:
             reason = rule["effects"]
         finding = {
             "id": "finding-" + digest({"item_id": item["id"], "rule_id": rule["id"], "rule_version": rule["version"]})[:24],
-            "item_id": item["id"], "category": "caches", "reason": reason,
+            "item_id": item["id"], "category": "logs" if rule["matcher"] == "ips_crash_report" else "caches", "reason": reason,
             "confidence": "verified-format" if eligible else "report-only",
             "eligible": eligible, "rule_id": rule["id"], "rule_version": rule["version"],
             "rule_digest": digest(rule), "app": rule["app"], "data_type": rule["data_type"],

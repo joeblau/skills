@@ -1,0 +1,69 @@
+name: CleanMac
+
+on:
+  pull_request:
+    paths:
+      - b/skills/cleanmac/**
+      - .github/workflows/cleanmac.yml
+      - .claude-plugin/marketplace.json
+      - b/.claude-plugin/plugin.json
+  push:
+    branches: [main]
+    paths:
+      - b/skills/cleanmac/**
+      - .github/workflows/cleanmac.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cleanmac-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fixtures:
+    name: Fixtures (${{ matrix.os }}, Python ${{ matrix.python }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            python: '3.10'
+          - os: macos-15
+            python: '3.10'
+          - os: macos-15-intel
+            python: '3.13'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Record actual platform
+        run: python -c 'import platform; print(platform.platform(), platform.machine(), platform.python_version())'
+      - name: Build native companions
+        if: runner.os == 'macOS'
+        run: |
+          sh b/skills/cleanmac/native/build.sh
+          sh b/skills/cleanmac/native/build-features.sh
+          sh b/skills/cleanmac/native/build-cloud.sh
+      - name: Run disposable fixture suite
+        run: python -m unittest discover -s b/skills/cleanmac/tests -v
+      - name: Validate repository manifests
+        run: make validate
+      - name: Compile Python sources
+        run: python -m compileall -q b/skills/cleanmac/scripts
+      - name: Check browser companion JavaScript
+        run: |
+          node --check b/skills/cleanmac/assets/browser-extension/worker.js
+          node --check b/skills/cleanmac/assets/browser-extension/popup.js
+      - name: Check shell syntax
+        run: |
+          sh -n b/skills/cleanmac/scripts/cleanmac
+          sh -n b/skills/cleanmac/native/build.sh
+          sh -n b/skills/cleanmac/native/build-features.sh
+          sh -n b/skills/cleanmac/native/build-cloud.sh

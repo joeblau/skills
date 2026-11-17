@@ -139,6 +139,9 @@ def _policy_reason(path: str, info: os.stat_result, ancestors: list[dict], *, re
     name = components[-1] if components else ""
     if _placeholder(path, info):
         return "cloud-placeholder"
+    if name.endswith((".crdownload", ".part", ".partial", ".download")) or any(
+            component.endswith(".download") for component in components[:-1]):
+        return "incomplete-download"
     if any(component in _PROTECTED_COMPONENTS for component in components):
         return "protected-app-credential-backup-or-agent-data"
     if repository or any(value.get("is_repository") for value in ancestors):

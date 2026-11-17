@@ -20,7 +20,7 @@ AREAS = ("files", "large", "duplicates", "caches", "storage")
 DEFAULT_AREAS = ("files", "large", "storage")
 DEFAULT_MIN_SIZE = 50 * 1024 * 1024
 MAX_REVIEW_LIMIT = 100000
-COOPERATIVE_COMMANDS = {"scan", "apply", "restore", "apps", "xcode", "overview"}
+COOPERATIVE_COMMANDS = {"scan", "plan", "apply", "restore", "apps", "xcode", "overview", "tool"}
 
 
 class _TerminalProgress:
@@ -77,7 +77,9 @@ class _TerminalProgress:
 
 class _Parser(argparse.ArgumentParser):
     def error(self, message: str) -> None:
-        raise CleanMacError(message, code="invalid_arguments")
+        # argparse errors can include raw argument values, including accidental
+        # credentials. Keep them out of terminal output and saved agent logs.
+        raise CleanMacError("Invalid or missing arguments. Use cleanmac --help or cleanmac COMMAND --help for usage.", code="invalid_arguments")
 
 
 def _global_options(parser: argparse.ArgumentParser) -> None:
@@ -131,8 +133,21 @@ def build_parser() -> argparse.ArgumentParser:
     permissions = command("permissions", "explain permission handoffs; optionally open Settings")
     permissions.add_argument("--root", action="append", default=[])
     permissions.add_argument("--open-settings", action="store_true")
-    permissions.add_argument("--pane", choices=("files-and-folders", "full-disk-access"), default="files-and-folders")
+    from .permissions import SETTINGS_URLS
+    permissions.add_argument("--pane", choices=tuple(SETTINGS_URLS), default="files-and-folders")
     command("rules", "show versioned cleanup-rule evidence and limitations")
+    tools = command("tools", "list installed tools and their configuration without running them")
+    tools.add_argument("name", nargs="?", help="show one tool's actions and configuration")
+    tool = command("tool", "run an explicitly selected tool action")
+    tool.add_argument("name")
+    tool.add_argument("--action", default="inspect")
+    tool.add_argument("--root", action="append", default=[])
+    tool.add_argument("--select", action="append", nargs="+", default=[], help="exact opaque IDs; repeat for multiple selections")
+    tool.add_argument("--record", dest="record_id")
+    tool.add_argument("--approve")
+    configuration = tool.add_mutually_exclusive_group()
+    configuration.add_argument("--config", help="bounded JSON configuration; credential references only")
+    configuration.add_argument("--config-file", help="owner-only JSON file; no symbolic links")
     apps = command("apps", "read-only application inventory")
     apps.add_argument("--root", action="append")
     command("overview", "read-only system measurements")
@@ -322,7 +337,7 @@ def _history(store: Any) -> dict:
     result = {"schema_version": 1, "status": "complete", "settings": store.get_settings()}
     for kind in ("scans", "plans", "receipts"):
         records = store.list(kind)
-        result[kind] = [{key: record[key] for key in ("id", "created_at", "status", "scan_id", "plan_id", "action", "summary")
+        result[kind] = [{key: record[key] for key in ("id", "created_at", "status", "scan_id", "plan_id", "action", "summary", "record_type", "tool")
                          if key in record} for record in records]
     return result
 
@@ -346,7 +361,10 @@ def dispatch(argv: list[str] | None = None, *, store=None, cancel=None, progress
     if command == "rules":
         from .rules import load_rules
         return load_rules()
-    if command in ("scan", "apply", "restore", "apps", "overview", "xcode"):
+    if command == "tools":
+        from .extensions import catalog
+        return catalog(args.name)
+    if command in ("scan", "apply", "restore", "apps", "overview", "xcode", "tool"):
         _macos_only()
     if command in ("apps", "overview", "xcode"):
         from . import adapters
@@ -360,6 +378,12 @@ def dispatch(argv: list[str] | None = None, *, store=None, cancel=None, progress
         store = StateStore(args.data_dir)
     elif args.data_dir is not None and Path(args.data_dir).absolute() != Path(store.root).absolute():
         raise CleanMacError("This session already has a state directory; start a new session to switch it.", code="state_scope_mismatch")
+    if command == "tool":
+        from .extensions import dispatch_tool, normalize_options, parse_configuration
+        options = normalize_options(roots=args.root, selected=[value for group in args.select for value in group],
+                                    record_id=args.record_id, approve=args.approve,
+                                    configuration=parse_configuration(args.config, path=args.config_file))
+        return dispatch_tool(args.name, args.action, options, store=store, cancel=cancel, progress=progress)
     if command == "scan":
         return _scan(args, store, cancel, progress)
     if command == "review":
@@ -369,7 +393,8 @@ def dispatch(argv: list[str] | None = None, *, store=None, cancel=None, progress
         selected = _ids(args.select)
         if not selected:
             raise CleanMacError("Select at least one exact item ID after reviewing the scan.", code="empty_selection")
-        plan = make_plan(store.get("scans", args.scan_id), selected, keep_ids=_ids(args.keep) or None)
+        plan = make_plan(store.get("scans", args.scan_id), selected, keep_ids=_ids(args.keep) or None,
+                         cancel=cancel, progress=progress)
         store.put("plans", plan)
         return plan
     if command == "apply":
@@ -401,28 +426,36 @@ def dispatch(argv: list[str] | None = None, *, store=None, cancel=None, progress
         return {"schema_version": 1, "status": "forgotten", "id": record["id"], "kind": kind,
                 "message": "Removed this saved record; no scanned file was changed."}
     if command == "ignore":
-        with store.lock("ignore-settings"):
-            settings = store.get_settings()
-            paths = list(settings.get("ignore_paths", []))
-            if args.ignore_command != "list":
-                path = _roots([args.path])[0]
+        if args.ignore_command == "list":
+            paths = list(store.get_settings().get("ignore_paths", []))
+        else:
+            path = _roots([args.path])[0]
+
+            def update_ignores(settings):
+                paths = list(settings.get("ignore_paths", []))
                 if args.ignore_command == "add" and path not in paths:
                     paths.append(path)
                 elif args.ignore_command == "remove":
                     paths = [value for value in paths if value != path]
                 settings["ignore_paths"] = sorted(paths)
-                store.save_settings(settings)
+
+            settings = store.update_settings(update_ignores)
+            paths = settings.get("ignore_paths", [])
         return {"schema_version": 1, "status": "complete", "ignore_paths": sorted(paths),
                 "message": "Exclusions apply to future scans; saved plans and existing approvals are unchanged."}
     raise CleanMacError("Unknown command.", code="invalid_arguments")
 
 
 def _human(result: dict, command: str | None) -> str:
-    from .review import render_plan, render_review
+    from .review import format_result, render_plan, render_review, render_tools
     if command in ("scan", "review") and "items" in result:
         return render_review(result)
     if command == "plan":
         return render_plan(result)
+    if command == "tools":
+        return render_tools(result)
+    if command == "tool":
+        return format_result(result)
     return json.dumps(result, indent=2, ensure_ascii=True)
 
 

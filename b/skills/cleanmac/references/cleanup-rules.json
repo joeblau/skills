@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "catalog_version": "1.0.0",
+  "catalog_version": "1.1.0",
   "reviewed_at": "2026-11-13",
   "policy": "Discovery does not authorize removal. Only individually selected regular files matching an enabled handler, current identity, supported on-disk format, content checks, and inactive writer checks can enter a Trash plan. Unknown layouts remain report-only.",
   "rules": [
@@ -11,13 +11,66 @@
       "data_type": "content-addressed package cache",
       "mode": "conditional",
       "matcher": "npm_sha512_content_v2",
-      "roots": [".npm/_cacache"],
+      "roots": [
+        ".npm/_cacache"
+      ],
       "applicability": "Only the content-v2/sha512/2-hex/2-hex/124-hex on-disk layout. No assumption about other npm/cacache versions or configured cache locations.",
-      "checks": ["regular owned file with one hard link", "matching scanned identity and ancestor identities", "SHA-512 content matches all three filename segments", "no Node/npm/pnpm/yarn/bun writer reported by a fresh process snapshot", "bounded content verification; unknown or oversized items remain report-only"],
-      "exclusions": ["index-v*", "tmp", "_npx", "_logs", ".npmrc", "unrecognized algorithms or layouts", "recently changed files", "files with protected data names"],
+      "checks": [
+        "regular owned file with one hard link",
+        "matching scanned identity and ancestor identities",
+        "SHA-512 content matches all three filename segments",
+        "no Node/npm/pnpm/yarn/bun writer reported by a fresh process snapshot",
+        "bounded content verification; unknown or oversized items remain report-only"
+      ],
+      "exclusions": [
+        "index-v*",
+        "tmp",
+        "_npx",
+        "_logs",
+        ".npmrc",
+        "unrecognized algorithms or layouts",
+        "recently changed files",
+        "files with protected data names"
+      ],
       "effects": "Moves a selected cached blob to Trash. npm may need network access to fetch it again; do not select copies required for offline work. The cache index is retained and may contain a cache miss until npm refreshes it.",
-      "provenance": ["https://docs.npmjs.com/cli/cache/", "https://github.com/npm/cacache/blob/main/lib/content/path.js", "https://github.com/npm/cacache#cacachermcontentcache-integrity---promise"],
+      "provenance": [
+        "https://docs.npmjs.com/cli/cache/",
+        "https://github.com/npm/cacache/blob/main/lib/content/path.js",
+        "https://github.com/npm/cacache#cacachermcontentcache-integrity---promise"
+      ],
       "validation": "Disposable content-addressed fixtures; this is a narrow format-specific file handler, not a complete npm cache manager."
+    },
+    {
+      "id": "user-ips-crash-report",
+      "version": "1.0.0",
+      "app": "macOS crash reporter",
+      "data_type": "archived JSON crash reports",
+      "mode": "conditional",
+      "matcher": "ips_crash_report",
+      "roots": [
+        "Library/Logs/DiagnosticReports"
+      ],
+      "applicability": "Top-level user-owned .ips files with the documented macOS 12+ bug_type 309 two-object JSON format, consistent process/incident metadata, explicit timezone and report date plus mtime older than 30 days.",
+      "checks": [
+        "bounded schema validation without disclosing report contents",
+        "matching scanned identity and ancestors",
+        "SHA-512 proof bound to selection and execution",
+        "owning process and crash writer absent from fresh process snapshot"
+      ],
+      "exclusions": [
+        "current reports",
+        "active applications and writers",
+        "unified and audit logs",
+        "unknown formats",
+        "nested diagnostic folders",
+        "system-owned reports",
+        "protected investigations added to ignores"
+      ],
+      "effects": "Selected report moves to Trash; removes historical crash evidence, not a regenerable cache. Keep reports needed for troubleshooting; Trash preserves recovery until emptied.",
+      "provenance": [
+        "https://developer.apple.com/documentation/xcode/interpreting-the-json-format-of-a-crash-report"
+      ],
+      "validation": "Disposable documented-schema fixtures, stale/content-changing report rejection, retention and active-writer checks. No blanket log removal."
     },
     {
       "id": "pip-cache-review",
@@ -26,11 +79,20 @@
       "data_type": "HTTP and wheel caches",
       "mode": "report-only",
       "matcher": "prefix",
-      "roots": ["Library/Caches/pip", ".cache/pip"],
+      "roots": [
+        "Library/Caches/pip",
+        ".cache/pip"
+      ],
       "applicability": "Known default locations only; pip configuration and newer formats can change them.",
-      "exclusions": ["unknown formats", "offline dependencies", "active installers"],
+      "exclusions": [
+        "unknown formats",
+        "offline dependencies",
+        "active installers"
+      ],
       "effects": "Review only. Use a separately supported pip cache operation after checking the active environment and offline requirements.",
-      "provenance": ["https://pip.pypa.io/en/stable/topics/caching/"],
+      "provenance": [
+        "https://pip.pypa.io/en/stable/topics/caching/"
+      ],
       "validation": "Discovery fixtures only; direct removal is disabled."
     },
     {
@@ -40,11 +102,23 @@
       "data_type": "Gradle-managed caches",
       "mode": "report-only",
       "matcher": "prefix",
-      "roots": [".gradle/caches"],
+      "roots": [
+        ".gradle/caches"
+      ],
       "applicability": "Default Gradle User Home only; GRADLE_USER_HOME and cache format versions may differ.",
-      "exclusions": ["configuration", "init scripts", "toolchains", "wrapper distributions", "daemon state", "offline dependencies"],
+      "exclusions": [
+        "configuration",
+        "init scripts",
+        "toolchains",
+        "wrapper distributions",
+        "daemon state",
+        "offline dependencies"
+      ],
       "effects": "Review only. Gradle owns cache lifetime and version-specific cleanup; no direct file removal is enabled.",
-      "provenance": ["https://docs.gradle.org/current/userguide/directory_layout.html", "https://docs.gradle.org/current/userguide/dependency_caching.html"],
+      "provenance": [
+        "https://docs.gradle.org/current/userguide/directory_layout.html",
+        "https://docs.gradle.org/current/userguide/dependency_caching.html"
+      ],
       "validation": "Discovery fixtures only; Gradle's own lifecycle rules are not reproduced."
     },
     {
@@ -54,11 +128,22 @@
       "data_type": "compiler module cache",
       "mode": "report-only",
       "matcher": "prefix",
-      "roots": ["Library/Developer/Xcode/DerivedData/ModuleCache.noindex"],
+      "roots": [
+        "Library/Developer/Xcode/DerivedData/ModuleCache.noindex"
+      ],
       "applicability": "Default module-cache location only; compiler/developer settings may relocate it.",
-      "exclusions": ["archives", "dSYMs", "source files", "active builds", "simulator data", "unverified formats"],
+      "exclusions": [
+        "archives",
+        "dSYMs",
+        "source files",
+        "active builds",
+        "simulator data",
+        "unverified formats"
+      ],
       "effects": "Review only until a toolchain-specific removal adapter proves inactivity and regeneration. Directory name or .pcm extension alone does not enable removal.",
-      "provenance": ["https://clang.llvm.org/docs/Modules.html"],
+      "provenance": [
+        "https://clang.llvm.org/docs/Modules.html"
+      ],
       "validation": "Discovery fixtures only; no managed Xcode resources are removed."
     },
     {
@@ -68,11 +153,21 @@
       "data_type": "mixed cache and offline media",
       "mode": "report-only",
       "matcher": "prefix",
-      "roots": ["Library/Application Support/Spotify", "Library/Caches/com.spotify.client"],
+      "roots": [
+        "Library/Application Support/Spotify",
+        "Library/Caches/com.spotify.client"
+      ],
       "applicability": "Discovery lead from installed-app inspection; Spotify app versions and configured paths are not validated.",
-      "exclusions": ["offline library", "preferences", "authentication", "all unclassified data"],
+      "exclusions": [
+        "offline library",
+        "preferences",
+        "authentication",
+        "all unclassified data"
+      ],
       "effects": "No removal is enabled: local/offline media must not be mistaken for regenerable cache.",
-      "provenance": ["https://cms-static.macpaw.com/support/cleanmymac/knowledgebase/safety-database"],
+      "provenance": [
+        "https://cms-static.macpaw.com/support/cleanmymac/knowledgebase/safety-database"
+      ],
       "validation": "Preservation fixtures only."
     },
     {
@@ -82,11 +177,26 @@
       "data_type": "app-specific media storage",
       "mode": "report-only",
       "matcher": "prefix",
-      "roots": ["Library/Application Support/Adobe/Common/Media Cache Files", "Library/Application Support/Telegram Desktop", "Library/Group Containers/6N38VWS5BX.ru.keepcoder.Telegram", "Library/Containers/org.telegram.desktop", "Library/Containers/com.tencent.xinWeChat"],
+      "roots": [
+        "Library/Application Support/Adobe/Common/Media Cache Files",
+        "Library/Application Support/Telegram Desktop",
+        "Library/Group Containers/6N38VWS5BX.ru.keepcoder.Telegram",
+        "Library/Containers/org.telegram.desktop",
+        "Library/Containers/com.tencent.xinWeChat"
+      ],
       "applicability": "Static discovery leads only; no independently validated removal layouts or app versions.",
-      "exclusions": ["authored media", "offline downloads", "message history", "credentials", "settings", "shared containers"],
+      "exclusions": [
+        "authored media",
+        "offline downloads",
+        "message history",
+        "credentials",
+        "settings",
+        "shared containers"
+      ],
       "effects": "No removal is enabled. Use each application's supported storage controls until a validated adapter exists.",
-      "provenance": ["local_app:CleanMyMac-5.7.4-static-inspection"],
+      "provenance": [
+        "local_app:CleanMyMac-5.7.4-static-inspection"
+      ],
       "validation": "Preservation fixtures only; competitor paths are not deletion rules."
     },
     {
@@ -96,11 +206,24 @@
       "data_type": "Chromium cache discovery candidates",
       "mode": "report-only",
       "matcher": "electron_cache",
-      "roots": ["Library/Application Support"],
+      "roots": [
+        "Library/Application Support"
+      ],
       "applicability": "Only Cache, Code Cache, and GPUCache branches beneath a single app folder; this layout is not proof of Electron identity or a supported app version.",
-      "exclusions": ["sessions", "Local Storage", "IndexedDB", "Cookies", "authentication", "configuration", "offline data", "active app state"],
+      "exclusions": [
+        "sessions",
+        "Local Storage",
+        "IndexedDB",
+        "Cookies",
+        "authentication",
+        "configuration",
+        "offline data",
+        "active app state"
+      ],
       "effects": "No removal is enabled. Each app needs independent identity, layout, and shutdown validation before a cache rule can be activated.",
-      "provenance": ["https://www.electronjs.org/docs/latest/api/app#appgetpathname"],
+      "provenance": [
+        "https://www.electronjs.org/docs/latest/api/app#appgetpathname"
+      ],
       "validation": "Discovery and preserved-session fixtures only."
     },
     {
@@ -110,11 +233,22 @@
       "data_type": "sync staging cache",
       "mode": "report-only",
       "matcher": "dropbox_cache",
-      "roots": ["Dropbox/.dropbox.cache", "Library/Group Containers"],
+      "roots": [
+        "Dropbox/.dropbox.cache",
+        "Library/Group Containers"
+      ],
       "applicability": "Default/team Dropbox .dropbox.cache or File Provider group-container root-mount discovery; installed provider version and process shutdown are not validated.",
-      "exclusions": ["syncing data", "cloud placeholders", "pending uploads", "recovery copies", "shared/provider state"],
+      "exclusions": [
+        "syncing data",
+        "cloud placeholders",
+        "pending uploads",
+        "recovery copies",
+        "shared/provider state"
+      ],
       "effects": "No removal is enabled. Dropbox manages this staging area; safe cleanup depends on provider-specific shutdown and active-transfer state.",
-      "provenance": ["https://help.dropbox.com/delete-restore/cache-folder"],
+      "provenance": [
+        "https://help.dropbox.com/delete-restore/cache-folder"
+      ],
       "validation": "Discovery fixtures only; provider internals remain protected."
     },
     {
@@ -124,11 +258,29 @@
       "data_type": "unclassified cache or app data",
       "mode": "report-only",
       "matcher": "app_data",
-      "roots": ["Library/Caches", "Library/Application Support", "Library/Containers", "Library/Group Containers", "Library/Developer", ".cache", ".npm", ".gradle"],
+      "roots": [
+        "Library/Caches",
+        "Library/Application Support",
+        "Library/Containers",
+        "Library/Group Containers",
+        "Library/Developer",
+        ".cache",
+        ".npm",
+        ".gradle"
+      ],
       "applicability": "Catch-all protection for unvalidated app data; no path name implies disposability.",
-      "exclusions": ["all data until covered by a supported exact rule", "AI sessions", "credentials", "configuration", "licenses", "offline media"],
+      "exclusions": [
+        "all data until covered by a supported exact rule",
+        "AI sessions",
+        "credentials",
+        "configuration",
+        "licenses",
+        "offline media"
+      ],
       "effects": "Inventory only; not selectable for cleanup through the generic file handler.",
-      "provenance": ["https://cms-static.macpaw.com/support/cleanmymac/knowledgebase/safety-database"],
+      "provenance": [
+        "https://cms-static.macpaw.com/support/cleanmymac/knowledgebase/safety-database"
+      ],
       "validation": "Unknown-layout and prefix-collision preservation fixtures."
     }
   ]

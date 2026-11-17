@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "CleanMac Browser Companion",
+  "version": "0.1.0",
+  "description": "Connect one Chrome profile to local CleanMac tab and privacy tools.",
+  "minimum_chrome_version": "120",
+  "permissions": ["tabs", "browsingData", "storage", "nativeMessaging"],
+  "incognito": "not_allowed",
+  "background": {"service_worker": "worker.js"},
+  "action": {"default_popup": "popup.html"}
+}

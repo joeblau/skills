@@ -153,7 +153,11 @@ class DuplicateTests(unittest.TestCase):
             data = real_read(fd, amount)
             if not changed:
                 changed = True
+                previous = first.stat()
                 first.write_bytes(b"b" * 200000)
+                # Some tmpfs/container clocks give back-to-back writes the same
+                # timestamp. This fixture specifically exercises changed metadata.
+                os.utime(first, ns=(previous.st_atime_ns, previous.st_mtime_ns + 1_000_000_000))
             return data
 
         with patch.object(duplicates.os, "read", side_effect=mutate_after_read):

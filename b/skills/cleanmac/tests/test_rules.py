@@ -52,10 +52,10 @@ class RuleTests(unittest.TestCase):
     def classify(self, item, active_apps=()):
         return rules.classify_items([item], home=self.home, active_apps=active_apps)[0]
 
-    def test_catalog_has_provenance_and_only_one_conditional_handler(self):
+    def test_catalog_has_provenance_and_known_conditional_handlers(self):
         catalog = rules.load_rules()
         self.assertEqual(catalog["schema_version"], 1)
-        self.assertEqual([r["id"] for r in catalog["rules"] if r["mode"] == "conditional"], ["npm-cacache-sha512-v2"])
+        self.assertEqual([r["id"] for r in catalog["rules"] if r["mode"] == "conditional"], ["npm-cacache-sha512-v2", "user-ips-crash-report"])
         for rule in catalog["rules"]:
             self.assertTrue(rule["provenance"])
             self.assertTrue(rule["exclusions"])
