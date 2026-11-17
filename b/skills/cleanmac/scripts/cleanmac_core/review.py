@@ -44,6 +44,7 @@ def menu_payload() -> dict:
             {"id": "areas", "label": "Choose areas", "description": "Choose available local scanners and an explicit folder."},
             {"id": "folder", "label": "One folder", "description": "Inspect files and storage in a chosen folder."},
             {"id": "history", "label": "History", "description": "Resume a saved review or inspect recovery records."},
+            {"id": "tools", "label": "My Tools", "description": "Choose cleanup, app, browser, cloud, mail, maintenance, and health tools; inspect requirements before use."},
         ],
         "note": "No scan or cleanup has started. Select a scope; cleanup requires a reviewed plan.",
     }
@@ -119,6 +120,8 @@ def render_review(scan: dict, *, offset: int = 0, limit: int = PAGE_SIZE,
 
 
 def render_plan(plan: dict) -> str:
+    if plan.get("record_type") == "action_plan":
+        return render_action_record(plan)
     items = plan.get("items", [])
     lines = [f"Plan {_safe(plan.get('id', 'unknown'))}: move {len(items)} selected file(s) to Trash."]
     for item in items:
@@ -146,6 +149,8 @@ def _receipt_items(receipt: dict) -> list[dict]:
 
 
 def render_receipt(receipt: dict) -> str:
+    if receipt.get("record_type") == "action_receipt":
+        return render_action_record(receipt)
     lines = [f"Receipt {_safe(receipt.get('id', 'unknown'))} · {_safe(receipt.get('status', 'unknown'))}"]
     for operation in _receipt_items(receipt):
         path = operation.get("original_path", operation.get("path", operation.get("item", {}).get("path", "")))
@@ -158,7 +163,35 @@ def render_receipt(receipt: dict) -> str:
     return "\n".join(lines)
 
 
+def render_action_record(record: dict) -> str:
+    """Keep provider/system action semantics visible; never relabel them Trash."""
+    return json.dumps(record, ensure_ascii=True, indent=2, sort_keys=True)
+
+
+def render_tools(catalog: dict) -> str:
+    tools = catalog.get("tools", [])
+    lines = ["My Tools — installed implementations; access and dependencies are checked when invoked."]
+    for tool in tools:
+        marker = "★ " if tool.get("favorite") else ""
+        lines.append(f"{marker}{_safe(tool.get('name', 'unknown'))}: {_safe(tool.get('title', ''))}")
+        lines.append("  Actions: " + ", ".join(_safe(a) for a in tool.get("actions", [])))
+        if tool.get("description"):
+            lines.append("  " + _safe(tool["description"]))
+        if len(tools) == 1:
+            for field in ("requirements", "configuration", "examples", "usage", "action_usage", "approval_actions"):
+                if tool.get(field):
+                    lines.append(f"  {field.replace('_', ' ').capitalize()}: " + json.dumps(tool[field], ensure_ascii=True, sort_keys=True))
+    if catalog.get("unavailable_modules"):
+        lines.append(f"{len(catalog['unavailable_modules'])} module registration(s) unavailable; no results are implied for them.")
+    lines.append("Listing tools does not scan files, connect accounts, request permissions, or start cleanup.")
+    return "\n".join(lines)
+
+
 def format_result(result: dict) -> str:
+    if "tools" in result:
+        return render_tools(result)
+    if result.get("record_type") in ("action_plan", "action_receipt") or result.get("tool"):
+        return render_action_record(result)
     if "digest" in result and "items" in result:
         return render_plan(result)
     if "operations" in result or str(result.get("id", "")).startswith("receipt-"):
@@ -208,7 +241,9 @@ def interactive_wizard(dispatch: Callable[[list[str]], dict], *, input_fn=None,
             result = dispatch(argv)
             if not isinstance(result, dict):
                 raise CleanMacError("The command did not return a structured result.")
-            if result.get("status") == "error" or result.get("error"):
+            coverage_reports = {"permission-needed", "dependency-needed", "unavailable", "unsupported",
+                                "manual-action-required", "scope-needed", "partial", "cancelled", "unscanned"}
+            if result.get("status") == "error" or (result.get("error") and result.get("status") not in coverage_reports):
                 error = result.get("error", result.get("message", "Command failed."))
                 emit("Cannot continue: " + _safe(error.get("message", error) if isinstance(error, dict) else error))
                 return None
@@ -219,6 +254,9 @@ def interactive_wizard(dispatch: Callable[[list[str]], dict], *, input_fn=None,
 
     def restore(receipt: dict) -> dict | None:
         emit(render_receipt(receipt))
+        if receipt.get("record_type") == "action_receipt":
+            emit("This is a tool action receipt. Open My Tools and select " + _safe(receipt.get("tool", "its tool")) + "; its supported recovery actions differ from file Trash recovery.")
+            return None
         receipt_id = receipt.get("id")
         if not receipt_id:
             emit("This record has no recovery receipt ID.")
@@ -230,6 +268,133 @@ def interactive_wizard(dispatch: Callable[[list[str]], dict], *, input_fn=None,
         if result is not None:
             emit(render_receipt(result))
         return result
+
+    def my_tools() -> dict | None:
+        available = call(["tools"])
+        if available is None:
+            return None
+        specs = {spec.get("name"): spec for spec in available.get("tools", [])}
+        while True:
+            if "favorites" in specs:
+                preferred = call(["tool", "favorites", "--action", "inspect"])
+                names = preferred.get("favorites", []) if preferred is not None else []
+                names = names if isinstance(names, list) else []
+                ranked = {name: index for index, name in enumerate(names) if isinstance(name, str)}
+                available["tools"] = [dict(spec, favorite=spec.get("name") in ranked) for spec in specs.values()]
+                available["tools"].sort(key=lambda spec: (ranked.get(spec.get("name"), len(ranked)), spec.get("name", "")))
+            emit(render_tools(available))
+            name = prompt("Tool name, search TEXT, or back> ")
+            if name.casefold() in ("back", "cancel", ""):
+                return None
+            if name.casefold().startswith("search "):
+                needle = name[7:].casefold()
+                matches = [spec for spec in specs.values() if needle in str(spec.get("name", "")).casefold() or needle in str(spec.get("title", "")).casefold()]
+                emit(render_tools({"tools": matches}))
+                name = prompt("Tool name or back> ")
+                if name.casefold() in ("back", "cancel", ""):
+                    continue
+            spec = specs.get(name)
+            if spec is None:
+                emit("Choose a registered tool name from the list.")
+                continue
+            emit(render_tools({"tools": [spec]}))
+            roots: list[str] = []
+            selected: list[str] = []
+            configuration: dict = {}
+            record_id = None
+            last_plan = None
+            last_result: dict = {}
+            reviewed_items: list[dict] = []
+            emit("Choose scope for local files or config for account/tool options. Supply credential references, never tokens or passwords.")
+            while True:
+                actions = spec.get("actions", [])
+                emit("Actions: " + ", ".join(_safe(action) for action in actions))
+                emit("Commands: scope, config, select ROWS, record ID, show, back, done")
+                entered = prompt(_safe(name) + "> ")
+                verb, _, argument = entered.partition(" ")
+                verb = verb.casefold()
+                if verb in ("done", "quit", "exit"):
+                    return {"status": "reviewed", "exit": True, "tool": name}
+                if verb in ("back", "cancel"):
+                    break
+                try:
+                    if verb == "scope":
+                        remote = spec.get("scope_kind") == "remote"
+                        root = prompt(("Remote folder ID" if remote else "Folder path") + " (blank clears scope; back keeps it)> ")
+                        if root.casefold() == "back":
+                            continue
+                        roots = [root if remote else os.path.abspath(os.path.expanduser(root))] if root else []
+                        selected, record_id, last_plan = [], None, None
+                        reviewed_items, last_result = [], {}
+                        emit("Selected scope: " + (", ".join(_safe(p) for p in roots) if roots else "none"))
+                    elif verb == "config":
+                        from .extensions import parse_configuration
+                        raw = prompt("Configuration JSON, @private-file, or blank for defaults> ")
+                        configuration = parse_configuration(path=raw[1:]) if raw.startswith("@") else parse_configuration(raw or "{}")
+                        last_plan = None
+                        emit("Configuration saved for this tool session.")
+                    elif verb == "record":
+                        detailed = call(["history", "--id", argument.strip()])
+                        if detailed is not None:
+                            owner = detailed.get("tool")
+                            if owner and owner != name:
+                                emit("That record belongs to a different tool.")
+                                continue
+                            record_id = detailed.get("id")
+                            last_result = detailed
+                            last_plan = detailed if detailed.get("digest") and detailed.get("id") else None
+                            if isinstance(detailed.get("items"), list):
+                                reviewed_items = [item for item in detailed["items"] if isinstance(item, dict) and item.get("id")]
+                            emit(format_result(detailed))
+                    elif verb == "select":
+                        selected = _resolve_ids(argument, reviewed_items)
+                        last_plan = None
+                        emit("Selected exact IDs: " + ", ".join(_safe(value) for value in selected))
+                    elif verb == "show":
+                        emit(format_result(last_result) if last_result else "No tool result yet.")
+                    elif verb in actions:
+                        argv = ["tool", name, "--action", verb]
+                        for root in roots:
+                            argv += ["--root", root]
+                        for item_id in selected:
+                            argv += ["--select", item_id]
+                        if configuration:
+                            argv += ["--config", json.dumps(configuration, ensure_ascii=True, allow_nan=False)]
+                        approval_action = verb in spec.get("approval_actions", ["apply"])
+                        if approval_action:
+                            if not last_plan or not last_plan.get("digest") or not last_plan.get("id"):
+                                emit("Create and review a plan, or load an exact saved plan with record ID, before apply.")
+                                continue
+                            emit(format_result(last_plan))
+                            emit("This applies the exact action and selection shown above. Review its scope, effects, and recovery limits.")
+                            if prompt("Type " + verb + " to approve this unchanged plan, or back> ").casefold() != verb:
+                                continue
+                            argv += ["--record", str(last_plan["id"]), "--approve", str(last_plan["digest"])]
+                        elif record_id:
+                            argv += ["--record", str(record_id)]
+                        result = call(argv)
+                        if result is None:
+                            continue
+                        last_result = result
+                        emit(format_result(result))
+                        if result.get("digest") and result.get("id"):
+                            last_plan = result
+                        else:
+                            if result.get("id"):
+                                record_id = result["id"]
+                            if approval_action:
+                                last_plan = None
+                        if isinstance(result.get("items"), list) and not result.get("digest"):
+                            reviewed_items = [item for item in result["items"] if isinstance(item, dict) and item.get("id")]
+                            for number, item in enumerate(reviewed_items, 1):
+                                label = item.get("path", item.get("title", item.get("name", item["id"])))
+                                emit(f"  {number}. {_safe(label)} · ID {_safe(item['id'])}")
+                        if result.get("status") in ("permission-needed", "dependency-needed", "unavailable", "unsupported"):
+                            emit("Review the reported requirements; retry only after resolving them, or choose back. OS permission prompts remain under your control.")
+                    elif entered:
+                        emit("Choose a listed action or command; no command text is executed as a shell.")
+                except CleanMacError as exc:
+                    emit(_safe(str(exc)))
 
     def review(scan: dict) -> dict:
         selected: set[str] = set()
@@ -415,7 +580,7 @@ def interactive_wizard(dispatch: Callable[[list[str]], dict], *, input_fn=None,
     try:
         emit("CleanMac: inspect local files, choose exact items, and review before cleanup.")
         while True:
-            emit("1. Quick check (Downloads)\n2. Choose areas\n3. One folder\n4. History\n5. Done")
+            emit("1. Quick check (Downloads)\n2. Choose areas\n3. One folder\n4. History\n5. Done\n6. My Tools (cleanup, apps, browsers, cloud, mail, maintenance, health)")
             choice = prompt("Choose> ").casefold()
             result = None
             if choice in ("5", "done", "quit", "cancel", "exit"):
@@ -426,7 +591,7 @@ def interactive_wizard(dispatch: Callable[[list[str]], dict], *, input_fn=None,
                 areas = ["files", "storage"]
                 if choice in ("2", "areas", "choose areas"):
                     emit("Available local areas: " + ", ".join(AREAS))
-                    emit("Advanced cloud, mail, malware, and privileged cleanup are unavailable here.")
+                    emit("Other tool categories and their requirements are available in My Tools.")
                     entered = prompt("Areas (comma-separated; back to return)> ").casefold()
                     if entered in ("back", "cancel"):
                         continue
@@ -439,6 +604,8 @@ def interactive_wizard(dispatch: Callable[[list[str]], dict], *, input_fn=None,
                     continue
                 root = os.path.abspath(os.path.expanduser(folder))
                 result = run_scan([root], areas)
+            elif choice in ("6", "tools", "my tools"):
+                result = my_tools()
             elif choice in ("4", "history"):
                 history = call(["history"])
                 if history is None:
@@ -447,13 +614,17 @@ def interactive_wizard(dispatch: Callable[[list[str]], dict], *, input_fn=None,
                     emit(kind.capitalize() + ":")
                     for record in history.get(kind, []):
                         emit(f"  {_safe(record.get('id', ''))} · {_safe(record.get('status', 'unknown'))} · {_safe(record.get('created_at', ''))}")
-                command = prompt("review SCAN_ID, restore RECEIPT_ID, or back> ")
+                command = prompt("review SCAN_ID, show RECORD_ID, restore RECEIPT_ID, or back> ")
                 verb, _, record_id = command.partition(" ")
                 record_id = record_id.strip()
                 if verb.casefold() == "review" and record_id:
                     scan = call(["review", record_id, "--limit", "100000"])
                     if scan is not None:
                         result = review(scan)
+                elif verb.casefold() == "show" and record_id:
+                    detailed = call(["history", "--id", record_id])
+                    if detailed is not None:
+                        emit(format_result(detailed))
                 elif verb.casefold() == "restore" and record_id:
                     receipt = next((r for r in history.get("receipts", []) if r.get("id") == record_id), None)
                     if receipt is None:

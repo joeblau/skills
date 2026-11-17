@@ -129,8 +129,11 @@ Claude and Kimi use
   and Python 3.10 or later. Build the optional native Trash helper explicitly with
   `sh b/skills/cleanmac/native/build.sh` using Apple Command Line Tools or Xcode;
   scans still work without it. Permission-blocked locations have skip/retry and
-  System Settings handoffs. Advanced roadmap modules remain unavailable until
-  implemented and validated. See the [skill](b/skills/cleanmac/SKILL.md) and
+  System Settings handoffs. `tools` discovers app, browser, cloud, mail,
+  maintenance, native, monitoring, and schedule adapters with their setup needs.
+  `tool setup --action inspect` reports requirements; `tool setup --action smoke`
+  checks the local workflow using disposable files. Account and native features
+  need their specific credentials/companions and permissions. See the [skill](b/skills/cleanmac/SKILL.md) and
   [feature roadmap](b/skills/cleanmac/references/roadmap.md).
 
 These are agent workflows: a model-only chat without shell, files, or required

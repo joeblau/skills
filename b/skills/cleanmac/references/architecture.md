@@ -1,12 +1,11 @@
 # CleanMac implementation contract
 
-The initial local runtime implements the scan, review, exact-plan, native Trash,
-recovery, and private-state layers below. Its CLI lives in `scripts/cleanmac`;
-the Python core uses the standard library and the optional Swift helper performs
-Foundation Trash operations as the current user. Remote integrations, privileged
-operations, and other advanced roadmap actions remain design proposals. Runtime
-capabilities report the distinction; this is not a claim that all 76 roadmap
-features or their cross-host acceptance criteria are complete.
+The runtime implements local scan, review, exact-plan, native Trash, recovery,
+and private state, plus typed tool adapters for maintenance, apps, browsers,
+cloud, mail, native libraries, monitoring, and schedules. Its CLI lives in
+`scripts/cleanmac`; Python uses the standard library. Optional native companions
+run as the current user. Tool registration, dependency readiness, and executed
+acceptance evidence are separate states; the feature catalog records their limits.
 
 ## Layers
 
@@ -26,8 +25,10 @@ Use a deterministic local core rather than LLM-generated recursive deletion.
 The current design uses Python 3.10+ standard-library orchestration and JSON
 artifacts, with an explicitly built Swift Foundation Trash helper. Local builds
 are ad-hoc signed for this Mac, not Developer ID signed or notarized distribution
-artifacts. PhotoKit, Vision, privileged services, and native UI remain future
-adapters. The launcher reports missing Python; native cleanup stays unavailable
+artifacts. A separate optional app companion provides PhotoKit, Vision, document
+versions, app process control, and screen-cleaning UI; a third helper provides
+iCloud APIs. No privileged service is installed or implemented in this release.
+The launcher reports missing Python; native cleanup stays unavailable
 until its helper is built. macOS is not assumed to ship a usable Python or Swift
 compiler. Read-only installations can set `CLEANMAC_NATIVE_PATH` to a private
 helper built with `native/build.sh --output /absolute/path/cleanmac-native`.
@@ -49,9 +50,10 @@ CleanMyMac, its helper, or its proprietary rules.
   the responsible runner/host for a permission handoff. Root privilege is not a
   substitute for Full Disk Access, and inaccessible roots are unknown coverage.
 - The normal scanner and local Trash adapter work without an elevated helper.
-  Optional privileged actions use a separate signed, caller-validated service
-  with typed bounded requests and explicit authorization/revocation lifecycle.
-  Read-only preflight neither installs that service nor authorizes cleanup.
+  Privileged actions remain unavailable. A future privilege adapter would need
+  a separate signed, caller-validated service with typed bounded requests and
+  an explicit authorization/revocation lifecycle. Read-only preflight neither
+  installs a service nor authorizes cleanup.
 - Evaluate portable traversal and an optional native bulk-metadata backend with
   the same scope, identity, cancellation, link, placeholder, and error contracts.
   Record large-tree timing and memory evidence before choosing an optimization.
@@ -67,13 +69,36 @@ CleanMyMac, its helper, or its proprietary rules.
 ## Runtime command families
 
 `capabilities`, `scan`, `review`, `plan`, `apply`, `restore`, `history`, `forget`,
-`permissions`, `rules`, `ignore`, `apps`, `overview`, and `xcode` have CLI handlers.
+`permissions`, `rules`, `ignore`, `apps`, `overview`, `xcode`, `tools`, and `tool`
+have CLI handlers.
 Use `--help` for exact arguments and `--json` for agent calls. A terminal invocation
 without a command opens the wizard; a noninteractive invocation returns choices
 without blocking. Mutations accept a validated saved plan and exact approval
 digest, never a freeform shell string. Restore requires the reviewed receipt ID.
 The app and Xcode adapters are read-only; no app uninstall or simulator removal
 is implied by their inventory output.
+
+`extensions.py` imports a fixed bundled module list and validates tool metadata
+without inspecting personal folders, opening accounts, or requesting permissions.
+Each adapter exports `TOOL_SPECS` and a typed `dispatch` function. Tool parameters
+are bounded JSON; direct credential values, duplicate JSON keys, and arbitrary
+module/command execution are rejected. Provider auth uses named credential
+references and does not persist tokens in the local state.
+
+`actions.py` handles non-file action plans. It binds the tool, action, exact
+payload, preconditions, and review summary to a digest, then durably records
+execution before invoking an adapter. The adapter revalidates live identity,
+account, revision, and scope. Effects and verification use a persistent checkpoint.
+Completed actions replay their receipt; interrupted/ambiguous actions freeze for
+inspection. Recoverable provider actions create separate reviewed restore plans,
+and irreversible effects are never represented as universal Undo.
+
+History deletion holds the corresponding executor/worker locks before removing
+records. Started or recovery-bearing receipts retain their referenced plans;
+the file executor rechecks the saved plan inside its mutation lock. Active OAuth
+sessions and connections cannot be forgotten. Disconnected connections require
+a noninteractive Keychain absence check, so deleting history cannot orphan
+credentials or race a pending mutation.
 
 Resolve the skill source through real paths; keep runtime state outside it.
 Candidate state order: explicit `CLEANMAC_DATA_DIR`, a host-provided plugin data

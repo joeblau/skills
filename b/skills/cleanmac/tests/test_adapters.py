@@ -168,6 +168,72 @@ class AdapterTests(unittest.TestCase):
         self.assertEqual(report["status"], "partial")
         self.assertTrue(any(c["status"] == "partial" for c in report["coverage"]))
 
+    def test_ancestor_sibling_creation_is_not_directory_replacement(self):
+        ancestor = self.root / "stable-parent"
+        selected = ancestor / "selected"
+        derived = selected / "Xcode" / "DerivedData"
+        derived.mkdir(parents=True)
+        (derived / "a").write_bytes(b"a")
+        original_open = adapters.os.open
+        changed = False
+
+        def sibling_creation(part, flags, *args, **kwargs):
+            nonlocal changed
+            if part == ancestor.name and not changed:
+                changed = True
+                before = ancestor.stat()
+                (ancestor / "unrelated-sibling").write_bytes(b"fixture")
+                # Make the timestamp-only change deterministic on filesystems
+                # with coarser time resolution; the directory inode is stable.
+                os.utime(ancestor, ns=(before.st_atime_ns, before.st_mtime_ns + 10 ** 9))
+                self.assertEqual((ancestor.stat().st_dev, ancestor.stat().st_ino), (before.st_dev, before.st_ino))
+            return original_open(part, flags, *args, **kwargs)
+
+        with patch.object(adapters.os, "open", side_effect=sibling_creation), patch.object(adapters, "_MAX_ENTRIES", 0):
+            report = adapters.scan_xcode([str(selected)])
+        self.assertTrue(changed)
+        self.assertEqual(report["status"], "partial")
+        self.assertEqual(report["items"][0]["category"], "derived_data")
+        self.assertFalse(any(error.get("errno") == errno.ESTALE for error in report["errors"]))
+
+    def test_ancestor_inode_replacement_between_stat_and_open_is_rejected(self):
+        ancestor = self.root / "replaceable-parent"
+        (ancestor / "selected").mkdir(parents=True)
+        replacement = self.root / "replacement"
+        (replacement / "selected").mkdir(parents=True)
+        original_open = adapters.os.open
+        changed = False
+
+        def replacement_race(part, flags, *args, **kwargs):
+            nonlocal changed
+            if part == ancestor.name and not changed:
+                changed = True
+                ancestor.rename(self.root / "original-parent")
+                replacement.rename(ancestor)
+            return original_open(part, flags, *args, **kwargs)
+
+        with patch.object(adapters.os, "open", side_effect=replacement_race), self.assertRaises(OSError) as error:
+            adapters._open_dir(str(ancestor / "selected"))
+        self.assertEqual(error.exception.errno, errno.ESTALE)
+
+    def test_ancestor_access_mode_change_between_stat_and_open_is_rejected(self):
+        ancestor = self.root / "policy-parent"
+        (ancestor / "selected").mkdir(parents=True)
+        ancestor.chmod(0o700)
+        original_open = adapters.os.open
+        changed = False
+
+        def policy_race(part, flags, *args, **kwargs):
+            nonlocal changed
+            if part == ancestor.name and not changed:
+                changed = True
+                ancestor.chmod(0o750)
+            return original_open(part, flags, *args, **kwargs)
+
+        with patch.object(adapters.os, "open", side_effect=policy_race), self.assertRaises(OSError) as error:
+            adapters._open_dir(str(ancestor / "selected"))
+        self.assertEqual(error.exception.errno, errno.ESTALE)
+
     def test_xcode_tree_rejects_an_unselected_volume(self):
         expected_device = self.root.stat().st_dev + 1
         with self.assertRaises(OSError) as error:

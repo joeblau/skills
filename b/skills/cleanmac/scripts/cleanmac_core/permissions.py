@@ -17,12 +17,18 @@ import subprocess
 import sys
 from typing import Any
 
+from . import __version__
 from .common import CleanMacError, display_path, utc_now
 
 
 SETTINGS_URLS = {
     "files-and-folders": "x-apple.systempreferences:com.apple.preference.security?Privacy_FilesAndFolders",
     "full-disk-access": "x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles",
+    "photos": "x-apple.systempreferences:com.apple.preference.security?Privacy_Photos",
+    "automation": "x-apple.systempreferences:com.apple.preference.security?Privacy_Automation",
+    "accessibility": "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility",
+    "input-monitoring": "x-apple.systempreferences:com.apple.preference.security?Privacy_ListenEvent",
+    "screen-recording": "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture",
 }
 PERMISSION_SOURCES = [
     "https://support.apple.com/guide/security/controlling-app-access-to-files-secddd1d86a6/web",
@@ -37,7 +43,7 @@ _FEATURE_SUPPORT = {
     "CM-006": ("review", "review", ["review"], "Interactive local-file workflow; advanced categories remain unavailable."),
     "CM-007": ("state", "history", ["inspect"], "Private local sessions, plans, and receipts; no remote account history."),
     "CM-009": ("cli", None, ["scan", "review"], "Launch cleanmac with no subcommand for the interactive menu. Selected local storage areas only; no malware, updates, or maintenance automation."),
-    "CM-010": ("cli", "ignore", ["inspect", "manage-exclusions"], "Persistent ignores and saved reviews/history are supported; favorites and named scan presets are not implemented."),
+    "CM-010": ("cli", "ignore", ["inspect", "manage-exclusions"], "Persistent ignores and saved reviews/history; named scopes and favorites are exposed through the tool catalog when installed."),
     "CM-011": ("rules", "scan --areas caches", ["scan", "plan"], "Only individually eligible cache rules; a cache-folder name is not permission to remove it."),
     "CM-022": ("adapters", "xcode", ["inspect"], "Read-only Xcode category inventory; simulator/runtime deletion is unavailable."),
     "CM-044": ("adapters", "apps", ["inspect"], "Read-only app bundle inventory; app removal and compatibility guarantees are unavailable."),
@@ -244,6 +250,20 @@ def _feature_capabilities(is_macos: bool, helper: dict[str, Any]) -> list[dict[s
             raise ValueError("features is not a list")
     except (OSError, ValueError, KeyError, TypeError) as error:
         raise CleanMacError("The feature catalog is missing or invalid.", code="invalid_catalog") from error
+    # Importing an adapter proves only that its implementation is installed.
+    # Never probe an account, protected library, or Automation target here.
+    extension_tools: dict[str, list[dict[str, Any]]] = {}
+    try:
+        from .extensions import catalog
+        for tool in catalog().get("tools", []):
+            for feature_id in tool.get("feature_ids", []):
+                extension_tools.setdefault(feature_id, []).append({
+                    "name": tool["name"], "actions": tool.get("actions", []),
+                    "requirements": tool.get("requirements", []),
+                    "dependency_status": "not-checked",
+                })
+    except ImportError:
+        pass
     output = []
     for feature in features:
         feature_id = feature["id"]
@@ -267,6 +287,20 @@ def _feature_capabilities(is_macos: bool, helper: dict[str, Any]) -> list[dict[s
                 item["reason"] = "Local cleanup is unavailable until the native helper is available; scanning and review remain usable."
             else:
                 item.update(status="available", permitted_actions=actions, reason=limits)
+        registered = extension_tools.get(feature_id, [])
+        if registered:
+            item["tools"] = registered
+            item["dependency_status"] = "not-checked"
+            item["implementation_status"] = feature.get("status", "partial")
+            if not supported:
+                primary = registered[0]
+                inspection = "inspect" if "inspect" in primary["actions"] else primary["actions"][0]
+                item.update(
+                    status="unverified" if is_macos else "unavailable",
+                    command=f"tool {primary['name']} --action {inspection}",
+                    reason=("The adapter is installed. Select this tool to check its scope, native permissions, and provider dependencies; no action has been authorized."
+                            if is_macos else "This workflow requires macOS. No host tools or accounts were accessed."),
+                )
         output.append(item)
     return output
 
@@ -288,7 +322,7 @@ def capabilities(roots: list[str] | tuple[str, ...] | None = None, *, native_pat
         "schema_version": 1, "created_at": utc_now(),
         "status": "available" if is_macos and runtime_ok else "unavailable",
         "platform": {"system": system, "release": platform.release(), "macos_version": platform.mac_ver()[0] if is_macos else None, "machine": platform.machine(), "supported": is_macos},
-        "runtime": {"python_version": platform.python_version(), "minimum_python": "3.10", "supported": runtime_ok, "host": _host_context()},
+        "runtime": {"version": __version__, "python_version": platform.python_version(), "minimum_python": "3.10", "supported": runtime_ok, "host": _host_context()},
         "capabilities": features, "access": access, "helper": helper,
         "permission_state": {
             "app_sandbox": "unknown", "full_disk_access": "unknown",
@@ -311,7 +345,7 @@ def capabilities(roots: list[str] | tuple[str, ...] | None = None, *, native_pat
 def open_permission_settings(pane: str = "files-and-folders") -> dict[str, Any]:
     """Open a fixed Settings pane only when explicitly requested by the caller."""
     if pane not in SETTINGS_URLS:
-        raise CleanMacError("Choose files-and-folders or full-disk-access.", code="invalid_settings_pane")
+        raise CleanMacError("Choose a supported privacy pane: " + ", ".join(SETTINGS_URLS), code="invalid_settings_pane")
     if platform.system() != "Darwin":
         raise CleanMacError("macOS privacy settings are unavailable on this platform.", code="unsupported_platform")
     try:

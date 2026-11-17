@@ -2,10 +2,11 @@
 
 Research completed **2026-11-13** against the supplied screenshots and current
 primary documentation, supplemented by read-only static inspection of installed
-CleanMyMac 5.7.4. The initial local runtime now supports interactive scanning,
-review, exact selection plans, native Trash, and recovery. **18 feature records
-have partial implementations; 58 remain planned.** No issue is claimed complete
-merely because its CLI entry point exists.
+CleanMyMac 5.7.4. Runtime 0.2.0 now routes **all 76 feature areas** through core
+handlers, typed tools, native companions, or explicit supported handoffs. Feature
+records remain `partial` where their full acceptance gates need live accounts,
+permissions, supported OS variants, or unavailable platform capabilities. Tool
+registration alone is not evidence that an action is runnable or an issue complete.
 
 The [GitHub roadmap](https://github.com/joeblau/skills/issues/9) tracks the complete
 project. Every feature issue includes research evidence, a proposed
@@ -39,33 +40,86 @@ with the same evidence. No new feature IDs or implementation-status changes are
 introduced by that research pass; proprietary rule contents and CleanMyMac
 runtime behavior remain unverified.
 
-## Current local runtime (0.1.0)
+## Current runtime (0.2.0)
 
 Run `scripts/cleanmac` relative to the skill directory for the terminal wizard,
 or invoke the installed `/cleanmac`, `/b:cleanmac`, `$cleanmac`, or
-`/skill:cleanmac` through an agent. Machine calls use `--json`; the skill guides
-scope, permission handoffs, review, exact approval, and recovery.
+`/skill:cleanmac` through an agent. Machine calls use `--json`. `tools` discovers
+adapters without account or private-folder access; `tools NAME` publishes each
+action, configuration field, requirement, and example. `tool setup --action
+inspect` reports dependencies; `tool setup --action smoke` exercises generated
+local fixtures without touching user files or accounts.
 
-| Available scope | Remaining boundary |
+| Workflow | Implemented scope and boundary |
 |---|---|
-| Selected-root metadata inventory, large-file review, exact duplicates, storage totals | Hidden/system/cloud/package/repository exclusions and denied scope remain explicit; allocation is not guaranteed reclaimable capacity. |
-| Nine rule definitions cover npm, pip, Gradle, Xcode, Electron, Dropbox, Spotify, media/messaging caches, and unknown app data | Only verified npm content-addressed cache blobs have a conditional cleanup handler; other layouts are review-only. |
-| Exact selected-file plans, user-level Foundation Trash, no-overwrite restore | Same-volume private capture and compiled helper required; no permanent deletion, directory cleanup, or privileged service. |
-| Persistent ignores, saved scans/plans/receipts, interactive review and JSON CLI | Saved plans preserve exact keeper/selection state; they do not grant new approval after scope changes. |
-| Applications, Xcode categories, storage and memory overview | Read-only metadata, no app uninstall, simulator/runtime deletion, system optimization, or continuous monitoring. |
+| Local files and storage | Descriptor-anchored metadata, exact duplicates/keepers, similar-image review, age/type/source filters, hidden/folder drilldown, static HTML and honest shared-allocation accounting. Incomplete downloads, placeholders and protected app data remain guarded. |
+| Cache/log/model/developer cleanup | Ten reviewed rules, conditional npm and retained crash-report Trash, explicit simulator/model provider actions. Unknown/system caches, preference resets, backups and uncertain app data remain report-only or guided. |
+| Approval and recovery | Exact plans and private journaled receipts, no-overwrite local restore, provider precondition checks and interrupted-action freezing. Local Trash retains storage; the dedicated Trash tool permanently erases only an exact selected eligible file with explicit irreversible-action review. |
+| Apps | Signatures/localizations/architectures, conservative leftovers, exact Homebrew-owned app-only cask uninstall/update. Signed-bundle slimming and arbitrary installers remain unsupported. |
+| Maintenance | Scoped permission reset, DNS troubleshooting, Spotlight requests, snapshot management, selected legacy LaunchAgent settings, and honest native handoffs for modern settings/Mail/obsolete operations. No root escalation. |
+| Malware | Explicit maintained ClamAV/signature dependency, bounded local/container scans, approved quarantine/restore, and optional read-only scheduled scans. Real-time Endpoint Security protection is unavailable. |
+| Browsers | Optional Chrome extension/native host with exact profile/tab/category/time scope, protected-state checks, discard/resume/close/reopen and privacy actions. Other browser variants use metadata/native handoffs; process totals are not per-tab attribution. |
+| Cloud and Gmail | Own-client OAuth with user consent, Keychain credentials and refresh; account/revision-bound metadata and selected actions. Google Drive/Gmail restore paths are implemented; OneDrive/Dropbox restore uses handoffs. Shared/work/team/folder or irreversible variants remain protected where the adapter cannot prove safe support. |
+| Native libraries/UI | Separate locally built companions for document versions, image similarity, PhotoKit and screen cleaning, plus native iCloud metadata/eviction. The selected native API checks its permission and synchronization state. |
+| Monitoring and lifecycle | Measured CPU/memory/disk/battery/network/device/health views, saved scopes/favorites, Smart Care and explicit user LaunchAgent schedules with quiet/AC/load policies and deduplicated measured alerts. No unattended cleanup or invented missing measurements. |
 
-Python 3.10+ is required. The optional Swift helper is built explicitly on each
-Mac with Apple Command Line Tools or Xcode and is locally ad-hoc signed. A
-missing helper disables cleanup, not scans. Use `capabilities` for the actual
-host, permission, helper, and per-feature availability. No initial onboarding
-requests administrator rights or Full Disk Access for every scan.
+Python 3.10+ is required. Native helpers are built explicitly with Apple Command
+Line Tools or Xcode and locally ad-hoc signed, not Developer ID distribution.
+The selected tool reports any companion, engine, browser permission, OAuth client
+registration or account prerequisite. Ordinary local scans need none of those
+external accounts and do not request blanket administrator access or Full Disk
+Access. No task automatically installs an extension or persistent schedule.
 
-Development progress is recorded as `partial` in `features.json`; the issue
-acceptance criteria still include broader host/OS compatibility and specialized
-features. Cloud/email/browser integrations, malware engines, Photos, privilege
-services, system maintenance, and background schedules remain unavailable.
+The catalog records implemented scope, actions, test paths, and acceptance limits
+for every feature. Missing credentials or permissions mean **unscanned**, while
+a report-only or guided tool does not advertise deletion. This release does not
+claim full CleanMyMac parity or completed live integration tests.
 
-## Validation record — 2026-11-13
+## 0.2.0 validation — 2026-11-13
+
+The final integrated suite contains **805 tests**. Both macOS suites ran
+concurrently, including regression checks for unrelated ancestor-directory
+changes without weakening inode, symlink, access-policy, or file-content checks.
+
+| Environment | Passed | Skipped | Result |
+|---|---:|---:|---|
+| macOS 27.2.1 arm64, Python 3.14.7 | 803 | 2 | Pass, 23.767 seconds |
+| macOS 27.2.1 arm64, Python 3.10.20 | 803 | 2 | Pass, 19.512 seconds |
+| Linux aarch64 container, Python 3.10.22 | 739 | 66 | Portable/mocked checks pass, 8.272 seconds; native macOS and unavailable Node checks skipped |
+
+The macOS defaults skip the opt-in real Trash and generated-app roundtrips.
+A separate disposable signed app test verified inspection, normal quit,
+same-bundle relaunch, and a second normal quit. Generated document-version and
+image-similarity checks pass. All three Swift helpers build and sign locally;
+the screen watchdog rejects an unrelated caller and verifies a legitimate
+helper parent without changing input state. This host's native Trash preflight
+still reports access denial before any move, so a full product Trash/restore
+roundtrip remains unverified.
+
+Independent reviews covered providers, browser requests, apps, maintenance,
+native tools, captured-file erasure, interrupted actions, and history retention.
+The installed shared skill exposes **66 tools in 14 modules**, with no missing
+module or mismatched catalog action. Its isolated setup smoke passes all four
+checks. Repository/skill validation, Python compilation, shell/JavaScript syntax,
+whitespace checks, and workflow lint pass.
+
+The configured GitHub workflow adds Ubuntu, macOS 15 arm64, and macOS 15 Intel
+coverage, but has not run remotely for this branch. Actual provider accounts and
+OAuth consent, Chrome installation, ClamAV engine scanning, PhotoKit changes,
+screen input/multiple displays, launchd/notifications, and live maintenance,
+Homebrew, and external-volume mutations remain separate validation gates.
+Fixtures do not satisfy these gates. No personal-file cleanup, account connection,
+privacy grant, extension installation, or persistent schedule was performed.
+
+Run the suite from the repository with
+`python3 -B -m unittest discover -s b/skills/cleanmac/tests -q`.
+The generated-app integration uses `CLEANMAC_APP_PROCESS_INTEGRATION=1` with
+`-p test_native_tools.py`; native Trash uses `CLEANMAC_NATIVE_INTEGRATION=1` with
+`-p test_native_roundtrip.py`. Use only disposable fixtures for either opt-in.
+Detailed test paths, implemented scope, and remaining gates are recorded in
+[features.json](features.json); no roadmap issue is closed from fixture counts.
+
+## Initial 0.1.0 validation — 2026-11-13
 
 - **267 tests executed: 266 passed, one opt-in native integration test skipped**
   in the default suite. Tests exercise real CLI subprocesses, scan-only session

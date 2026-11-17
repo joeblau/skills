@@ -7,7 +7,7 @@ as an incidental part of forgetting a scan.
 
 from __future__ import annotations
 
-from contextlib import contextmanager
+from contextlib import contextmanager, ExitStack
 import errno
 import fcntl
 import json
@@ -189,6 +189,29 @@ def _contains_recovery(value) -> bool:
     return False
 
 
+def _references_id(value, identifier: str) -> bool:
+    if isinstance(value, dict):
+        return any(_references_id(item, identifier) for item in value.values())
+    if isinstance(value, list):
+        return any(_references_id(item, identifier) for item in value)
+    return isinstance(value, str) and value == identifier
+
+
+def _receipt_requires_plan(record: dict) -> bool:
+    if record.get("record_type") == "action_receipt":
+        if record.get("execution_started") is False and record.get("status") in {"not_started", "failed"}:
+            return _contains_recovery({key: value for key, value in record.items() if key != "plan_snapshot"})
+        return True
+    if _contains_recovery(record):
+        return True
+    operations = record.get("operations")
+    if isinstance(operations, list) and operations:
+        return (record.get("status") not in {"cancelled", "partial"}
+                or any(not isinstance(operation, dict) or operation.get("status") != "not_started" for operation in operations))
+    # An unrecognized referenced receipt is not evidence that nothing happened.
+    return True
+
+
 class StateStore:
     """Persist private JSON records; instantiate with a separate fixture directory in tests."""
 
@@ -330,16 +353,75 @@ class StateStore:
         _name(identifier, "record ID")
         if not isinstance(discard_recovery, bool):
             raise _invalid("Recovery disposal must be an explicit Boolean choice.", "state_invalid_record")
-        with self.lock("records"):
-            with self._kind_fd(kind) as directory:
-                record = _read(directory, identifier + ".json")
-                if record.get("id") != identifier:
-                    raise _invalid("State record ID does not match its filename; original preserved.", "state_corrupt")
-                if kind == "receipts" and _contains_recovery(record) and not discard_recovery:
-                    raise _invalid("This receipt contains recovery locations. Retain it, or explicitly discard recovery history.",
-                                   "recovery_retention", receipt_id=identifier)
-                os.unlink(identifier + ".json", dir_fd=directory)
-                os.fsync(directory)
+        observed = self.get(kind, identifier)
+        locks = []
+        record_type = observed.get("record_type")
+        if kind in {"plans", "receipts"}:
+            plan_id = identifier if kind == "plans" else observed.get("plan_id", "")
+            action = re.fullmatch(r"plan-action-([0-9a-f]{32})", str(plan_id))
+            if action:
+                locks.append(("action-" + action.group(1), 5.0))
+            # Native image actions nest action -> mutation; never invert that.
+            locks.append(("mutation", 5.0))
+        elif kind == "scans" and record_type == "oauth_session":
+            session = re.fullmatch(r"oauth-session-([0-9a-f]{32})", identifier)
+            if session is None:
+                raise _invalid("OAuth session identity is invalid; retain the record.", "oauth_session_retention")
+            locks.extend([("worker-" + session.group(1), 0.0), (identifier, 5.0)])
+        elif kind == "scans" and record_type == "oauth_connection":
+            connection = re.fullmatch(r"oauth-connection-([0-9a-f]{32})", identifier)
+            if connection is None:
+                raise _invalid("OAuth connection identity is invalid; retain the record.", "oauth_account_retention")
+            locks.append(("oauth-" + connection.group(1), 5.0))
+
+        with ExitStack() as stack:
+            for name, timeout in locks:
+                try:
+                    stack.enter_context(self.lock(name, timeout=timeout))
+                except CleanMacError as error:
+                    if name.startswith("worker-") and error.code == "state_busy":
+                        raise _invalid("The consent worker is still running. Use tool accounts --action cancel --record SESSION_ID, then wait for it to stop before forgetting this session.",
+                                       "oauth_session_retention", session_id=identifier) from None
+                    raise
+            current = self.get(kind, identifier)
+            if current.get("record_type") != record_type:
+                raise _invalid("The record changed while preparing deletion; inspect it again.", "state_busy")
+            if kind == "scans" and record_type == "oauth_session":
+                if current.get("status") not in {"cancelled", "expired", "denied", "failed", "connected"}:
+                    raise _invalid("This consent session is still active. Use tool accounts --action cancel --record SESSION_ID, or check its status after expiry, before forgetting it.",
+                                   "oauth_session_retention", session_id=identifier)
+            elif kind == "scans" and record_type == "oauth_connection":
+                if current.get("status") != "disconnected":
+                    raise _invalid("This account may still have stored credentials. Use tool accounts --action disconnect-plan --record CONNECTION_ID and apply its reviewed plan before forgetting the connection.",
+                                   "oauth_account_retention", connection_id=identifier)
+                from .oauth import Keychain
+                if Keychain().contains(identifier):
+                    raise _invalid("Account credentials still exist in Keychain. Complete the accounts disconnect workflow before forgetting this connection.",
+                                   "oauth_account_retention", connection_id=identifier)
+            with self.lock("records"):
+                with self._kind_fd(kind) as directory:
+                    record = _read(directory, identifier + ".json")
+                    if record != current or record.get("id") != identifier:
+                        raise _invalid("The record changed while preparing deletion; inspect it again.", "state_busy")
+                    if kind == "plans":
+                        with self._kind_fd("receipts") as receipts:
+                            filenames = [name for name in os.listdir(receipts) if name.endswith(".json")]
+                            if len(filenames) > _MAX_RECORDS:
+                                raise _invalid("Too many receipts to safely check plan retention.", "state_limit")
+                            for filename in filenames:
+                                receipt_id = _name(filename[:-5], "receipt ID")
+                                receipt = _read(receipts, filename)
+                                if receipt.get("id") != receipt_id:
+                                    raise _invalid("Receipt identity does not match its filename; original preserved.", "state_corrupt")
+                                if _references_id(receipt, identifier) and _receipt_requires_plan(receipt):
+                                    raise _invalid("This plan is referenced by a started or recovery-bearing receipt. Inspect and retain that receipt and plan together for recovery and audit.",
+                                                   "plan_retention", plan_id=identifier, receipt_id=receipt_id)
+                    if kind == "receipts" and ((record_type == "action_receipt" and _receipt_requires_plan(record))
+                            or (record_type != "action_receipt" and _contains_recovery(record) and not discard_recovery)):
+                        raise _invalid("This receipt contains recovery or action audit records. Retain it so recovery and repeated-action checks remain available.",
+                                       "recovery_retention", receipt_id=identifier)
+                    os.unlink(identifier + ".json", dir_fd=directory)
+                    os.fsync(directory)
 
     def get_settings(self) -> dict:
         with self._root_fd() as root:
@@ -352,5 +434,26 @@ class StateStore:
         data = _serialize(settings)
         with self.lock("settings"):
             with self._root_fd() as root:
+                _write(root, "settings.json", data)
+        return json.loads(data)
+
+    def update_settings(self, mutate) -> dict:
+        """Atomically read, change and save shared settings without lost updates.
+
+        The synchronous callback receives a fresh JSON object and may modify it
+        in place, returning None, or return a replacement object. It must not
+        call StateStore methods, perform external work or acquire another lock.
+        Exceptions and invalid results leave the previous settings untouched.
+        """
+        if not callable(mutate):
+            raise _invalid("A settings update requires a callback.", "state_invalid_record")
+        with self.lock("settings"):
+            with self._root_fd() as root:
+                try:
+                    current = _read(root, "settings.json")
+                except FileNotFoundError:
+                    current = {"schema_version": 1}
+                result = mutate(current)
+                data = _serialize(current if result is None else result)
                 _write(root, "settings.json", data)
         return json.loads(data)

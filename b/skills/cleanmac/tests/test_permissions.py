@@ -128,7 +128,8 @@ class CapabilityTests(unittest.TestCase):
         self.assertEqual(features["CM-003"]["status"], "available")
         self.assertEqual(features["CM-005"]["status"], "unavailable")
         self.assertEqual(features["CM-027"]["permitted_actions"], [])
-        self.assertEqual(features["CM-027"]["status"], "unavailable")
+        self.assertEqual(features["CM-027"]["status"], "unverified")
+        self.assertEqual(features["CM-027"]["dependency_status"], "not-checked")
         self.assertEqual(features["CM-006"]["command"], "review")
         self.assertIsNone(features["CM-009"]["command"])
         self.assertEqual(features["CM-009"]["invocation"], [])
@@ -137,6 +138,17 @@ class CapabilityTests(unittest.TestCase):
     def test_unimportable_adapter_is_not_advertised(self):
         with patch.object(permissions.Path, "is_file", return_value=True), patch.object(permissions.importlib, "import_module", side_effect=ImportError("broken dependency")):
             self.assertFalse(permissions._module_available("inventory"))
+
+    def test_registered_provider_is_not_implicitly_connected_or_authorized(self):
+        metadata = {"tools": [{"name": "fixture-cloud", "feature_ids": ["CM-056"],
+                               "actions": ["inspect", "plan", "apply"], "requirements": ["OAuth"]}]}
+        with patch("cleanmac_core.extensions.catalog", return_value=metadata), patch.object(permissions.platform, "system", return_value="Darwin"), patch.object(permissions.subprocess, "run", side_effect=AssertionError("unexpected provider/native process")):
+            result = permissions.capabilities(native_path=self.missing_helper)
+        feature = next(item for item in result["capabilities"] if item["id"] == "CM-056")
+        self.assertEqual(feature["status"], "unverified")
+        self.assertEqual(feature["permitted_actions"], [])
+        self.assertEqual(feature["command"], "tool fixture-cloud --action inspect")
+        self.assertEqual(feature["tools"][0]["requirements"], ["OAuth"])
 
     def test_unsupported_platform_does_not_probe_or_run_macos_tools(self):
         with patch.object(permissions.platform, "system", return_value="Linux"), patch.object(permissions, "_probe_root", side_effect=AssertionError("probe on unsupported OS")), patch.object(permissions.subprocess, "run", side_effect=AssertionError("macOS tool called")):
