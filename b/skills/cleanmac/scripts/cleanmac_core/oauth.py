@@ -20,6 +20,7 @@ from pathlib import Path
 import re
 import secrets
 import signal
+from socketserver import TCPServer
 import ssl
 import subprocess
 import sys
@@ -550,6 +551,12 @@ def _loopback_code(store, session):
                 pass
 
     class LoopbackServer(HTTPServer):
+        def server_bind(self):
+            # HTTPServer resolves the hostname here, which can block on DNS.
+            # The callback uses a fixed loopback address and needs no lookup.
+            TCPServer.server_bind(self)
+            self.server_name, self.server_port = self.server_address[:2]
+
         def get_request(self):
             connection, address = super().get_request()
             connection.settimeout(1)

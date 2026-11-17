@@ -339,6 +339,17 @@ class OAuthTests(unittest.TestCase):
         self.assertEqual(result["status"], "starting")
         self.assertIn("client_id", accounts_tools.TOOL_SPECS[0]["configuration"])
 
+    def test_loopback_listener_starts_without_hostname_resolution(self):
+        session = self.session()
+        with mock.patch("http.server.socket.getfqdn", side_effect=AssertionError("Loopback startup must not resolve hostnames")), \
+             mock.patch.object(oauth, "_is_pending", return_value=False):
+            self.assertIsNone(oauth._loopback_code(self.store, session))
+        current = self.store.get("scans", session["id"])
+        self.assertEqual(current["status"], "waiting_for_consent")
+        redirect = parse.urlsplit(current["redirect_uri"])
+        self.assertEqual(redirect.hostname, "127.0.0.1")
+        self.assertGreater(redirect.port, 0)
+
     def test_loopback_listener_validates_state_and_closes_after_callback(self):
         session = self.session()
         outcomes = []
